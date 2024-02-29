@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/../static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <style>
+        .account {
+            width: 400px;
+            border: 1px solid #dddddd;
+            border-radius: 20px;
+            box-shadow: 5px 5px 20px #aaa;
+
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            padding: 20px 40px;
+
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .account h2 {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        body {
+            background-image: url('/../static/image/background2.jpg');
+            background-size: 100% auto; /* 使图片覆盖整个页面 */
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="account">
+    <h2>Register</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Username</label>
+            {{ form.username }}
+            <span style="color: red">{{ form.username.errors.0 }}</span>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            {{ form.password }}
+            <span style="color: red">{{ form.password.errors.0 }}</span>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm password</label>
+            {{ form.confirm_password }}
+            <span style="color: red">{{ form.confirm_password.errors.0 }}</span>
+        </div>
+
+        <div class="form-group">
+            <label>Age</label>
+            {{ form.age }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_code">Code</label>
+            <div class="row">
+                <div class="col-xs-7">
+                    {{ form.code }}
+                    <span style="color: red">{{ form.code.errors.0 }}</span>
+                </div>
+                <div class="col-xs-5">
+                    <img id="image_code" src="/image/code/" style="width: 125px; cursor: pointer;"
+                         onclick="refreshCode();">
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <input type="submit" value="Register" class="btn btn-primary" style="width: 100%; margin-bottom: 20px;">
+        </div>
+        <a href="/login/" class="btn btn-success">Back to login</a>
+
+    </form>
+</div>
+
+<script>
+    function refreshCode() {
+        var imageCode = document.getElementById('image_code');
+        imageCode.src = '/image/code/?' + new Date().getTime();
+    }
+</script>
+</body>
+</html>

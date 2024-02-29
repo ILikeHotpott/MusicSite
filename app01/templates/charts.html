@@ -1,0 +1,244 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <style>
+        table {
+            width: 100%;
+            table-layout: fixed; /* 确保列宽固定不变 */
+            border-collapse: collapse; /* 移除单元格之间的间隙 */
+        }
+
+        table th, table td {
+            border: none;
+            padding: 0;
+            text-align: center;
+            vertical-align: middle;
+            height: 100px; /* 设置所有单元格的高度 */
+        }
+
+        table img {
+            width: 100px; /* 图片宽度填满单元格 */
+            height: 100px; /* 图片高度填满单元格 */
+            object-fit: fill; /* 图片覆盖整个内容区域 */
+            display: block; /* 防止出现额外空间 */
+            margin: 0;
+        }
+
+
+        th.rank, td.rank {
+            width: 100px;
+        }
+
+        th.pic, td.pic {
+            width: 100px;
+        }
+
+        .score {
+            width: 200px;
+        }
+
+        .scores {
+            font-size: 25px;
+            font-weight: 600;
+            font-family: "Arial Black", serif;
+        }
+
+        th.song, td.song {
+            width: 300px;
+        }
+
+        th.artist, td.artist {
+            text-align: left;
+            width: 180px;
+        }
+
+        th.weeks, td.weeks {
+            width: 100px;
+        }
+
+        .table-row .rank {
+            font-size: 30px;
+            color: white;
+            font-weight: 400;
+        }
+
+        .song-font {
+            font-family: "Arial Black", serif;
+            font-size: 27px;
+            color: black;
+            font-weight: 600;
+        }
+
+        .song-text {
+            border: none;
+            text-align: left; /* 使文本靠左对齐 */
+            vertical-align: middle; /* 使文本垂直居中 */
+            height: 35px; /* 你可以根据需要设置合适的高度 */
+            /* 在左侧添加一些内边距，根据需要调整 */
+        }
+
+        .table-row .rank {
+            font-weight: 600;
+            font-family: "Arial Black", serif;
+        }
+
+        .table-row .artist {
+            font-weight: 100;
+            font-family: "Arial Black", serif;
+            font-size: 16px;
+        }
+
+        .table-row .weeks {
+            font-weight: 200;
+            font-family: "Arial Black", serif;
+            font-size: 20px;
+        }
+
+        .table-row .weeks {
+            font-weight: 200;
+            font-family: "Arial Black", serif;
+            font-size: 20px;
+        }
+
+        .table-title {
+            font-weight: 200;
+            font-family: "Arial Black", serif;
+            font-size: 20px;
+        }
+
+        .star {
+            cursor: pointer;
+            color: grey; /* 初始颜色为白色 */
+            font-size: 28px;
+        }
+
+        .star.rated {
+            color: gold; /* 评分后的星星颜色 */
+            font-size: 28px;
+        }
+
+        .star_after_score {
+            color:gold;
+            font-size: 30px;
+        }
+
+    </style>
+
+    <div class="container">
+        <a href="/charts/add" class="btn" style="background-color: black; color: white;">Add Music</a>
+        <table>
+            <thead>
+            <tr>
+                <th class="rank table-title">RANK</th>
+                <th class="pic table-title">ALBUM</th>
+                <th class="score table-title">SCORES</th>
+                <th class="song song-text table-title">SONG</th>
+                <th class="weeks table-title">WKS ON CHART</th>
+                <th class="rate table-title">STARS</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in queryset %}
+                <tr class="table-row">
+                    <td class="rank" style="background-color: black; margin-left: 50px">{{ forloop.counter }}</td>
+                    <td class="pic"><img src="{{ item.pic.url }}" alt="Artist Image"></td>
+                    {% if not item.average_score %}
+                    <td class="scores">0 <span class="star_after_score">&#9733;</span>
+                    </td>
+                    {% else %}
+                    <td class="scores">{{ item.average_score | floatformat:1 }}
+                        <span class="star_after_score">&#9733;</span>
+                    </td>
+                    {% endif %}
+                    <td>
+                        <div class="song song-font song-text">{{ item.title }}</div>
+                        <div class="artist" style="text-align: left">{{ item.artist }}</div>
+                    </td>
+                    <td class="weeks">{{ item.weeks }}</td>
+                    <td>
+                        <div class="rating" data-music-id="{{ item.id }}">
+                            <span class="star" data-value="1">&#9734;</span>
+                            <span class="star" data-value="2">&#9734;</span>
+                            <span class="star" data-value="3">&#9734;</span>
+                            <span class="star" data-value="4">&#9734;</span>
+                            <span class="star" data-value="5">&#9734;</span>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+    <script>
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function () {
+                let rating = this.dataset.value;
+                let ratingContainer = this.parentElement;
+                updateRating(ratingContainer, rating);
+            });
+        });
+
+        function updateRating(ratingContainer, rating) {
+            const musicId = ratingContainer.getAttribute('data-music-id');
+            // 假设你有某种方式获取当前登录用户的ID，或者后端通过用户的session自动识别
+            // const userId = ...;
+
+            for (let i = 0; i < ratingContainer.children.length; i++) {
+                let star = ratingContainer.children[i];
+                if (i < rating) {
+                    star.innerHTML = '&#9733;'; // 实心星星
+                    star.classList.add('rated');
+                } else {
+                    star.innerHTML = '&#9734;'; // 空心星星
+                    star.classList.remove('rated');
+                }
+            }
+
+            // 发送AJAX请求到后端
+            fetch('/rate-music/', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 添加CSRF令牌是必要的，如果你使用的是Django
+                    'X-CSRFToken': getCookie('csrftoken') // 从cookies中获取CSRF令牌
+                },
+                body: JSON.stringify({
+                    musicId: musicId,
+                    // userId: userId, // 如果你的后端能自动从session识别用户，则不需要发送userId
+                    score: rating,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    location.reload();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // 函数用于从cookies中获取CSRF令牌
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // 判断这个cookie的名称是否是我account们想要的
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+    </script>
+{% endblock %}

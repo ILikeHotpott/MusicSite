@@ -1,0 +1,139 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+    <style>
+        .left-bar {
+            background-color: #4A474A;
+            height: 800px;
+            margin-bottom: 0;
+            border-radius: 15px;
+        }
+
+        .img-container {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: flex-start; /* 使项目在容器的顶部对齐 */
+            padding-top: 30px; /* 距离上方边距100px */
+            height: 100%; /* 容器高度，可以根据需要调整 */
+        }
+
+        .avatar {
+            height: 120px;
+        }
+
+        .profile-name {
+            text-align: center;
+            font-family: "Arial Black", serif;
+            margin-top: 40px;
+            color: #eff1f6bf;
+            font-size: 20px;
+        }
+
+        .profile-button {
+            opacity: 85%;
+            margin-top: 15px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .left-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-left {
+            font-family: "Arial Black", serif;
+            color: #eff1f6bf;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .profile-right {
+            font-family: "Arial Black", serif;
+            color: #eff1f6bf;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .tags {
+            color: #eff1f6bf;
+            font-size: 16px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .tag-logo {
+            margin-top: 3px;
+        }
+
+        .tag-content {
+            margin-left: 15px;
+        }
+
+        .profile-info-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* 确保宽度足够 */
+            padding-left: 15px; /* 根据需要调整 */
+            color: #eff1f6bf;
+            font-family: "Arial Black", serif;
+            font-size: 16px;
+            align-items: center; /* 居中对齐 */
+            margin-top: 20px; /* 根据需要调整上边距 */
+        }
+
+        .profile-info {
+            margin-top: 10px; /* 根据需要调整间距 */
+        }
+
+        .profile-info span {
+            min-width: 120px; /* 根据需要调整 */
+            text-align: center;
+        }
+
+
+    </style>
+
+    <div class="container">
+        <div class="left-bar col-xs-4">
+            <div class="avatar img-container">
+                <a href="#">
+                    <img src="/media/profile/default.png" alt="Default Profile" class="img-circle avatar">
+                </a>
+            </div>
+            <div class="profile-name">
+                {{ username }}
+            </div>
+            <div class="profile-info-group">
+                <div class="profile-info">
+                    <span>followers: 140</span>
+                    <span style="margin-left: 10px"></span>
+                    <span>following: 210</span>
+                </div>
+                <div class="profile-info">
+                    <span>friend: 5002</span>
+                    <span style="margin-left: 12px; margin-right: 12px"></span>
+                    <span>subscribes: 10</span>
+                </div>
+            </div>
+            <a class="btn btn-success profile-button" href="/profile/edit/">Edit Profile</a>
+            <div style="text-align: left !important;">
+                <div class="tags">
+                    <span class="glyphicon glyphicon-map-marker tag-logo" aria-hidden="true"></span>
+                    <span class="tag-content">Australia</span>
+                </div>
+                <div class="tags" style="margin-top: 5px">
+                    <span class="glyphicon glyphicon-tag tag-logo" aria-hidden="true"></span>
+                    <span class="tag-content">The Weeknd</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
