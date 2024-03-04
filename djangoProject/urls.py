@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 
-
 from app01 import views
 from django.urls import re_path
 from django.views.static import serve
@@ -29,10 +28,10 @@ urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}, name='media'),
     re_path(r'^$', RedirectView.as_view(url='/charts/', permanent=False)),
 
-
     path('accounts/', include('django.contrib.auth.urls')),
     path("charts/", views.charts),
     path("charts/add/", views.charts_add),
+    path("charts/<int:nid>/comment/", views.charts_comment, name='charts_comment'),
 
     path("login/", views.login),
     path("logout/", views.logout),
@@ -41,8 +40,22 @@ urlpatterns = [
 
     path("rate-music/", views.rate_music, name="rate_music"),
 
+    path("rank/", views.rank, name='rank_default'),
+    path('rank/<str:region>/', views.rank, name='rank_region'),
+
     path("profile/", views.profile),
     path("profile/edit/", views.profile_edit),
+    path('profile/avatar/', views.profile_avatar, name='profile_avatar'),
+
+    # Practice for chat function!
+    path("chat/", views.chat),
+    path("send/msg/", views.send_msg),
+    path("get/msg/", views.get_msg),
+
+    path("chat2/", views.chat2),
+
+    # http://127.0.0.1/chat3/?num=123123
+    path("chat3/", views.chat3),
 
 ]
 

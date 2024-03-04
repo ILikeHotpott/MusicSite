@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <style>
+        .message {
+            height: 600px;
+            width: 500px;
+            background-color: #2aabd2;
+            border-radius: 10px;
+        }
+    </style>
+
+    <div class="message" id="message"></div>
+    <div>
+        <input type="text" id="txt">
+        <input type="button" value="Send" onclick="sendMessage();">
+        <input type="button" value="Disconnect" onclick="closeConn();">
+    </div>
+
+    <div style="height: 1000px"></div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        socket = new WebSocket("ws://127.0.0.1:8000/room/{{ qq_group_num }}/");
+
+        // 当服务端和客户端 创建连接时自动触发(服务端执行self.accept())
+        socket.onopen = function (event) {
+            let tag = document.createElement("div");
+            tag.innerText = "[Successfully connected]";
+            document.getElementById("message").appendChild(tag);
+        }
+
+        // 当websocket接收到服务端发来的消息时，自动触发这个函数
+        socket.onmessage = function (event) {
+            let tag = document.createElement("div");
+            tag.innerText = event.data;
+            document.getElementById("message").appendChild(tag);
+        }
+
+        // 服务端主动断开连接时，这个方法被触发
+        socket.onclose = function (event) {
+            let tag = document.createElement("div");
+            tag.innerText = "[Disconnected]";
+            document.getElementById("message").appendChild(tag);
+        }
+
+        function closeConn() {
+            socket.close();
+        }
+
+        let tag = document.getElementById("txt");
+
+        function sendMessage() {
+            socket.send(tag.value)
+        }
+    </script>
+
+{% endblock %}

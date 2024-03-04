@@ -102,12 +102,19 @@
     <div class="container">
         <div class="left-bar col-xs-4">
             <div class="avatar img-container">
-                <a href="#">
-                    <img src="/media/profile/default.png" alt="Default Profile" class="img-circle avatar">
-                </a>
+                {% if user.avatar %}
+                    <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
+                        <img src="{{ user.avatar.url }}" alt="User Profile" class="img-circle avatar">
+                    </a>
+                {% else %}
+                    <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
+                        <img src="/media/profile/default.png" alt="User Profile" class="img-circle avatar">
+                    </a>
+                {% endif %}
+
             </div>
             <div class="profile-name">
-                {{ username }}
+                {{ user.username }}
             </div>
             <div class="profile-info-group">
                 <div class="profile-info">
@@ -133,6 +140,37 @@
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <!-- Modal -->
+    <!-- Avatar Update Modal -->
+    <div class="modal fade" id="avatarUpdateModal" tabindex="-1" role="dialog" aria-labelledby="avatarUpdateModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="avatarUpdateModalLabel">更换头像</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'profile_avatar' %}" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Upload your avatar</label>
+                            {{ form.avatar }}
+                            <span style="color: red">{{ item.errors.0 }}</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
 

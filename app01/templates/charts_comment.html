@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <style>
+        .left-bar {
+            height: 700px;
+            background-color: #555555;
+            text-align: center;
+        }
+
+        .right-bar {
+            height: 700px;
+            background-color: #404040;
+            text-align: center;
+            color: #D3D3D3
+        }
+
+        .left-bar img {
+            height: 500px;
+            margin-top: 50px;
+            border-radius: 20px;
+        }
+
+        .song {
+            font-size: 35px;
+            font-family: "Arial Black", serif;
+            margin-top: 50px;
+        }
+
+        .artist {
+            font-size: 25px;
+            font-family: "Arial Black", serif;
+        }
+
+        .published {
+            font-size: 25px;
+            font-family: "Arial Black", serif;
+        }
+
+        .comment-section {
+            margin-top: 20px;
+        }
+
+        .comment {
+            margin-top: 750px;
+        }
+
+        .comment-item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+
+        .comment-user-avatar img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        .comment-content {
+            margin-left: 50px;
+        }
+
+        .comment-user-name {
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .comment-time {
+            color: #999;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .content1 {
+            font-size: 15px;
+            margin-left: 15px;
+        }
+
+        .scores {
+            font-family: "Arial Black", serif;
+            font-size: 30px;
+            margin-left: 15px;
+        }
+
+        .comment-title {
+            margin-top: 100px;
+        }
+
+        .input-container {
+            width: 300px; /* 设置输入框容器的宽度 */
+            margin: 0 auto; /* 居中显示 */
+            position: relative; /* 用于定位伪元素 */
+        }
+
+        .underline-input {
+            width: 100%; /* 输入框填满容器宽度 */
+            border: none; /* 移除边框 */
+            outline: none; /* 移除聚焦时的轮廓 */
+            background: none; /* 移除背景 */
+            padding: 10px 0; /* 添加一些内边距 */
+            font-size: 16px; /* 设置字体大小 */
+            position: relative; /* 相对定位，用于下划线动画 */
+        }
+
+        .underline-input::after {
+            content: ''; /* 创建伪元素用于显示下划线 */
+            position: absolute;
+            bottom: 0; /* 定位到输入框底部 */
+            left: 0; /* 始终从左侧开始 */
+            width: 100%; /* 初始宽度为100% */
+            height: 2px; /* 下划线厚度 */
+            background-color: grey; /* 初始颜色 */
+            transition: background-color 0.3s ease; /* 只过渡背景颜色的变化 */
+        }
+
+        .underline-input:focus::after {
+            background-color: black; /* 聚焦时颜色变为黑色 */
+        }
+
+    </style>
+    <div class="container">
+        <div class="col-xs-7 left-bar">
+            <img src="{{ music.pic.url }}" alt="default pic">
+        </div>
+
+        <div class="col-xs-5 right-bar">
+            <div class="song">{{ music.title }}</div>
+            <div class="artist">{{ music.artist }}</div>
+            <div class="published">2023</div>
+            <div class="scores">{{ music.average_score }} &#9733</div>
+            <div class="lyrics">lyrics</div>
+        </div>
+
+        <div class="comment">
+            <h3 class="comment-title">Comments</h3>
+
+            {% if request.user.is_authenticated %}
+                <div class="input-container">
+                    <span>
+                        <img src="{{ comment.user.avatar.url }}" alt="User Avatar">
+                    </span>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="text" class="underline-input" placeholder="Add a comment...">
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>Please <a href="/login/">login</a> to post a comment.</p>
+            {% endif %}
+
+            {% for comment in comments %}
+                <div class="comment-item">
+                    <span class="comment-user-avatar">
+                        <!-- 假设每个用户都有一个头像字段 -->
+                        <img src="{{ comment.user.avatar.url }}"
+                             alt="User Avatar">
+                    </span>
+                    <span class="comment-user-name">{{ comment.user.username }}</span>
+                    <span class="comment-time">{{ comment.created_at }}</span>
+                    <div class="comment-content">
+
+                        <div class="content1">{{ comment.content }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+        </div>
+
+        <div style="height: 800px"></div>
+    </div>
+
+{% endblock %}

@@ -118,7 +118,7 @@
         }
 
         .star_after_score {
-            color:gold;
+            color: gold;
             font-size: 30px;
         }
 
@@ -144,15 +144,18 @@
                     <td class="rank" style="background-color: black; margin-left: 50px">{{ forloop.counter }}</td>
                     <td class="pic"><img src="{{ item.pic.url }}" alt="Artist Image"></td>
                     {% if not item.average_score %}
-                    <td class="scores">0 <span class="star_after_score">&#9733;</span>
-                    </td>
+                        <td class="scores">0 <span class="star_after_score">&#9733;</span>
+                        </td>
                     {% else %}
-                    <td class="scores">{{ item.average_score | floatformat:1 }}
-                        <span class="star_after_score">&#9733;</span>
-                    </td>
+                        <td class="scores">{{ item.average_score | floatformat:1 }}
+                            <span class="star_after_score">&#9733;</span>
+                        </td>
                     {% endif %}
                     <td>
-                        <div class="song song-font song-text">{{ item.title }}</div>
+                        <div class="song song-font song-text">
+                            <a href="{% url 'charts_comment' item.id %}"
+                               style="text-decoration: none; color: black;">{{ item.title }}</a>
+                        </div>
                         <div class="artist" style="text-align: left">{{ item.artist }}</div>
                     </td>
                     <td class="weeks">{{ item.weeks }}</td>

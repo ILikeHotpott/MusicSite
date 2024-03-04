@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <style>
+        .message {
+            height: 600px;
+            width: 500px;
+            box-shadow: grey;
+        }
+    </style>
+
+    <div class="message" id="message"></div>
+    <div>
+        <input type="text" id="txt">
+        <input type="button" value="Send" onclick="sendMessage();">
+    </div>
+
+    <div style="height: 1000px"></div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% endblock %}

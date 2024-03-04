@@ -1,0 +1,210 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <style>
+        .rank-list {
+            cursor: pointer;
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+
+
+        .music-cover img {
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            table-layout: fixed; /* 确保列宽固定不变 */
+            border-collapse: collapse; /* 移除单元格之间的间隙 */
+        }
+
+        table th, table td {
+            border: none;
+            padding: 0;
+            text-align: center;
+            vertical-align: middle;
+            height: 100px; /* 设置所有单元格的高度 */
+        }
+
+        table img {
+            width: 100px; /* 图片宽度填满单元格 */
+            height: 100px; /* 图片高度填满单元格 */
+            object-fit: fill; /* 图片覆盖整个内容区域 */
+            display: block; /* 防止出现额外空间 */
+            margin: 0;
+        }
+
+        th.rank, td.rank {
+            width: 100px;
+        }
+
+        th.pic, td.pic {
+            width: 100px;
+        }
+
+        .score {
+            width: 200px;
+        }
+
+        th.song, td.song {
+            width: 300px;
+        }
+
+        th.artist, td.artist {
+            text-align: left;
+            width: 180px;
+        }
+
+        .table-row .rank {
+            font-size: 30px;
+            color: white;
+            font-weight: 400;
+        }
+
+        .song-font {
+            font-family: "Arial Black", serif;
+            font-size: 23px;
+            color: black;
+            font-weight: 600;
+        }
+
+        .song-text {
+            border: none;
+            text-align: left; /* 使文本靠左对齐 */
+            vertical-align: middle; /* 使文本垂直居中 */
+            height: 35px; /* 你可以根据需要设置合适的高度 */
+            /* 在左侧添加一些内边距，根据需要调整 */
+        }
+
+        .table-row .rank {
+            font-weight: 600;
+            font-family: "Arial Black", serif;
+        }
+
+        .table-row .artist {
+            font-weight: 100;
+            font-family: "Arial Black", serif;
+            font-size: 14px;
+        }
+
+        .table-title {
+            font-weight: 200;
+            font-family: "Arial Black", serif;
+            font-size: 20px;
+        }
+
+        .star {
+            cursor: pointer;
+            color: grey; /* 初始颜色为白色 */
+            font-size: 28px;
+        }
+
+        .left-bar-list {
+            margin-top: 50px;
+        }
+
+        .rank-list-title {
+            text-align: center;
+            font-weight: 600;
+        }
+
+    </style>
+
+    <div class="container rank">
+        <!-- Left bar for music charts list -->
+        <div class="col-xs-3 left-bar">
+            <!-- Assuming you have multiple charts, iterate over them -->
+            <div class="left-bar-list">
+                <a href="/rank/">
+                    <div class="rank-list">
+                        AMERICA
+                    </div>
+                </a>
+
+{#                <a href="/rank/UK/">#}
+{#                    <div class="rank-list">#}
+{#                        BRITISH#}
+{#                    </div>#}
+{#                </a>#}
+
+                <a href="{% url 'rank_region' 'UK' %}">
+                    <div class="rank-list">
+                        BRITISH
+                    </div>
+                </a>
+
+                <a href="{% url 'rank_region' 'UK' %}">
+                    <div class="rank-list">
+                        AUSTRALIA
+                    </div>
+                </a>
+
+{#                <a href="/rank/AU/">#}
+{#                    <div class="rank-list">#}
+{#                        AUSTRALIA#}
+{#                    </div>#}
+{#                </a>#}
+            </div>
+            <!-- Add more links for other charts as needed -->
+        </div>
+
+        <!-- Right bar for displaying selected chart's content -->
+        <div class="col-xs-9 right-bar">
+            <h2 class="rank-list-title">{{ region }} MUSIC RANK</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th class="rank table-title">RANK</th>
+                    <th class="pic table-title">ALBUM</th>
+                    <th class="song song-text table-title">SCORES</th>
+                    <th class="score table-title">SONG</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for song_info in songs_info %}
+                    <tr class="table-row">
+                        <td class="rank" style="background-color: black; margin-left: 50px">{{ forloop.counter }}</td>
+
+                        {% if song_info.absolute_cover_url %}
+                            <td class="pic">
+                                <img src="{{ song_info.absolute_cover_url }}" alt="Album Cover">
+                            </td>
+                        {% else %}
+                            <td class="pic">
+                                <img src="/media/album/default.jpeg" alt="WTF">
+                            </td>
+                        {% endif %}
+
+
+                        <td>
+                            <div class="song song-font song-text" style="text-decoration: none; color: black;">
+                                {% if song_info.title|length > 20 %}
+                                    {{ song_info.title|slice:":20" }}...
+                                {% else %}
+                                    {{ song_info.title }}
+                                {% endif %}
+                            </div>
+                            <div class="artist" style="text-align: left">{{ song_info.artist }}</div>
+                        </td>
+                        <td>
+                            <div class="rating" data-music-id="{{ item.id }}">
+                                <span class="star" data-value="1">&#9734;</span>
+                                <span class="star" data-value="2">&#9734;</span>
+                                <span class="star" data-value="3">&#9734;</span>
+                                <span class="star" data-value="4">&#9734;</span>
+                                <span class="star" data-value="5">&#9734;</span>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
