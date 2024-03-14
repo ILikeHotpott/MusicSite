@@ -47,16 +47,13 @@ urlpatterns = [
     path("profile/edit/", views.profile_edit),
     path('profile/avatar/', views.profile_avatar, name='profile_avatar'),
 
-    # Practice for chat function!
-    path("chat/", views.chat),
-    path("send/msg/", views.send_msg),
-    path("get/msg/", views.get_msg),
-
-    path("chat2/", views.chat2),
-
     # http://127.0.0.1/chat3/?num=123123
     path("chat3/", views.chat3),
+    path("chat/", views.chat),
 
+    path("playground/", views.playground),
+    path("upload-to-s3/", views.upload_file_to_s3),
+    path("save-moment/", views.save_moment),
 ]
 
 if settings.DEBUG:

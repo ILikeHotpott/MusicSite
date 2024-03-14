@@ -1,6 +1,6 @@
 from io import BytesIO
 import json
-import queue
+import boto3
 import time
 import os
 import requests
@@ -9,18 +9,16 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.db.models import Avg
 from django.core.cache import cache
-from django.db.models import Q
 from django import forms
 from django.urls import reverse
 from django.views.decorators.http import require_POST
-from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login
-from djangoProject.settings import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, MUSIXMATCH_API_KEY
+from django.views.decorators.csrf import csrf_exempt
 from app01.utils.bootstrap import BootstrapForm, BootstrapModelForm
 from app01 import models
 from app01.utils.code import check_code
-from app01.models import Music, Comment, US_TopMusic
+from app01.models import Music, Comment, US_TopMusic, UserInfo
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists, get_album_cover, remove_feat, remove_parentheses
 
@@ -308,7 +306,7 @@ def rank(request, region="US"):
             image_filename = f"{rank}_{song}_{artist}.jpg".replace(" ", "_").replace("/", "_")
             local_image_path = os.path.join(settings.MEDIA_ROOT, 'album', image_filename)
 
-            cover_url = get_album_cover(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, song, artist)
+            cover_url = get_album_cover(settings.SPOTIFY_CLIENT_ID, settings.SPOTIFY_CLIENT_SECRET, song, artist)
             if not os.path.exists(local_image_path):
                 if not download_image(cover_url, local_image_path):
                     relative_image_path = 'album/default.jpeg'
@@ -326,7 +324,8 @@ def rank(request, region="US"):
 
         cache.set(f'last_update_{region}', current_timestamp, None)
 
-    enhanced_songs_info = list(US_TopMusic.objects.filter(region=region).values('id', 'title', 'artist', 'cover_url', 'region'))
+    enhanced_songs_info = list(
+        US_TopMusic.objects.filter(region=region).values('id', 'title', 'artist', 'cover_url', 'region'))
     for song_info in enhanced_songs_info:
         song_info['absolute_cover_url'] = settings.MEDIA_URL + song_info['cover_url']
 
@@ -338,38 +337,74 @@ def rank(request, region="US"):
     return render(request, "rank.html", context)
 
 
-def chat(request):
-    return render(request, "chat.html")
-
-
-DB = []
-
-
-def send_msg(request):
-    text = request.GET.get("text")
-    DB.append(text)
-    return HttpResponse("OK")
-
-
-def get_msg(request):
-    index = request.GET.get("index")
-    index = int(index)
-    context = {
-        "data": DB[index:],
-        "max_index": len(DB)
-    }
-    return JsonResponse(context)
-
-
-USER_QUEUE = {}
-
-
-def chat2(request):
-    uid = request.GET.get("uid")
-    USER_QUEUE[uid] = queue.Queue()
-    return render(request, "chat2.html")
-
-
 def chat3(request):
     qq_group_num = request.GET.get("num")
     return render(request, "chat3.html", {"qq_group_num": qq_group_num})
+
+
+@login_required
+def chat(request):
+    target_username = request.GET.get("with")
+    current_username = request.user.username
+    form = UserUpdateForm(instance=request.user)
+
+    current_user_info = UserInfo.objects.get(username=current_username)
+    target_user_info = UserInfo.objects.get(username=target_username)
+    current_avatar_url = current_user_info.avatar.url
+    target_avatar_url = target_user_info.avatar.url
+
+    # 将用户名传递给前端模板
+    return render(request, "chat.html", {
+        'current_username': current_username,
+        'target_username': target_username,
+        'form': form,
+        'current_avatar_url': current_avatar_url,
+        'target_avatar_url': target_avatar_url,
+    })
+
+
+def playground(request):
+    if request.method == "GET":
+        queryset = models.Moments.objects.all().order_by('-created_at')
+        return render(request, "playground.html", {"queryset": queryset})
+
+
+@csrf_exempt
+def upload_file_to_s3(request):
+    if request.method == 'POST':
+        file = request.FILES['file']
+        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+
+        try:
+            # 创建一个唯一的文件名，例如使用用户ID和上传时间
+            file_name = f"uploads/{request.user.id}/{file.name}"
+            # 上传文件到S3
+            s3_client.upload_fileobj(
+                file,
+                settings.AWS_STORAGE_BUCKET_NAME,
+                file_name,
+                ExtraArgs={
+                    "ContentType": file.content_type
+                }
+            )
+            file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_name}"
+
+            return JsonResponse({"message": "File uploaded successfully", "file_url": file_url}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+    else:
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+
+@csrf_exempt
+def save_moment(request):
+    if request.method == 'GET':
+        pass
+
+    data = json.loads(request.body)
+    content = data.get('content')
+    image_urls = data.get('image_urls', '')
+    moment = models.Moments(user=request.user, content=content, image_urls=image_urls)
+    moment.save()
+    return JsonResponse({"message": "Moment saved successfully"}, status=200)

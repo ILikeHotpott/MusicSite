@@ -1,65 +1,207 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 
 {% block content %}
     <style>
-        .message {
-            height: 600px;
-            width: 500px;
-            box-shadow: grey;
+        .navbar {
+            margin-bottom: 0 !important;
         }
+
+        .left-bar {
+            background-color: #2aabd2;
+            height: 627px;
+        }
+
+        .right-bar {
+            background-color: white;
+            height: 627px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            overflow-y: auto; /* 确保内容溢出时可滚动 */
+            border: 1px solid #ccc; /* 添加边框 */
+        }
+
+        .search-bar {
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            background-color: grey;
+            height: 40px;
+        }
+
+        .function-bar {
+            margin-top: 10px;
+            height: 40px;
+            background-color: grey;
+        }
+
+        .input-group {
+            position: relative;
+            bottom: 0;
+            left: 0;
+            width: 100%; /* 或根据需要设置具体宽度 */
+        }
+
+        .message-wrapper {
+            display: flex;
+            justify-content: flex-start; /* 默认对齐方式 */
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .sender-message-wrapper {
+            justify-content: flex-end; /* 发送者消息靠右对齐 */
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block; /* 根据内容调整宽度 */
+            background-color: #e0e0e0; /* 默认背景色 */
+            color: black; /* 默认文字颜色 */
+            word-wrap: break-word;
+        }
+
+        .sender-message {
+            background-color: #AB68FF;
+            color: white;
+            text-align: right;
+        }
+
+        .receiver-message {
+            background-color: #e0e0e0;
+            color: black;
+            text-align: left;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-self: center; /* 对齐调整为居中，以便于在wrapper内的位置调整 */
+        }
+
+        /* 发送者头像的外边距调整 */
+        .sender-avatar {
+            margin-left: 10px;
+        }
+
+        /* 接收者头像的外边距调整 */
+        .receiver-avatar {
+            margin-right: 10px;
+        }
+
+
+        .sender-message-wrapper, .receiver-message-wrapper {
+            display: flex;
+            align-items: flex-end;
+        }
+
+
     </style>
 
-    <div class="message" id="message"></div>
-    <div>
-        <input type="text" id="txt">
-        <input type="button" value="Send" onclick="sendMessage();">
+    <div class="left-bar col-xs-4">
+        <div class="function-bar">
+            <img src="#">
+        </div>
+        <div class="search-bar"></div>
     </div>
 
-    <div style="height: 1000px"></div>
+    <div class="right-bar col-xs-8">
+        <div id="message-container" style="padding: 20px; overflow-y: auto;">
+        </div>
 
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <div class="input-group">
+            <input type="text" class="form-control" id="txt" placeholder="Type a message">
+            <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="sendMessage()">Send</button>
+            </span>
+        </div><!-- /input-group -->
+    </div>
+
+
     <script>
+        var currentUser = "{{ current_username }}";
+        var targetUser = "{{ target_username }}";
 
-        var max_index = 0;
+        console.log("Current User:", "{{ current_username }}");
+        console.log("Target User:", "{{ target_username }}");
+
+        // 按字典序排序用户名
+        var roomName = [currentUser, targetUser].sort().join('_');
+        var wsPath = `ws://127.0.0.1:8000/ws/chat/${roomName}/`;
+        var socket = new WebSocket(wsPath);
+
+        socket.onopen = function (e) {
+            console.log("连接成功");
+        };
+
+        socket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            if (data.sender === currentUser) {
+                return;
+            }
+
+            var messageContainer = document.getElementById("message-container");
+            var wrapperElement = document.createElement("div");
+            wrapperElement.classList.add("message-wrapper");
+
+            // 添加头像
+            var avatarElement = document.createElement("img");
+            avatarElement.src = "{{ target_avatar_url }}"; // 替换为实际的头像URL
+            avatarElement.classList.add("avatar");
+            wrapperElement.appendChild(avatarElement);
+
+            var messageElement = document.createElement("div");
+            messageElement.classList.add("message", "receiver-message");
+            messageElement.textContent = data.message;
+            wrapperElement.appendChild(messageElement);
+
+            messageContainer.appendChild(wrapperElement);
+        };
+
 
         function sendMessage() {
-            var text = $("#txt").val();
+            var txtInput = document.getElementById("txt");
+            var message = txtInput.value.trim();
 
-            $.ajax({
-                url: "/send/msg/",
-                type: "GET",
-                data: {
-                    text: text
-                },
-                success: function (res) {
-                    console.log("Send successfully", res)
-                }
-            })
+            if (!message) {
+                return;
+            }
+
+            var messageContainer = document.getElementById("message-container");
+            var wrapperElement = document.createElement("div");
+            wrapperElement.classList.add("message-wrapper", "sender-message-wrapper");
+
+            var messageElement = document.createElement("div");
+            messageElement.classList.add("message", "sender-message");
+            messageElement.textContent = message;
+            wrapperElement.appendChild(messageElement);
+
+            // 添加头像，但这次是在消息文本之后，以确保它出现在右侧
+            var avatarElement = document.createElement("img");
+            avatarElement.src = "{{ current_avatar_url }}"; // 替换为实际的头像URL
+            avatarElement.classList.add("avatar", "sender-avatar");
+            wrapperElement.appendChild(avatarElement);
+
+            messageContainer.appendChild(wrapperElement);
+
+            socket.send(JSON.stringify({'message': message, 'sender': currentUser}));
+
+            txtInput.value = "";
         }
 
-        setInterval(function () {
+        document.getElementById("txt").addEventListener("keypress", function (event) {
+            // 检查是否按下了Enter键
+            if (event.key === "Enter") {
+                event.preventDefault(); // 阻止默认行为（不插入换行符）
+                sendMessage(); // 调用发送消息的函数
+            }
+        });
 
-            $.ajax({
-                url: "/get/msg/",
-                type: "GET",
-                data: {
-                    index: max_index
-                },
-                success: function (dataDict) {
-                    {#console.log("Received message --> ", res);#}
-                    {#var dataDict = JSON.parse(res);#}
-                    max_index = dataDict.max_index;
-
-                    $.each(dataDict.data, function (index, item) {
-                        console.log(index, item);
-                        // 拼接成div标签, 并添加到message区域
-                        var tag = $("<div>");
-                        tag.text(item)
-                        $("#message").append(tag)
-                    })
-                }
-            })
-        }, 2000)
     </script>
+
 
 {% endblock %}

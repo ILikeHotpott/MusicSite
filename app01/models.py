@@ -68,3 +68,8 @@ class US_TopMusic(models.Model):
     region = models.CharField(max_length=2, choices=region_choices, default='US')
 
 
+class Moments(models.Model):
+    user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='User')
+    content = models.TextField(verbose_name='Content')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Comment Time')
+    image_urls = models.TextField(verbose_name='Image URLs', blank=True, null=True)

@@ -1,0 +1,310 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <style>
+        .navbar {
+            margin-bottom: 0 !important;
+        }
+
+        .left-bar {
+            background-color: #b5f7ff;
+            height: 800px;
+        }
+
+        .right-bar {
+            background-color: #4c4c4c;
+            height: 800px;
+            text-align: center;
+        }
+
+        .post-input {
+            margin-top: 30px;
+            height: 40px;
+            width: 60%;
+            border-radius: 30px;
+            font-size: 20px;
+        }
+
+        .pic-upload {
+            margin-top: 30px;
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .post-square {
+            text-align: center;
+        }
+
+        .modal-header {
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        #message-text {
+            height: 150px;
+        }
+
+        .upload-pic {
+            float: right;
+        }
+
+        .upload-pic img {
+            height: 28px;
+        }
+
+        .form-control {
+            border-radius: 20px;
+            font-size: 25px;
+        }
+
+        .dropzone-box {
+            width: 100%;
+            margin-top: 30px;
+            border-radius: 20px;
+        }
+
+        .moments {
+            border: 5px solid black;
+            height: 100px;
+            color: red;
+            background-color: red;
+        }
+
+        .post-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 500px;
+            margin: 20px auto;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-header img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .post-header .name {
+            font-weight: bold;
+        }
+
+        .post-header .time {
+            margin-left: auto;
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        .post-content {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .post-actions {
+            border-top: 1px solid #eee;
+            padding-top: 5px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .post-actions span:hover {
+            cursor: pointer;
+        }
+
+    </style>
+    <div class="friends">
+        <div class="left-bar col-xs-3"></div>
+        <div class="right-bar col-xs-9">
+            <div class="post-square">
+                <input class="post-input btn" placeholder="Share what's new to you!" data-toggle="modal"
+                       data-target="#exampleModal">
+            </div>
+
+            {% for item in queryset %}
+
+                <div class="post-container">
+                    <div class="post-header">
+                        <img src="{{ item.user.avatar.url }}" alt="profile picture">
+                        <span class="name">{{ item.user.username }}</span>
+                        <span class="time" data-time="{{ item.created_at_iso }}"></span>
+                    </div>
+                    <div class="post-content">
+                        {{ item.content }}
+                    </div>
+                    <div class="post-actions">
+                        <span>Like</span>
+                        <span>Comment</span>
+                        <span>Share</span>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+    {#     <form action="/target" class="dropzone" id="my-great-dropzone"></form>#}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Create a post</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="/upload-to-s3/" method="post" enctype="multipart/form-data" id="myForm">
+                        <div class="form-group">
+                            <textarea class="form-control" id="message-text"
+                                      placeholder="Share what's new to you!"></textarea>
+                        </div>
+                        <label for="message-text" class="more-content-title control-label">Add more contents:</label>
+                        <div class="upload-pic">
+                            <a href="#" id="toggle-upload">
+                                <img style="margin-right: 5px" src="/media/pic.png">
+                            </a>
+                            <a href="#">
+                                <img style="height: 31px !important; margin-bottom: 2px;" src="/media/location.png">
+                            </a>
+                        </div>
+                        <!-- Dropzone Form placeholder -->
+                        <div id="my-great-dropzone" class="dropzone dz-clickable dropzone-box" style="display:none;">
+                            <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        Dropzone.autoDiscover = false; // Prevent Dropzone from auto initializing
+
+        $(document).ready(function () {
+            var imageUrls = [];
+
+            var myDropzone = new Dropzone("#myForm", {
+                url: "/upload-to-s3/",
+                paramName: "file",
+                maxFilesize: 2, // MB
+                acceptedFiles: 'image/*',
+                clickable: "#my-great-dropzone",
+                autoProcessQueue: false, // Prevent files from being uploaded immediately
+                dictDefaultMessage: "Drop files here to upload",
+                previewsContainer: "#my-great-dropzone", // Specify the previews container
+                hiddenInputContainer: "#myForm",
+                init: function () {
+                    this.on("success", function (file, response) {
+                        var responseObj;
+                        if (typeof response === "string") {
+                            try {
+                                responseObj = JSON.parse(response);
+                                // 确保这里正确地从响应中获取URL，并添加到imageUrls数组中
+                                imageUrls.push(responseObj.file_url); // 假设file_url是响应中的URL字段
+                            } catch (error) {
+                                console.error("Error parsing response:", error);
+                            }
+                        } else {
+                            responseObj = response; // 假设response已经是对象
+                            // 同样，从对象中获取URL并添加到数组中
+                            imageUrls.push(responseObj.file_url); // 确保这里的file_url字段名与你的后端响应匹配
+                        }
+                    });
+                },
+            });
+
+            $('#toggle-upload').click(function (e) {
+                e.preventDefault();
+                var dz = $("#my-great-dropzone");
+                if (dz.is(":visible")) {
+                    dz.slideUp(); // Use slideUp for a sliding effect
+                } else {
+                    dz.slideDown(); // Use slideDown for a sliding effect
+                }
+            });
+
+            $('.btn-primary').click(function (e) {
+                e.preventDefault();
+                if (myDropzone.getQueuedFiles().length > 0) {
+                    myDropzone.processQueue();
+                } else {
+                    submitFormData(); // Directly submit if no files to upload
+                }
+            });
+
+            myDropzone.on("queuecomplete", function () {
+                submitFormData();
+            });
+
+            function submitFormData() {
+                var formData = {
+                    content: $('#message-text').val(),
+                    image_urls: imageUrls.join(','),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/save-moment/",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        console.log("Moment submitted successfully.");
+                        $('#exampleModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.error("Error submitting moment.");
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script type="module">
+        import {formatDistanceToNow} from 'https://cdn.jsdelivr.net/npm/date-fns@2.28.0/esm';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var timeElements = document.querySelectorAll('.time');
+
+            timeElements.forEach(function (el) {
+                var isoTime = el.getAttribute('data-time');
+                el.textContent = formatDistanceToNow(new Date(isoTime), {addSuffix: true});
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+{% endblock %}
