@@ -60,6 +60,7 @@ class US_TopMusic(models.Model):
     artist = models.CharField(max_length=255)
     album = models.CharField(max_length=255, null=True, blank=True)
     cover_url = models.URLField(null=True, blank=True)
+    rank = models.IntegerField(default=0)
     region_choices = (
         ('US', 'United States'),
         ('UK', 'British'),
@@ -72,4 +73,35 @@ class Moments(models.Model):
     user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='User')
     content = models.TextField(verbose_name='Content')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Comment Time')
-    image_urls = models.TextField(verbose_name='Image URLs', blank=True, null=True)
+    image_urls = models.JSONField(default=list)
+    likes_count = models.IntegerField(default=0, verbose_name="Likes Count")
+
+
+class Like(models.Model):
+    user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, related_name='user_likes')
+    moment = models.ForeignKey(Moments, on_delete=models.CASCADE, related_name='moment_likes')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Liked At')
+
+    class Meta:
+        unique_together = ('user', 'moment')
+
+
+class MomentComment(models.Model):
+    user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='User', related_name='moment_comments')
+    moment = models.ForeignKey(Moments, on_delete=models.CASCADE, verbose_name='Moment', related_name='comments')
+    content = models.TextField(verbose_name='Content')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Comment Time')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies',
+                               verbose_name='Parent Comment')
+
+    class Meta:
+        verbose_name = 'Moment Comment'
+        verbose_name_plural = 'Moment Comments'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.moment.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
+
+    def is_reply(self):
+        """Check if the comment is a reply to another comment."""
+        return self.parent is not None

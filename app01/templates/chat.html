@@ -6,36 +6,73 @@
             margin-bottom: 0 !important;
         }
 
+        .container-fluid1 {
+            display: flex;
+            height: 90vh; /* Use viewport height to fill the screen */
+        }
+
         .left-bar {
-            background-color: #2aabd2;
-            height: 627px;
+            height: 90vh;
+            background-color: #053354;
+            flex: 0 0 30%; /* Assign width to left bar and prevent it from growing or shrinking */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align items to the top */
+            padding-top: 20px;
         }
 
         .right-bar {
+            flex: 1;
             background-color: white;
-            height: 627px;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 20px;
-            overflow-y: auto; /* 确保内容溢出时可滚动 */
-            border: 1px solid #ccc; /* 添加边框 */
-        }
-
-        .search-bar {
-            margin-left: 20px;
-            margin-right: 20px;
-            margin-top: 20px;
-            border-radius: 20px;
-            background-color: grey;
-            height: 40px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
         }
 
         .function-bar {
-            margin-top: 10px;
-            height: 40px;
-            background-color: grey;
+            display: flex;
+            justify-content: space-between; /* Aligns items on both ends */
+            align-items: center;
+            padding: 0 20px; /* Add padding on sides */
+            width: 100%;
         }
+
+        .function-bar img.avatar {
+            height: 60px; /* Size of the avatar */
+            width: 60px; /* To keep the avatar circular */
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-right: auto; /* Push all other items to the right */
+        }
+
+
+        .icon {
+            height: 40px; /* Adjust icon size */
+            {#filter: invert(100%); /* Invert colors for white icons */#}
+        }
+
+        .search-bar {
+            background-color: white;
+            border-radius: 20px;
+            margin: 20px; /* Added margin to all sides */
+            padding: 5px 15px; /* Padding inside search bar */
+        }
+
+        .search-bar input {
+            width: 90%;
+            border: none;
+            outline: none; /* Removes focus outline */
+        }
+
+
+        .search-bar input::placeholder {
+            color: #a1a1a1;
+        }
+
 
         .input-group {
             position: relative;
@@ -65,8 +102,8 @@
         }
 
         .sender-message {
-            background-color: #AB68FF;
-            color: white;
+            background-color: #16C55E;
+            color: black;
             text-align: right;
         }
 
@@ -84,11 +121,13 @@
         }
 
         /* 发送者头像的外边距调整 */
+
         .sender-avatar {
             margin-left: 10px;
         }
 
         /* 接收者头像的外边距调整 */
+
         .receiver-avatar {
             margin-right: 10px;
         }
@@ -99,26 +138,43 @@
             align-items: flex-end;
         }
 
+        #avatar {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            border: 2px solid grey;
+        }
+
+        #icon {
+            height: 30px;
+        }
 
     </style>
-
-    <div class="left-bar col-xs-4">
-        <div class="function-bar">
-            <img src="#">
+    <div class="container-fluid1">
+        <div class="left-bar">
+            <div class="function-bar">
+                <img class="avatar" src="{{ current_avatar_url }}" id="avatar"> <!-- Avatar is now aligned left -->
+                <!-- Icons aligned right -->
+                <img class="icon" src="/media/add_friend.png" id="icon"> <!-- Replace with actual image source -->
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search or start new chat">
+            </div>
+            <!-- Chat list goes here -->
         </div>
-        <div class="search-bar"></div>
-    </div>
 
-    <div class="right-bar col-xs-8">
-        <div id="message-container" style="padding: 20px; overflow-y: auto;">
-        </div>
 
-        <div class="input-group">
-            <input type="text" class="form-control" id="txt" placeholder="Type a message">
-            <span class="input-group-btn">
+        <div class="right-bar">
+            <div id="message-container" style="padding: 20px; overflow-y: auto;">
+            </div>
+
+            <div class="input-group">
+                <input type="text" class="form-control" id="txt" placeholder="Type a message">
+                <span class="input-group-btn">
             <button class="btn btn-default" type="button" onclick="sendMessage()">Send</button>
             </span>
-        </div><!-- /input-group -->
+            </div>
+        </div>
     </div>
 
 

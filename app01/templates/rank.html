@@ -123,11 +123,11 @@
                     </div>
                 </a>
 
-{#                <a href="/rank/UK/">#}
-{#                    <div class="rank-list">#}
-{#                        BRITISH#}
-{#                    </div>#}
-{#                </a>#}
+                {#                <a href="/rank/UK/">#}
+                {#                    <div class="rank-list">#}
+                {#                        BRITISH#}
+                {#                    </div>#}
+                {#                </a>#}
 
                 <a href="{% url 'rank_region' 'UK' %}">
                     <div class="rank-list">
@@ -141,11 +141,11 @@
                     </div>
                 </a>
 
-{#                <a href="/rank/AU/">#}
-{#                    <div class="rank-list">#}
-{#                        AUSTRALIA#}
-{#                    </div>#}
-{#                </a>#}
+                {#                <a href="/rank/AU/">#}
+                {#                    <div class="rank-list">#}
+                {#                        AUSTRALIA#}
+                {#                    </div>#}
+                {#                </a>#}
             </div>
             <!-- Add more links for other charts as needed -->
         </div>
@@ -170,7 +170,7 @@
 
                         {% if song_info.absolute_cover_url %}
                             <td class="pic">
-                                <img src="{{ song_info.absolute_cover_url }}" alt="Album Cover">
+                                <img src="{{ song_info.absolute_cover_url }}" alt="Album Cover" loading="lazy">
                             </td>
                         {% else %}
                             <td class="pic">
@@ -205,6 +205,28 @@
 
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/rank_api/')
+                .then(response => response.json())
+                .then(data => {
+                    const songsInfo = data.songs_info;
+                    // 使用songsInfo更新页面内容
+                    // 例如，遍历songsInfo并创建表格行
+                    const tableBody = document.getElementById('songsTableBody');
+                    songsInfo.forEach(song => {
+                        const row = `<tr>
+                            <td>${song.rank}</td>
+                            <td><img src="${song.cover_url}" alt="Album Cover" loading="lazy"></td>
+                            <td>${song.song}</td>
+                            <td>${song.artist}</td>
+                         </tr>`;
+                        tableBody.innerHTML += row;
+                    });
+                });
+        });
+    </script>
 
 
 {% endblock %}

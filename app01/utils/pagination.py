@@ -38,9 +38,10 @@ In the HTML:
 
 """
 
+
 class Pagination():
 
-    def __init__(self, request, queryset, page_size=10, page_param="page", plus = 5):
+    def __init__(self, request, queryset, page_size=10, page_param="page", plus=5):
         """
         :param request: request an object
         :param queryset: eligible data (through the search function), according to the data, process the pagination
@@ -72,9 +73,6 @@ class Pagination():
         query_dict._mutable = True
         self.query_dict = query_dict
 
-
-
-
     def html(self):
         if self.total_page <= self.plus * 2:
             start_page = 1
@@ -94,7 +92,7 @@ class Pagination():
         page_str_list = []
 
         if self.page > 1:
-            self.query_dict.setlist(self.page_param, [self.page-1])
+            self.query_dict.setlist(self.page_param, [self.page - 1])
             prev = f'<li><a href="?{self.query_dict.urlencode()}">Previous Page</a></li>'
         else:
             self.query_dict.setlist(self.page_param, [1])
@@ -116,8 +114,6 @@ class Pagination():
             self.query_dict.setlist(self.page_param, [self.total_page])
             next = f'<li><a href="?{self.query_dict.urlencode()}">Next Page</a></li>'
         page_str_list.append(next)
-
-
 
         page_string = mark_safe("".join(page_str_list))
 

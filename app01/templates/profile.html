@@ -3,19 +3,41 @@
 
 {% block content %}
     <style>
+
+        #nav1 {
+            z-index: 3 !important;
+            margin-bottom: 0 !important;
+        }
+
+        #nav2 {
+            margin-bottom: 0 !important;
+            position: relative;
+            z-index: 2;
+        }
+
         .left-bar {
-            background-color: #4A474A;
+            background-color: #EFF4F5;
             height: 800px;
             margin-bottom: 0;
-            border-radius: 15px;
+            width: 33%;
+            z-index: 1;
+            box-shadow: 6px 0 15px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .right-bar {
+            background-color: #E4F0FA;
+            height: 800px;
+            text-align: center;
+            overflow-y: auto;
+            width: 67%;
         }
 
         .img-container {
             display: flex;
-            justify-content: center; /* 水平居中 */
-            align-items: flex-start; /* 使项目在容器的顶部对齐 */
-            padding-top: 30px; /* 距离上方边距100px */
-            height: 100%; /* 容器高度，可以根据需要调整 */
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 30px;
+            height: 100%;
         }
 
         .avatar {
@@ -26,7 +48,7 @@
             text-align: center;
             font-family: "Arial Black", serif;
             margin-top: 40px;
-            color: #eff1f6bf;
+            color: black;
             font-size: 20px;
         }
 
@@ -45,7 +67,7 @@
 
         .profile-left {
             font-family: "Arial Black", serif;
-            color: #eff1f6bf;
+            color: black;
             font-size: 15px;
             text-align: center;
             margin-top: 15px;
@@ -53,14 +75,14 @@
 
         .profile-right {
             font-family: "Arial Black", serif;
-            color: #eff1f6bf;
+            color: black;
             font-size: 15px;
             text-align: center;
             margin-top: 15px;
         }
 
         .tags {
-            color: #eff1f6bf;
+            color: black;
             font-size: 16px;
             display: flex;
             align-items: flex-start;
@@ -80,7 +102,7 @@
             flex-direction: column;
             width: 100%; /* 确保宽度足够 */
             padding-left: 15px; /* 根据需要调整 */
-            color: #eff1f6bf;
+            color: black;
             font-family: "Arial Black", serif;
             font-size: 16px;
             align-items: center; /* 居中对齐 */
@@ -88,7 +110,7 @@
         }
 
         .profile-info {
-            margin-top: 10px; /* 根据需要调整间距 */
+            margin-top: 10px;
         }
 
         .profile-info span {
@@ -96,50 +118,145 @@
             text-align: center;
         }
 
+        .moments {
+            border: 5px solid black;
+            height: 100px;
+            color: red;
+            background-color: red;
+        }
+
+        .post-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 800px;
+            padding: 15px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+            background-color: #fff;
+            text-align: left;
+            margin-top: 40px;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-header img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .post-header .name {
+            font-weight: bold;
+        }
+
+        .post-header .time {
+            margin-left: auto;
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        .post-content {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .post-actions {
+            border-top: 1px solid #eee;
+            padding-top: 5px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .post-actions span:hover {
+            cursor: pointer;
+        }
+
+        .post-content img {
+            height: 120px;
+        }
+
 
     </style>
 
-    <div class="container">
-        <div class="left-bar col-xs-4">
-            <div class="avatar img-container">
-                {% if user.avatar %}
-                    <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
-                        <img src="{{ user.avatar.url }}" alt="User Profile" class="img-circle avatar">
-                    </a>
-                {% else %}
-                    <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
-                        <img src="/media/profile/default.png" alt="User Profile" class="img-circle avatar">
-                    </a>
-                {% endif %}
+    <div class="left-bar col-xs-3">
+        <div class="avatar img-container">
+            {% if user.avatar %}
+                <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
+                    <img src="{{ user.avatar.url }}" alt="User Profile" class="img-circle avatar">
+                </a>
+            {% else %}
+                <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
+                    <img src="/media/profile/default.png" alt="User Profile" class="img-circle avatar">
+                </a>
+            {% endif %}
 
+        </div>
+        <div class="profile-name">
+            {{ user.username }}
+        </div>
+        <div class="profile-info-group">
+            <div class="profile-info">
+                <span>followers: 140</span>
+                <span style="margin-left: 10px"></span>
+                <span>following: 210</span>
             </div>
-            <div class="profile-name">
-                {{ user.username }}
-            </div>
-            <div class="profile-info-group">
-                <div class="profile-info">
-                    <span>followers: 140</span>
-                    <span style="margin-left: 10px"></span>
-                    <span>following: 210</span>
-                </div>
-                <div class="profile-info">
-                    <span>friend: 5002</span>
-                    <span style="margin-left: 12px; margin-right: 12px"></span>
-                    <span>subscribes: 10</span>
-                </div>
-            </div>
-            <a class="btn btn-success profile-button" href="/profile/edit/">Edit Profile</a>
-            <div style="text-align: left !important;">
-                <div class="tags">
-                    <span class="glyphicon glyphicon-map-marker tag-logo" aria-hidden="true"></span>
-                    <span class="tag-content">Australia</span>
-                </div>
-                <div class="tags" style="margin-top: 5px">
-                    <span class="glyphicon glyphicon-tag tag-logo" aria-hidden="true"></span>
-                    <span class="tag-content">The Weeknd</span>
-                </div>
+            <div class="profile-info">
+                <span>friend: 5002</span>
+                <span style="margin-left: 12px; margin-right: 12px"></span>
+                <span>subscribes: 10</span>
             </div>
         </div>
+        <a class="btn btn-success profile-button" href="/profile/edit/">Edit Profile</a>
+        <div style="text-align: left !important;">
+            <div class="tags">
+                <span class="glyphicon glyphicon-map-marker tag-logo" aria-hidden="true"></span>
+                <span class="tag-content">Australia</span>
+            </div>
+            <div class="tags" style="margin-top: 5px">
+                <span class="glyphicon glyphicon-tag tag-logo" aria-hidden="true"></span>
+                <span class="tag-content">The Weeknd</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-bar col-xs-9">
+
+        {% for item in queryset %}
+
+            <div class="post-container">
+                <div class="post-header">
+                    <img src="{{ item.user.avatar.url }}" alt="profile picture">
+                    <span class="name">{{ item.user.username }}</span>
+                    <span class="time" data-time="{{ item.created_at_iso }}"></span>
+                </div>
+                <div class="post-content">
+                    {{ item.content }}
+                </div>
+                {% if item.image_urls %}
+                    {% for image_url in item.image_urls %}
+                        <div class="post-content">
+                            <img src="{{ image_url }}">
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="post-actions">
+                    <span>Like</span>
+                    <span>Comment</span>
+                    <span>Share</span>
+                </div>
+            </div>
+
+        {% endfor %}
+
+
     </div>
 
 
@@ -170,8 +287,36 @@
             </div>
         </div>
 
-
     </div>
 
 
+    <!-- Image Model -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {#                    <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>#}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="imageModalSrc" style="width: 100%;"> <!-- 留空的src，稍后用JS填充 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.post-content img', function () {
+                var src = $(this).attr('src');
+                $('#imageModalSrc').attr('src', src);
+                $('#imageModal').modal('show');
+            });
+        })
+    </script>
 {% endblock %}
