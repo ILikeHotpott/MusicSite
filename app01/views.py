@@ -2,8 +2,6 @@ from io import BytesIO
 import json
 import boto3
 import time
-import os
-import requests
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
@@ -15,7 +13,8 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.csrf import csrf_exempt
-from app01.utils.bootstrap import BootstrapForm, BootstrapModelForm
+from django_redis import get_redis_connection
+from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
 from app01.models import Music, Comment, US_TopMusic, UserInfo
@@ -238,6 +237,11 @@ class UserUpdateForm(forms.ModelForm):
 
 @login_required
 def profile(request):
+    user = request.user
+    queryset = None
+    if user.is_authenticated:
+        queryset = models.Moments.objects.filter(user=user).order_by('-created_at')
+
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
         print("form", form)
@@ -247,7 +251,7 @@ def profile(request):
     else:
         form = UserUpdateForm(instance=request.user)
 
-    return render(request, "profile.html", {"form": form})
+    return render(request, "profile.html", {"form": form, "queryset": queryset})
 
 
 def profile_edit(request):
@@ -273,61 +277,39 @@ def profile_avatar(request):
     return render(request, "profile_edit.html", {'form': form})
 
 
-def download_image(image_url, local_path):
-    """下载图片并保存到本地路径。如果下载失败，返回False。"""
-    try:
-        response = requests.get(image_url)
-        if response.status_code == 200:
-            with open(local_path, 'wb') as f:
-                f.write(response.content)
-            return True
-    except Exception as e:
-        print(f"Error downloading {image_url}: {e}")
-    return False
-
-
 def rank(request, region="US"):
-    last_update_timestamp = cache.get(f'last_update_{region}')
     current_timestamp = time.time()
+    last_update_timestamp = cache.get(f'last_update_{region}')
 
     if not last_update_timestamp or (current_timestamp - last_update_timestamp >= 86400):
-        songs_info = get_ranks_songs_artists(50, region)
-        added_songs = 0
+        songs_info = get_ranks_songs_artists(100, region)
 
-        for song_info in songs_info:
-            if added_songs >= 100:  # 如果已经成功添加了100首歌，结束循环
-                break
-            rank, song, artist = song_info
+        # 假设你已经有一个字段在模型中叫做 rank，用于保存排名信息
+        for idx, song_info in enumerate(songs_info, start=1):  # start=1 使排名从1开始
+            rank = idx
+            song, artist = song_info[1], song_info[2]
             song = remove_parentheses(song)
             artist = remove_feat(artist)
-            if US_TopMusic.objects.filter(title=song, artist=artist).exists():
-                continue  # 如果存在，跳过当前循环迭代
-
-            image_filename = f"{rank}_{song}_{artist}.jpg".replace(" ", "_").replace("/", "_")
-            local_image_path = os.path.join(settings.MEDIA_ROOT, 'album', image_filename)
-
             cover_url = get_album_cover(settings.SPOTIFY_CLIENT_ID, settings.SPOTIFY_CLIENT_SECRET, song, artist)
-            if not os.path.exists(local_image_path):
-                if not download_image(cover_url, local_image_path):
-                    relative_image_path = 'album/default.jpeg'
-                else:
-                    relative_image_path = os.path.join('album', image_filename)
-            else:
-                relative_image_path = os.path.join('album', image_filename)
 
-            # Update or create the entry
+            # 使用rank作为一个字段来更新或创建记录
             US_TopMusic.objects.update_or_create(
-                title=song, artist=artist,
-                defaults={'cover_url': relative_image_path}
+                title=song,
+                artist=artist,
+                region=region,
+                defaults={'cover_url': cover_url, 'rank': rank}
             )
-            added_songs += 1
 
+        # 更新缓存的时间戳
         cache.set(f'last_update_{region}', current_timestamp, None)
 
+    # 从数据库中获取并按rank排序的歌曲信息，此时可以确信数据库里的rank是准确的
     enhanced_songs_info = list(
-        US_TopMusic.objects.filter(region=region).values('id', 'title', 'artist', 'cover_url', 'region'))
+        US_TopMusic.objects.filter(region=region).order_by('rank').values('id', 'title', 'artist', 'cover_url',
+                                                                          'region'))
+
     for song_info in enhanced_songs_info:
-        song_info['absolute_cover_url'] = settings.MEDIA_URL + song_info['cover_url']
+        song_info['absolute_cover_url'] = song_info['cover_url']
 
     context = {
         'songs_info': enhanced_songs_info,
@@ -335,6 +317,11 @@ def rank(request, region="US"):
     }
 
     return render(request, "rank.html", context)
+
+
+def rank_api(request, region="US"):
+    songs_info = get_ranks_songs_artists(11, region)
+    return JsonResponse({'songs_info': songs_info})
 
 
 def chat3(request):
@@ -363,23 +350,18 @@ def chat(request):
     })
 
 
-def playground(request):
-    if request.method == "GET":
-        queryset = models.Moments.objects.all().order_by('-created_at')
-        return render(request, "playground.html", {"queryset": queryset})
-
-
 @csrf_exempt
 def upload_file_to_s3(request):
+    if request.method != 'POST':
+        return JsonResponse({"error": "POST request required."}, status=400)
+
     if request.method == 'POST':
         file = request.FILES['file']
         s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                  aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
 
         try:
-            # 创建一个唯一的文件名，例如使用用户ID和上传时间
             file_name = f"uploads/{request.user.id}/{file.name}"
-            # 上传文件到S3
             s3_client.upload_fileobj(
                 file,
                 settings.AWS_STORAGE_BUCKET_NAME,
@@ -400,11 +382,60 @@ def upload_file_to_s3(request):
 @csrf_exempt
 def save_moment(request):
     if request.method == 'GET':
-        pass
-
+        return JsonResponse({"error": "GET method not supported"}, status=405)
     data = json.loads(request.body)
     content = data.get('content')
-    image_urls = data.get('image_urls', '')
-    moment = models.Moments(user=request.user, content=content, image_urls=image_urls)
+    image_urls_list = data.get('imageUrls', [])
+    moment = models.Moments(user=request.user, content=content, image_urls=image_urls_list)
     moment.save()
     return JsonResponse({"message": "Moment saved successfully"}, status=200)
+
+
+def playground(request):
+    if request.method == "GET":
+        user_info = None
+        if request.user.is_authenticated:
+            user_info = models.UserInfo.objects.filter(username=request.user.username).first()
+
+        queryset = models.Moments.objects.all().order_by('-created_at')
+        for item in queryset:
+            print(item.created_at)
+
+        redis_conn = get_redis_connection('default')
+        user_id = request.user.id if request.user.is_authenticated else None
+
+        for moment in queryset:
+            likes_key = f'post_likes:{moment.id}'
+            moment.like_count = redis_conn.scard(likes_key)
+            moment.is_liked = redis_conn.sismember(likes_key, user_id) if user_id else False
+
+        return render(request, "playground.html", {"queryset": queryset, "user_info": user_info})
+
+
+@login_required
+@require_POST
+def like_post(request):
+    data = json.loads(request.body)
+    post_id = data['post_id']
+    user = request.user
+
+    # 获取Moment实例
+    moment = get_object_or_404(models.Moments, pk=post_id)
+
+    redis_conn = get_redis_connection('default')
+    likes_key = f'post_likes:{post_id}'
+
+    already_liked = redis_conn.sismember(likes_key, user.id)
+
+    if already_liked:
+        redis_conn.srem(likes_key, user.id)
+        liked = False
+        moment.likes_count = redis_conn.scard(likes_key)  # 更新likes_count
+    else:
+        redis_conn.sadd(likes_key, user.id)
+        liked = True
+        moment.likes_count = redis_conn.scard(likes_key)  # 更新likes_count
+
+    moment.save()  # 保存修改到数据库
+
+    return JsonResponse({'liked': liked, 'like_count': moment.likes_count})
