@@ -95,13 +95,24 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'Lcy741125',
+#         'HOST': '127.0.0.1',
+#         'PORT': 3306
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'music',
-        'USER': 'root',
+        'USER': 'admin',
         'PASSWORD': 'Lcy741125',
-        'HOST': '127.0.0.1',
+        'HOST': 'database-2.cpcm4m8s64p6.us-east-1.rds.amazonaws.com',
         'PORT': 3306
     }
 }

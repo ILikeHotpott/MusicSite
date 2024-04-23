@@ -72,7 +72,7 @@ diff-match-patch==20200713
 dill==0.3.4
 distlib==0.3.4
 distributed==2021.11.2
-Django==3.2.9
+Django==5.0.4
 django-channels==3.0.4
 docstring-to-markdown==0.9
 docutils==0.17.1
@@ -82,7 +82,7 @@ executing==0.8.2
 fastjsonschema==2.15.1
 filelock==3.4.0
 flake8==4.0.1
-Flask==2.0.2
+Flask==3.0.3
 fonttools==4.28.3
 frozenlist==1.2.0
 fsspec==2021.11.1
