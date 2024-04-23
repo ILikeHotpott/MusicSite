@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% for comment in comments %}
+    <div class="moment-comment">
+        <strong>
+            <span>
+                <img src="{{ comment.user.avatar.url }}" style="height: 30px; border-radius: 50%">
+            </span>
+            <span class="moment-comment-name">{{ comment.user.username }}</span>
+        </strong>: {{ comment.content }}
+        <br>
+    </div>
+{% endfor %}

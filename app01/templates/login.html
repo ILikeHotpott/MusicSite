@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/../static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="{% static 'sass/star.css' %}">
     <style>
         .account {
             width: 400px;
@@ -19,6 +20,8 @@
             padding: 20px 40px;
 
             background-color: rgba(255, 255, 255, 0.25);
+            position: relative;
+            z-index: 1000;
         }
 
         .account h2 {
@@ -26,18 +29,25 @@
             text-align: center;
         }
 
-        body {
-            background-image: url('/../static/image/background2.jpg');
-            background-size: 100% auto; /* 使图片覆盖整个页面 */
 
+        body {
+            background: linear-gradient(to top,#001D31,#000000);
+            border: 1px solid #000;
+            height: 100vh;
         }
     </style>
 </head>
 
 <body>
+<div class="layer1"></div>
+<div class="layer2"></div>
+<div class="layer3"></div>
+<div class="layer4"></div>
+<div class="layer5"></div>
+<div class="layer6"></div>
 
 <div class="account">
-    <h2>User Login</h2>
+    <h2>MUSICTOP</h2>
     <form method="post" novalidate>
         {% csrf_token %}
         <div class="form-group">

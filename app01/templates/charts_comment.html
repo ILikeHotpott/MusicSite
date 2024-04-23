@@ -93,13 +93,13 @@
         }
 
         .underline-input {
-            width: 100%; /* 输入框填满容器宽度 */
-            border: none; /* 移除边框 */
-            outline: none; /* 移除聚焦时的轮廓 */
-            background: none; /* 移除背景 */
-            padding: 10px 0; /* 添加一些内边距 */
-            font-size: 16px; /* 设置字体大小 */
-            position: relative; /* 相对定位，用于下划线动画 */
+            width: 100%;
+            border: none;
+            outline: none;
+            background: none;
+            padding: 10px 0;
+            font-size: 16px;
+            position: relative;
         }
 
         .underline-input::after {
@@ -152,7 +152,6 @@
             {% for comment in comments %}
                 <div class="comment-item">
                     <span class="comment-user-avatar">
-                        <!-- 假设每个用户都有一个头像字段 -->
                         <img src="{{ comment.user.avatar.url }}"
                              alt="User Avatar">
                     </span>

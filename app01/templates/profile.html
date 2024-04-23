@@ -183,6 +183,34 @@
             height: 120px;
         }
 
+        .image-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .image-container div {
+            position: relative;
+            width: 100%; /* 保持和图片一样的宽度 */
+            padding-top: 100%; /* 顶部填充百分比来实现正方形 */
+            overflow: hidden; /* 隐藏溢出的部分 */
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
 
     </style>
 
@@ -241,17 +269,19 @@
                     {{ item.content }}
                 </div>
                 {% if item.image_urls %}
-                    {% for image_url in item.image_urls %}
-                        <div class="post-content">
-                            <img src="{{ image_url }}">
-                        </div>
-                    {% endfor %}
+                    <div class="image-container">
+                        {% for image_url in item.image_urls %}
+                            <div>
+                                <img src="{{ image_url }}" class="responsive-img">
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
-                <div class="post-actions">
-                    <span>Like</span>
-                    <span>Comment</span>
-                    <span>Share</span>
-                </div>
+{#                <div class="post-actions">#}
+{#                    <span>Like</span>#}
+{#                    <span>Comment</span>#}
+{#                    <span>Share</span>#}
+{#                </div>#}
             </div>
 
         {% endfor %}

@@ -5,11 +5,10 @@ from datetime import datetime
 import pytz
 from django.conf import settings
 from app01.utils.music_api import get_ranks_songs_artists
-from app01.models import US_TopMusic
 
 
 class Command(BaseCommand):
-    help = 'Download music ranks and upload to Amazon S3 with daily folders'
+    """ Download music ranks and upload to Amazon S3 with daily folders """
 
     def handle(self, *args, **kwargs):
         adelaide_tz = pytz.timezone('Australia/Adelaide')
@@ -17,8 +16,9 @@ class Command(BaseCommand):
         region = "US"
         file_key = f'{today}-{region}/music_rankings.json'
 
-        songs_info = get_ranks_songs_artists(100, region)  # 使用您现有的函数
-        data = json.dumps(list(songs_info))
+        songs_info = get_ranks_songs_artists(100, region)
+        # 确保数据是以JSON格式序列化
+        data = json.dumps(songs_info)
 
         # 上传到S3
         s3 = boto3.resource('s3',

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>MusicTop</title>
 </head>
 <style>
     body, html {
@@ -55,8 +55,7 @@
         display: flex;
         justify-content: center; /* This will center MUSICTOP horizontally */
         align-items: center; /* This will center MUSICTOP vertically */
-        {#margin-left: 100px;#}
-        font-weight: 550;
+    {#margin-left: 100px;#} font-weight: 550;
     }
 
     .navbar .login-button {
@@ -129,5 +128,6 @@
 
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

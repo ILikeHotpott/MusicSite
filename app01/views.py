@@ -1,7 +1,6 @@
 from io import BytesIO
 import json
 import boto3
-import time
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
@@ -13,13 +12,14 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 from django_redis import get_redis_connection
 from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
 from app01.models import Music, Comment, US_TopMusic, UserInfo
 from app01.utils.bootstrap import BootstrapModelForm
-from app01.utils.music_api import get_ranks_songs_artists, get_album_cover, remove_feat, remove_parentheses
+from app01.utils.music_api import get_ranks_songs_artists
 
 
 class MusicModelForm(BootstrapModelForm):
@@ -58,7 +58,7 @@ class CommentModelForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content']  # 仅需要用户填写评论内容
+        fields = ['content']
 
 
 def charts_comment(request, nid):
@@ -126,6 +126,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
+            request.session.set_expiry(86400 * 30)
             return redirect("/charts/")
         else:
             form.add_error("password", "Incorrect username or password")
@@ -278,45 +279,58 @@ def profile_avatar(request):
 
 
 def rank(request, region="US"):
-    current_timestamp = time.time()
-    last_update_timestamp = cache.get(f'last_update_{region}')
+    # 直接从数据库中获取并按rank排序的歌曲信息
+    songs_info = list(
+        US_TopMusic.objects.filter(region=region).order_by('rank').values(
+            'id', 'title', 'artist', 'cover_url', 'region'
+        )
+    )
 
-    if not last_update_timestamp or (current_timestamp - last_update_timestamp >= 86400):
-        songs_info = get_ranks_songs_artists(100, region)
-
-        # 假设你已经有一个字段在模型中叫做 rank，用于保存排名信息
-        for idx, song_info in enumerate(songs_info, start=1):  # start=1 使排名从1开始
-            rank = idx
-            song, artist = song_info[1], song_info[2]
-            song = remove_parentheses(song)
-            artist = remove_feat(artist)
-            cover_url = get_album_cover(settings.SPOTIFY_CLIENT_ID, settings.SPOTIFY_CLIENT_SECRET, song, artist)
-
-            # 使用rank作为一个字段来更新或创建记录
-            US_TopMusic.objects.update_or_create(
-                title=song,
-                artist=artist,
-                region=region,
-                defaults={'cover_url': cover_url, 'rank': rank}
-            )
-
-        # 更新缓存的时间戳
-        cache.set(f'last_update_{region}', current_timestamp, None)
-
-    # 从数据库中获取并按rank排序的歌曲信息，此时可以确信数据库里的rank是准确的
-    enhanced_songs_info = list(
-        US_TopMusic.objects.filter(region=region).order_by('rank').values('id', 'title', 'artist', 'cover_url',
-                                                                          'region'))
-
-    for song_info in enhanced_songs_info:
+    for song_info in songs_info:
         song_info['absolute_cover_url'] = song_info['cover_url']
 
     context = {
-        'songs_info': enhanced_songs_info,
+        'songs_info': songs_info,
         'region': region
     }
 
     return render(request, "rank.html", context)
+
+
+@csrf_exempt
+def upload_file_to_s3(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        if not file:
+            return JsonResponse({"error": "No file provided."}, status=400)
+
+        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+
+        try:
+            # Construct the file name to be saved on S3
+            file_name = f"uploads/{request.user.id}/{file.name}"
+            s3_client.upload_fileobj(
+                file,
+                settings.AWS_STORAGE_BUCKET_NAME,
+                file_name,
+                ExtraArgs={
+                    "ContentType": file.content_type
+                }
+            )
+            file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_name}"
+            moment = models.Moments(user=request.user, content="")
+            if file.content_type.startswith('image/'):
+                moment.image_urls.append(file_url)
+            elif file.content_type.startswith('video/'):
+                moment.video_urls.append(file_url)
+            moment.save()
+
+            return JsonResponse({"message": "File uploaded successfully", "file_url": file_url}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+    else:
+        return JsonResponse({"error": "POST request required."}, status=400)
 
 
 def rank_api(request, region="US"):
@@ -351,42 +365,14 @@ def chat(request):
 
 
 @csrf_exempt
-def upload_file_to_s3(request):
-    if request.method != 'POST':
-        return JsonResponse({"error": "POST request required."}, status=400)
-
-    if request.method == 'POST':
-        file = request.FILES['file']
-        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-
-        try:
-            file_name = f"uploads/{request.user.id}/{file.name}"
-            s3_client.upload_fileobj(
-                file,
-                settings.AWS_STORAGE_BUCKET_NAME,
-                file_name,
-                ExtraArgs={
-                    "ContentType": file.content_type
-                }
-            )
-            file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_name}"
-
-            return JsonResponse({"message": "File uploaded successfully", "file_url": file_url}, status=200)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
-    else:
-        return JsonResponse({"error": "POST request required."}, status=400)
-
-
-@csrf_exempt
 def save_moment(request):
     if request.method == 'GET':
         return JsonResponse({"error": "GET method not supported"}, status=405)
     data = json.loads(request.body)
     content = data.get('content')
     image_urls_list = data.get('imageUrls', [])
-    moment = models.Moments(user=request.user, content=content, image_urls=image_urls_list)
+    video_urls_list = data.get('videoUrls', [])
+    moment = models.Moments(user=request.user, content=content, image_urls=image_urls_list, video_urls=video_urls_list)
     moment.save()
     return JsonResponse({"message": "Moment saved successfully"}, status=200)
 
@@ -397,9 +383,7 @@ def playground(request):
         if request.user.is_authenticated:
             user_info = models.UserInfo.objects.filter(username=request.user.username).first()
 
-        queryset = models.Moments.objects.all().order_by('-created_at')
-        for item in queryset:
-            print(item.created_at)
+        queryset = models.Moments.objects.prefetch_related('comments').all().order_by('-created_at')
 
         redis_conn = get_redis_connection('default')
         user_id = request.user.id if request.user.is_authenticated else None
@@ -439,3 +423,59 @@ def like_post(request):
     moment.save()  # 保存修改到数据库
 
     return JsonResponse({'liked': liked, 'like_count': moment.likes_count})
+
+
+def submit_moment_comment(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  # 先从ajax获取数据
+            moment_id = data.get('post_id')
+            comment_text = data.get('comment')
+
+            try:
+                moment = models.Moments.objects.get(id=moment_id)
+            except models.Moments.DoesNotExist:
+                return JsonResponse({'error': 'Moment does not exist'}, status=404)
+
+            comment = models.MomentComment(
+                user=request.user,
+                moment=moment,
+                content=comment_text,
+            )
+            comment.save()
+            return JsonResponse({'message': 'Comment submitted successfully'})
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+def load_more_comments(request):
+    post_id = request.GET.get('post_id')
+    offset = int(request.GET.get('offset', 0))
+    limit = 10  # 一次加载10条评论
+
+    comments_query = models.MomentComment.objects.filter(moment_id=post_id).order_by('-created_at')
+    total_comments = comments_query.count()
+    comments = comments_query[offset:offset + limit]
+    comments_html = render_to_string('comments_partial.html', {'comments': comments})
+
+    # 如果当前已加载的评论（offset + 刚加载的评论数量）小于总评论数，还有更多评论
+    has_more = (offset + len(comments)) < total_comments
+
+    return JsonResponse({
+        'comments_html': comments_html,
+        'has_more': has_more,
+        'limit': limit,
+    })
+
+
+def delete_post(request, post_id):
+    if request.method == "POST":
+        try:
+            post = models.Moments.objects.get(id=post_id, user=request.user)
+            post.delete()
+            return JsonResponse({"success": True})
+        except models.Moments.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Post not found or permission denied."})

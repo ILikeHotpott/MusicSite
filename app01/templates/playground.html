@@ -2,6 +2,10 @@
 
 {% block content %}
 
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.7.0/dist/min/dropzone.min.css"/>#}
+
     <style>
         #nav1 {
             z-index: 3 !important;
@@ -24,7 +28,6 @@
             z-index: 1;
             box-shadow: 6px 0 15px -5px rgba(0, 0, 0, 0.5);
         }
-
 
         .right-bar {
             background-color: #E4F0FA;
@@ -76,7 +79,7 @@
 
         .form-control {
             border-radius: 20px;
-            font-size: 25px;
+            font-size: 20px;
         }
 
         .dropzone-box {
@@ -106,7 +109,16 @@
         .post-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            width: 100%;
             margin-bottom: 10px;
+        }
+
+        .name, .time {
+            flex-grow: 1; /* 允许这些元素填充额外空间 */
+            white-space: nowrap; /* 防止内容折行 */
+            overflow: hidden;
+            text-overflow: ellipsis; /* 超出部分显示省略号 */
         }
 
         .post-header img {
@@ -118,6 +130,8 @@
 
         .post-header .name {
             font-weight: bold;
+            font-size: 16px;
+            margin-right: 20px;
         }
 
         .post-header .time {
@@ -130,6 +144,36 @@
             margin-bottom: 10px;
             font-size: 20px;
         }
+
+
+        .image-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 创建三列 */
+            gap: 10px; /* 设置列与列之间的间隔 */
+        }
+
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .image-container div {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
 
         .post-actions {
             border-top: 1px solid #eee;
@@ -151,9 +195,6 @@
             cursor: pointer;
         }
 
-        .post-content img {
-            height: 120px;
-        }
 
         .left-bar-tools {
             margin-left: 30px;
@@ -243,6 +284,176 @@
             height: 15px;
         }
 
+        #comment-body {
+            padding-left: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        .custom-modal-container {
+            display: flex;
+            max-width: 1200px;
+        }
+
+        .custom-modal-left {
+            flex: 1;
+            padding: 1em;
+        }
+
+        .custom-modal-left img {
+            width: 100%;
+            height: auto;
+            max-height: 600px; /* 或者您想要的任何尺寸 */
+        }
+
+        .custom-modal-right {
+            flex: 1;
+            padding: 1em;
+            max-height: 600px;
+            overflow-y: auto; /* 使评论部分可滚动 */
+        }
+
+        .custom-modal-comment-input {
+            margin-top: 1em;
+        }
+
+        .custom-modal-comment-input textarea {
+            width: 100%;
+            margin-bottom: 0.5em;
+            font-size: 20px;
+            height: 100px;
+        }
+
+        .custom-modal-comment-input button {
+            float: right;
+        }
+
+        .custom-swal-container {
+            /* 可能需要的容器样式 */
+        }
+
+        .custom-swal-popup {
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .custom-swal-content {
+            padding: 0;
+        }
+
+        .comment-input-container {
+            position: relative;
+            padding: 10px;
+        }
+
+        .comment-input-container textarea {
+            width: 100%;
+            margin-bottom: 50px;
+            margin-top: 15px;
+        }
+
+        .comment-input-container .btn-primary {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+
+        .moment-comment {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .dropdown {
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            visibility: hidden;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            position: absolute; /* 绝对定位 */
+            left: 0; /* 根据需要调整 */
+            top: 100%; /* 位于触发元素的正下方 */
+        }
+
+        .dropdown.show-dropdown .dropdown-menu {
+            visibility: visible;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .delete-post {
+            color: red;
+        }
+
+        /* 当父元素有show-avatar-dropdown类时显示下拉菜单 */
+        .show-avatar-dropdown .dropdown-user-menu {
+            display: block;
+        }
+
+        /* 下拉菜单基本样式 */
+        .dropdown-user-menu {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            list-style-type: none;
+            padding: 0;
+            border-radius: 15px;
+        }
+
+        .dropdown-user-menu a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-user-menu a:hover {
+            background-color: #f1f1f1
+        }
+
+        .responsive-video {
+            width: 768px;
+        }
+
+        .video-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .responsive-video {
+            width: auto;
+            max-height: 90vh;
+            height: auto;
+        }
+
+        .video-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明的黑色背景 */
+        }
+
+        .video-modal img {
+            opacity: 0.5;
+            height: 65px;
+        }
 
 
     </style>
@@ -287,44 +498,107 @@
                 <div class="post-container">
                     <div class="post-header">
                         <span class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">
+                            <span class="dropdown-toggle avatar-dropdown" data-toggle="dropdown" aria-haspopup="true"
+                                  aria-expanded="false">
                                 <img src="{{ item.user.avatar.url }}" alt="profile picture">
-                            </a>
-                            <ul class="dropdown-menu">
+                            </span>
+                            <ul class="dropdown-user-menu" aria-labelledby="dropdownMenuButton{{ item.id }}">
                                 <li><a href="/profile/">Profile</a></li>
                                 <li><a href="{% url 'chat' %}?with={{ item.user.username }}">Chat</a></li>
-                                <!-- 将"Chat"文本移动到<a>标签内 -->
                             </ul>
                         </span>
                         <span class="name">{{ item.user.username }}</span>
-                        <span class="time">{{ item.created_at|date:"M d, Y g:i a"}}</span>
+                        <span class="time">{{ item.created_at|date:"M d, Y g:i a" }}</span>
+                        <span class="dropdown">
+                            <span class="more-options dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                  aria-expanded="false"><img style="width:25px; height:25px; opacity: 70%;"
+                                                             src="/media/more.png"></span>
+                            {% if request.user.is_authenticated and item.user == request.user %}
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                <li><a class="delete-post" data-post-id="{{ item.id }}" href="javascript:void(0);"
+                                       style="color: #CB1212">Delete Post</a></li>
+                            </ul>
+                            {% else %}
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                <li><a href="/#/">Not Interested</a></li>
+                                <li><a href="/#/">Follow User</a></li>
+                                <li><a href="/#/">Block User</a></li>
+                            </ul>
+                            {% endif %}
+                        </span>
                     </div>
                     <div class="post-content">
                         {{ item.content }}
                     </div>
                     {% if item.image_urls %}
-                        {% for image_url in item.image_urls %}
-                            <div class="post-content">
-                                <img src="{{ image_url }}">
-                            </div>
-                        {% endfor %}
+                        <div class="image-container">
+                            {% for image_url in item.image_urls %}
+                                <div>
+                                    <img src="{{ image_url }}" class="responsive-img" loading="lazy">
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% endif %}
+                    {% if item.video_urls %}
+                        <div class="video-container">
+                            {% for video_url in item.video_urls %}
+                                <div class="video-container">
+                                    <video controls class="responsive-video" autoplay muted>
+                                        <source src="{{ video_url }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <div class="video-modal" onclick="play(this)">
+                                        <img src="/media/play.png" style="opacity: 0.5; height: 65px;">
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    {% endif %}
+
                     <div class="post-actions">
                         <span class="like" data-post-id="{{ item.id }}">
                             <img src="/media/{{ item.is_liked|yesno:'like_red.png,like_grey.png' }}" class="like-icon"
                                  id="like-img-{{ item.id }}">
                             <span id="like-count-{{ item.id }}">{{ item.likes_count }}</span>
                         </span>
-                        <span id="comment">
+
+                        <span class="comment" data-post-id="{{ item.id }}">
                             <img src="/media/comment.png">
-                            Comment
                         </span>
                         <span id="share">
                             <img src="/media/share.png">
                             Share
                         </span>
                     </div>
+                    <div id="commentInput-{{ item.id }}" class="comment-input-container" style="display:none;">
+                        <textarea class="form-control" placeholder="Write a comment..."></textarea>
+                        <button class="btn btn-primary submit-comment" data-post-id="{{ item.id }}">Comment</button>
+                    </div>
+                    <div class="comments-container">
+                        {% with item.comments.all|slice:":5" as initial_comments %}
+                            {% for comment in initial_comments %}
+                                <div class="moment-comment">
+                                    <strong>
+                                        <span>
+                                            <img src="{{ comment.user.avatar.url }}"
+                                                 style="height: 30px; border-radius: 50%">
+                                        </span>
+                                        <span
+                                                class="moment-comment-name">{{ comment.user.username }}
+                                        </span>
+                                    </strong>: {{ comment.content }}
+                                </div>
+                            {% endfor %}
+                        {% endwith %}
+                        {% if item.comments.count > 5 %}
+                            <button class="btn btn-link load-more-comments" data-post-id="{{ item.id }}"
+                                    data-offset="5">Load more
+                                comments
+                            </button>
+                        {% endif %}
+                    </div>
+
                 </div>
 
             {% endfor %}
@@ -357,6 +631,7 @@
                                 <img style="height: 31px !important; margin-bottom: 2px;" src="/media/location.png">
                             </a>
                         </div>
+
                         <!-- Dropzone Form placeholder -->
                         <div id="my-great-dropzone" class="dropzone dz-clickable dropzone-box" style="display:none;">
                             <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
@@ -365,13 +640,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Post</button>
+                    <button type="button" class="btn btn-primary" id="post-button">Post</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Image Model -->
+    <!-- Image Modal -->
     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -388,9 +663,12 @@
         </div>
     </div>
 
+
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {#    <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.0/dist/min/dropzone.min.js"></script>#}
+
 
 
     <script>
@@ -400,7 +678,6 @@
                 const cookies = document.cookie.split(';');
                 for (let i = 0; i < cookies.length; i++) {
                     const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                         break;
@@ -411,84 +688,118 @@
         }
 
         const csrftoken = getCookie('csrftoken');
-        Dropzone.autoDiscover = false; // 关闭自动发现
+        Dropzone.autoDiscover = false;
 
         $(document).ready(function () {
-            var imageUrls = []; // 用于存储上传图片的URLs
+                let imageUrls = [];
+                let videoUrls = [];
 
-            // 初始化Dropzone
-            var myDropzone = new Dropzone("#my-great-dropzone", {
-                url: "/upload-to-s3/",
-                paramName: "file",
-                maxFilesize: 2, // 最大文件大小（MB）
-                acceptedFiles: 'image/*', // 仅接受图片文件
-                addRemoveLinks: true, // 添加移除文件的链接
-                success: function (file, response) {
-                    // 检查response是否已经是对象，不是则解析
-                    if (typeof response === "string") {
-                        try {
-                            response = JSON.parse(response);
-                        } catch (e) {
-                            console.error("Parsing error:", e);
-                            return;
+                if (typeof myDropzone == "undefined") {
+                    var myDropzone = new Dropzone("#my-great-dropzone", {
+                        url: "/upload-to-s3/",
+                        paramName: "file",
+                        maxFilesize: 50,
+                        acceptedFiles: 'image/*, video/*',
+                        addRemoveLinks: true,
+                        success: function (file, response) {
+                            if (response.file_url) {
+                                if (file.type.startsWith('image/')) {
+                                    imageUrls.push(response.file_url);
+                                } else if (file.type.startsWith('video/')) {
+                                    videoUrls.push(response.file_url);
+                                }
+                            } else {
+                                console.error("File upload didn't return file_url.");
+                            }
                         }
-                    }
-                    if (response.file_url) {
-                        imageUrls.push(response.file_url);
+                    });
+                }
+
+                // 处理模态框显示时的事件
+                $('#exampleModal').on('show.bs.modal', function (e) {
+                    // 清空图片和视频URL数组以及输入内容
+                    imageUrls = [];
+                    videoUrls = [];
+                    $('#message-text').val('');
+                });
+
+                // 上拉下拉
+                $('#toggle-upload').click(function (e) {
+                    e.preventDefault();
+                    var dz = $("#my-great-dropzone");
+                    if (dz.is(":visible")) {
+                        dz.slideUp();
                     } else {
-                        console.error("File upload didn't return file_url.");
-                    }
-                }
-
-            });
-
-            $('#toggle-upload').click(function (e) {
-                e.preventDefault();
-                var dz = $("#my-great-dropzone");
-                if (dz.is(":visible")) {
-                    dz.slideUp();
-                } else {
-                    dz.slideDown();
-                }
-            });
-
-            $(document).on('click', '.post-content img', function () {
-                var src = $(this).attr('src');
-                $('#imageModalSrc').attr('src', src);
-                $('#imageModal').modal('show');
-            });
-
-            // 提交按钮事件
-            $('.btn-primary').on('click', function (e) {
-                e.preventDefault();
-                var formData = {
-                    content: $('#message-text').val(),
-                    imageUrls: imageUrls
-                };
-
-                // 使用AJAX发送数据到后端
-                $.ajax({
-                    type: "POST",
-                    url: "/save-moment/",
-                    contentType: "application/json",
-                    data: JSON.stringify(formData),
-                    success: function (response) {
-                        console.log("Post submitted successfully.");
-                        $('#exampleModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function (error) {
-                        console.error("Error submitting post:", error);
+                        dz.slideDown();
                     }
                 });
-            });
-        });
+
+                // 展示更大的image
+                $(document).on('click', '.image-container img', function () {
+                    var src = $(this).attr('src');
+                    $('#imageModalSrc').attr('src', src);
+                    $('#imageModal').modal('show');
+                });
+
+                // comment
+                $(document).on('click', '#comment', function () {
+                    // 尝试找到当前 post-container 内 post-content 下的第一张图片
+                    var imgSrc = $(this).closest('.post-container').find('.post-content img:first').attr('src');
+                    // 如果找到了图片，则设置图片并显示模态框
+                    if (imgSrc) {
+                        $('#commentImageSrc').attr('src', imgSrc);
+                        $('#commentImageSrc').show();
+                    } else {
+                        // 如果没有找到图片，隐藏<img>元素
+                        $('#commentImageSrc').hide();
+                    }
+                    $('#commentModal').modal('show');
+                });
+
+                // 发布朋友圈
+                $('#post-button').on('click', function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    $this.prop('disabled', true); // 禁用按钮防止重复提交
+
+                    var content = $('#message-text').val();
+                    var formData = {
+                        content: content,
+                        imageUrls: imageUrls,
+                        videoUrls: videoUrls,
+                    };
+
+                    console.log("Form data: ", formData);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/save-moment/",
+                        contentType: "application/json",
+                        data: JSON.stringify(formData),
+                        beforeSend: function (xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        },
+                        success: function (response) {
+                            console.log("Post submitted successfully.");
+                            $('#exampleModal').modal('hide');
+                            location.reload();
+                        },
+                        error: function (error) {
+                            console.error("Error submitting post:", error);
+                        },
+                        complete: function () {
+                            $this.prop('disabled', false); // 请求完成后重新启用按钮
+                        }
+                    });
+                });
+            }
+        );
 
         $(document).on('click', '.like', function (e) {
             var postId = $(this).data('post-id');
             var likeIcon = $('#like-img-' + postId);
             var iconOffset = likeIcon.offset();
-            var colors = ['#ff4500', '#ffac40', '#ff77ab', '#00d4ff', '#4dff4d']; // 粒子颜色数组
+            var colors = ['#ff4500', '#ffac40', '#ff77ab', '#00d4ff', '#4dff4d'];
 
             for (let i = 0; i < 25; i++) {
                 let particle = $('<div class="particle"></div>');
@@ -512,7 +823,7 @@
                     top: '+=' + targetY + 'px',
                     opacity: 0,
                 }, 700, "linear", function () {
-                    particle.remove(); // 动画完成后移除粒子
+                    particle.remove();
                 });
             }
 
@@ -532,12 +843,204 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    // 如果有错误，你可以在这里处理，比如显示一个错误消息
                     console.error("Error in liking post:", error);
                 }
             });
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.comment', function () {
+                var postId = $(this).data('post-id');
+                var commentInput = $('#commentInput-' + postId);
+
+                // 检查当前状态并相应地展开或收起
+                if (commentInput.is(":visible")) {
+                    commentInput.slideUp();
+                } else {
+                    commentInput.slideDown();
+                }
+            });
+
+
+            $(document).on('click', '.submit-comment', function () {
+                var postId = $(this).data('post-id');
+                var commentText = $('#commentInput-' + postId + ' textarea').val();
+
+                if (commentText) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/submit-moment-comment/",
+                        contentType: "application/json",
+                        data: JSON.stringify({post_id: postId, comment: commentText}),
+                        headers: {'X-CSRFToken': csrftoken},
+                        success: function (response) {
+                            console.log("Comment submitted successfully.");
+                            $('#commentInput-' + postId + ' textarea').val('');
+                            $('#commentInput-' + postId).slideUp();
+                            location.reload();
+                        },
+                        error: function (error) {
+                            console.error("Error submitting comment:", error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    {#   load more comments#}
+    <script>
+        $(document).ready(function () {
+            $('.load-more-comments').on('click', function () {
+                var postId = $(this).data('post-id');
+                var $button = $(this);
+
+                // 确保从按钮获取最新的 data-offset 值
+                var currentOffset = $button.data('offset');
+
+                $.ajax({
+                    url: '/load-more-comments/',
+                    method: 'GET',
+                    data: {
+                        'post_id': postId,
+                        'offset': currentOffset  // 使用从按钮获取的 offset
+                    },
+                    success: function (response) {
+                        // 插入新加载的评论HTML到按钮之前
+                        $button.before(response.comments_html);
+                        // 更新按钮上的 data-offset 值，用于下次点击事件
+                        if (response.has_more) {
+                            $button.data('offset', currentOffset + response.limit);  // 使用后端返回的 limit 更新 offset
+                        } else {
+                            $button.remove(); // 如果没有更多评论，移除按钮
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Error loading more comments:', error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    {#    more options#}
+    <script>
+        // more options
+        $(document).ready(function () {
+            $('.more-options').click(function () {
+                var $dropdownMenu = $(this).next('.dropdown-menu');
+
+                // 切换 show-dropdown 类来控制下拉菜单的显示与隐藏
+                if ($dropdownMenu.parent().hasClass('show-dropdown')) {
+                    $dropdownMenu.parent().removeClass('show-dropdown');
+                } else {
+                    // 先隐藏所有其他下拉菜单
+                    $('.dropdown').removeClass('show-dropdown');
+                    $dropdownMenu.parent().addClass('show-dropdown');
+                }
+            });
+            // 点击其他地方隐藏下拉菜单
+            $(document).click(function (e) {
+                if (!$(e.target).closest('.dropdown').length) {
+                    $('.dropdown').removeClass('show-dropdown');
+                }
+            });
+        });
+
+        // avatar dropdown
+        $(document).ready(function () {
+            $('.avatar-dropdown').click(function () {
+                var $dropdownMenu = $(this).next('.dropdown-user-menu');
+
+                if ($dropdownMenu.parent().hasClass('show-avatar-dropdown')) {
+                    $dropdownMenu.parent().removeClass('show-avatar-dropdown');
+                } else {
+                    // 先隐藏所有其他下拉菜单
+                    $('.dropdown').removeClass('show-avatar-dropdown');
+                    $dropdownMenu.parent().addClass('show-avatar-dropdown');
+                }
+            });
+
+            // 点击其他地方隐藏下拉菜单
+            $(document).click(function (e) {
+                if (!$(e.target).closest('.dropdown').length) {
+                    $('.dropdown').removeClass('show-avatar-dropdown');
+                }
+            });
+        });
+
+        // 删除post
+        $(document).on('click', '.delete-post', function () {
+            var postId = $(this).data('post-id');
+            $.ajax({
+                url: '/delete-post/' + postId + '/',
+                method: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': getCookie('csrftoken'),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert("Could not delete the post.");
+                    }
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        function play(element) {
+            // 获取点击的蒙层对应的视频元素
+            let vdo = element.previousElementSibling;
+            let modal = element;
+
+            // 尝试播放视频（如果浏览器阻止自动播放，则可能需要用户交互）
+            vdo.play().then(() => {
+                // 播放成功后，取消静音并隐藏蒙层
+                vdo.muted = false;
+                modal.style.display = "none";
+            }).catch(err => {
+                // 如果播放失败，显示蒙层提示用户手动播放
+                console.log("播放失败，需要用户手动交互", err);
+                modal.style.display = "flex";
+                modal.addEventListener("click", () => play(element), {once: true});
+            });
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var videos = document.querySelectorAll('.responsive-video');
+
+            function checkVisibility() {
+                videos.forEach(function (video) {
+                    var videoRect = video.getBoundingClientRect();
+                    var videoHeight = videoRect.height;
+                    var visibleHeight = Math.min(window.innerHeight, videoRect.bottom) - Math.max(0, videoRect.top);
+
+                    // 计算可见高度占视频总高度的百分比
+                    var visibilityPercentage = (visibleHeight / videoHeight) * 100;
+
+                    if (visibilityPercentage < 30) {
+                        video.pause();
+                    } else {
+                        video.play();
+                    }
+                });
+            }
+
+            // 监听滚动事件并检查视频的可见性
+            window.addEventListener('scroll', checkVisibility);
+            window.addEventListener('resize', checkVisibility); // 在窗口大小改变时也进行检查
+
+            // 初始检查
+            checkVisibility();
+        });
     </script>
 
 

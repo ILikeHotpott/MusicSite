@@ -67,13 +67,15 @@ class US_TopMusic(models.Model):
         ('AU', 'Australia'),
     )
     region = models.CharField(max_length=2, choices=region_choices, default='US')
+    album_name = models.CharField(max_length=255, null=True, blank=True)
 
 
 class Moments(models.Model):
     user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='User')
     content = models.TextField(verbose_name='Content')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Comment Time')
-    image_urls = models.JSONField(default=list)
+    image_urls = models.JSONField(default=list, verbose_name='Image URLs')
+    video_urls = models.JSONField(default=list, verbose_name='Video URLs')
     likes_count = models.IntegerField(default=0, verbose_name="Likes Count")
 
 

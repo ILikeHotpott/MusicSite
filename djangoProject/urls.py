@@ -42,6 +42,7 @@ urlpatterns = [
 
     path("rank/", views.rank, name='rank_default'),
     path('rank/<str:region>/', views.rank, name='rank_region'),
+    path('rank_api/', views.rank_api),
 
     path("profile/", views.profile),
     path("profile/edit/", views.profile_edit),
@@ -49,11 +50,16 @@ urlpatterns = [
 
     # http://127.0.0.1/chat3/?num=123123
     path("chat3/", views.chat3),
-    path("chat/", views.chat),
+    path("chat/", views.chat, name="chat"),
 
     path("playground/", views.playground),
     path("upload-to-s3/", views.upload_file_to_s3),
     path("save-moment/", views.save_moment),
+    path("like-post/", views.like_post, name="like_post"),
+    path("submit-moment-comment/", views.submit_moment_comment, name="submit_moment_comment"),
+    path("load-more-comments/", views.load_more_comments, name="load_more_comments"),
+
+    path("delete-post/<int:post_id>/", views.delete_post),
 ]
 
 if settings.DEBUG:
