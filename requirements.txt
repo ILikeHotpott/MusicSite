@@ -4,8 +4,6 @@ aioitertools==0.10.0
 aiosignal==1.2.0
 alabaster==0.7.12
 altgraph==0.17.4
-anaconda-client
-anaconda-navigator
 anyio==3.5.0
 appdirs==1.4.4
 applaunchservices==0.2.1
