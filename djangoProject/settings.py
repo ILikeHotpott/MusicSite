@@ -33,7 +33,7 @@ SECRET_KEY = "django-insecure-jbomzr_8&=h+r#s_4)($+6jbelxe70wusc8jf=x*=p%+bis)1r
 DEBUG = False
 
 
-ALLOWED_HOSTS = ["44.204.48.81", "localhost", "www.music-top.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
