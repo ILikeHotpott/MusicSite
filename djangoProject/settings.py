@@ -30,7 +30,7 @@ LOGIN_URL = '/login/'
 SECRET_KEY = "django-insecure-jbomzr_8&=h+r#s_4)($+6jbelxe70wusc8jf=x*=p%+bis)1r"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "www.music-top.com", '0.0.0.0']
@@ -111,9 +111,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'music',
-        'USER': 'admin',
+        'USER': 'root',
         'PASSWORD': 'Lcy741125',
-        'HOST': 'database-2.cpcm4m8s64p6.us-east-1.rds.amazonaws.com',
+        'HOST': '44.204.48.81',
         'PORT': 3306
     }
 }
