@@ -7,6 +7,9 @@ from django.conf import settings
 from app01.models import US_TopMusic
 
 
+#  python manage.py update_music_ranks_from_s3
+#  python manage.py upload_music_ranks_to_s3
+
 class Command(BaseCommand):
     help = 'Update database with music ranks from Amazon S3'
 

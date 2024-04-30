@@ -6,6 +6,9 @@ import pytz
 from django.conf import settings
 from app01.utils.music_api import get_ranks_songs_artists
 
+#  python manage.py upload_music_ranks_to_s3
+#  python manage.py update_music_ranks_from_s3
+
 
 class Command(BaseCommand):
     """ Download music ranks and upload to Amazon S3 with daily folders """
