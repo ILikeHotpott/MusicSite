@@ -2,6 +2,35 @@
 
 {% block content %}
     <style>
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            .table-title, .song-text {
+                font-size: smaller; /* 调整字体大小 */
+            }
+
+            th.rank, td.rank, th.pic, td.pic, th.score, th.song, th.artist, th.weeks {
+                width: auto; /* 让宽度自适应 */
+            }
+        }
+
+        @media (max-width: 600px) {
+            table th, table td {
+                width: 100%; /* 每个单元格宽度填满容器 */
+                display: block; /* 使表格行表现为块级元素 */
+                text-align: left; /* 左对齐文本 */
+            }
+        }
+
+        img {
+            max-width: 100%; /* 图片最大宽度为容器宽度，保持比例 */
+            height: auto; /* 高度自动调整 */
+        }
+
+
         table {
             width: 100%;
             table-layout: fixed; /* 确保列宽固定不变 */
