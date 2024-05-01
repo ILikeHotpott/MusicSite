@@ -463,24 +463,28 @@
                 <div class="avatar">
                     <a href="/profile/">
                         {% if not request.user.is_authenticated %}
-                            <img src="/media/profile/default.png">
+                            {#                            <img src="/media/profile/default.png">#}
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png">
                         {% elif request.user and not user_info.avatar %}
-                            <img src="/media/profile/default.png">
+                            {#                            <img src="/media/profile/default.png">#}
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png">
                         {% else %}
-                            <img src="/media/{{ user_info.avatar }}">
+                            {#                            <img src="/media/{{ user_info.avatar }}">#}
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ user_info.avatar }}">
                         {% endif %}
                     </a>
                 </div>
                 <div class="friends tool-bar">
-                    <img src="/media/friends.png">
+                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/friends.png">
                     <span class="tool">Friends</span>
                 </div>
                 <div class="market tool-bar">
-                    <img src="/media/market.png" style="height: 25px !important;">
+                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/market.png"
+                         style="height: 25px !important;">
                     <span class="tool">Marketplace</span>
                 </div>
                 <div class="favourite tool-bar">
-                    <img src="/media/favourite.png">
+                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/favourite.png">
                     <span class="tool">Favourite</span>
                 </div>
             </div>
@@ -548,7 +552,7 @@
                                         Your browser does not support the video tag.
                                     </video>
                                     <div class="video-modal" onclick="play(this)">
-                                        <img src="/media/play.png" style="opacity: 0.5; height: 65px;">
+                                        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/play.png" style="opacity: 0.5; height: 65px;">
                                     </div>
                                 </div>
                             {% endfor %}
@@ -558,16 +562,16 @@
 
                     <div class="post-actions">
                         <span class="like" data-post-id="{{ item.id }}">
-                            <img src="/media/{{ item.is_liked|yesno:'like_red.png,like_grey.png' }}" class="like-icon"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ item.is_liked|yesno:'like_red.png,like_grey.png' }}" class="like-icon"
                                  id="like-img-{{ item.id }}">
                             <span id="like-count-{{ item.id }}">{{ item.likes_count }}</span>
                         </span>
 
                         <span class="comment" data-post-id="{{ item.id }}">
-                            <img src="/media/comment.png">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/comment.png">
                         </span>
                         <span id="share">
-                            <img src="/media/share.png">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/share.png">
                             Share
                         </span>
                     </div>
