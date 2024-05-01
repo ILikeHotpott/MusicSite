@@ -839,10 +839,10 @@
                 headers: {'X-CSRFToken': csrftoken},
                 success: function (response) {
                     if (response.liked) {
-                        $('#like-img-' + postId).attr('src', '/media/like_red.png').addClass('heartbeat');
+                        $('#like-img-' + postId).attr('src', 'https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/like_red.png').addClass('heartbeat');
                         $('#like-count-' + postId).text(response.like_count); // 更新点赞数量
                     } else {
-                        $('#like-img-' + postId).attr('src', '/media/like_grey.png').removeClass('heartbeat'); // 更换为未点赞的图标路径
+                        $('#like-img-' + postId).attr('src', 'https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/like_grey.png').removeClass('heartbeat'); // 更换为未点赞的图标路径
                         $('#like-count-' + postId).text(response.like_count); // 更新点赞数量
                     }
                 },
