@@ -5,7 +5,6 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.db.models import Avg
-from django.core.cache import cache
 from django import forms
 from django.urls import reverse
 from django.views.decorators.http import require_POST

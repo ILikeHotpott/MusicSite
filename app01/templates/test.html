@@ -1,82 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Social Post</title>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <style>
+
+    /* 基本样式 */
     body {
         font-family: Arial, sans-serif;
     }
 
-    .post-container {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 500px;
-        margin: 20px auto;
-        padding: 15px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        background-color: #fff;
+    .chart-container {
+        margin: 20px;
+        overflow-x: auto; /* 使得表格在小屏幕上可以横向滚动 */
     }
 
-    .post-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* 保持列宽固定 */
     }
 
-    .post-header img {
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
+    th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ccc;
     }
 
-    .post-header .name {
-        font-weight: bold;
+    /* 响应式布局调整 */
+    @media (max-width: 768px) {
+        .chart-container {
+            margin: 0;
+        }
+
+        table {
+            white-space: nowrap; /* 保持单元格内容不折行 */
+        }
     }
 
-    .post-header .time {
-        margin-left: auto;
-        color: #777;
-        font-size: 0.9em;
-    }
 
-    .post-content {
-        margin-bottom: 10px;
-    }
-
-    .post-actions {
-        border-top: 1px solid #eee;
-        padding-top: 5px;
-        display: flex;
-        justify-content: space-around;
-        font-size: 0.9em;
-        color: #555;
-    }
-
-    .post-actions span:hover {
-        text-decoration: underline;
-        cursor: pointer;
-    }
 </style>
-</head>
 <body>
 
-<div class="post-container">
-    <div class="post-header">
-        <img src="profile-image-url.jpg" alt="profile picture">
-        <span class="name">Naumi Cherry</span>
-        <span class="time">2 hours ago</span>
-    </div>
-    <div class="post-content">
-        I am looking for game partner to play the game
-    </div>
-    <div class="post-actions">
-        <span>Like</span>
-        <span>Comment</span>
-        <span>Share</span>
-    </div>
+
+<div class="chart-container">
+    <table>
+        <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Title</th>
+            <th>Last Week</th>
+            <th>Peak Pos.</th>
+            <th>Weeks on Chart</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Fortnight - Taylor Swift Featuring Post Malone</td>
+            <td>-</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <!-- 更多行 -->
+        </tbody>
+    </table>
 </div>
 
 </body>

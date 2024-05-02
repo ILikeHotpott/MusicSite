@@ -86,35 +86,100 @@
             margin-top: 100px;
         }
 
+        {#.input-container {#}
+        {#    display: flex;#}
+        {#    position: relative; /* 用于定位伪元素 */#}
+        {
+        #}#}
+
+        {#.underline-input {#}
+        {#    flex-grow: 1; /* 输入框占据剩余空间 */#}
+        {#    border: none; /* 去除默认边框 */#}
+        {#    outline: none; /* 去除焦点轮廓 */#}
+        {#    border-bottom: 2px solid #ccc; /* 添加下划线 */#}
+        {#    padding: 8px 10px; /* 输入框内部略微填充 */#}
+        {
+        #}#}
+        {##}
+        {#.underline-input {#}
+        {#    width: 100%;#}
+        {#    border: none;#}
+        {#    outline: none;#}
+        {#    background: none;#}
+        {#    padding: 10px 0;#}
+        {#    font-size: 16px;#}
+        {#    position: relative;#}
+        {
+        #}#}
+        {##}
+        {#.underline-input:focus {#}
+        {#    border-bottom-color: #007bff; /* 聚焦时改变下划线颜色 */#}
+        {
+        #}#}
+        {##}
+        {#.input-container span {#}
+        {#    display: flex; /* 使span也成为flex容器 */#}
+        {#    align-items: center; /* 垂直居中内部的图像 */#}
+        {
+        #}#}
+        {##}
+        {#.underline-input::after {#}
+        {#    content: ''; /* 创建伪元素用于显示下划线 */#}
+        {#    position: absolute;#}
+        {#    bottom: 0; /* 定位到输入框底部 */#}
+        {#    left: 0; /* 始终从左侧开始 */#}
+        {#    width: 100%; /* 初始宽度为100% */#}
+        {#    height: 2px; /* 下划线厚度 */#}
+        {#    background-color: grey; /* 初始颜色 */#}
+        {#    transition: background-color 0.3s ease; /* 只过渡背景颜色的变化 */#}
+        {
+        #}#}
+        {##}
+        {#.underline-input:focus::after {#}
+        {#    background-color: black; /* 聚焦时颜色变为黑色 */#}
+        {
+        #}#}
+        {##}
+        {#.self-avatar {#}
+        {#    height: 40px;#}
+        {#    width: 40px;#}
+        {#    border-radius: 50%;#}
+        {##}
+        {
+        #}#}
+
+
         .input-container {
-            width: 300px; /* 设置输入框容器的宽度 */
-            margin: 0 auto; /* 居中显示 */
-            position: relative; /* 用于定位伪元素 */
+            display: flex; /* 启用Flexbox布局 */
+            align-items: center; /* 垂直居中所有子元素 */
+            gap: 10px; /* 设置子元素之间的间隔 */
+        }
+
+        .input-container span {
+            display: flex; /* 使span也成为flex容器 */
+            align-items: center; /* 垂直居中内部的图像 */
+        }
+
+        .self-avatar {
+            width: 40px; /* 头像宽度 */
+            height: 40px; /* 头像高度 */
+            border-radius: 50%; /* 圆形头像 */
         }
 
         .underline-input {
-            width: 100%;
-            border: none;
-            outline: none;
-            background: none;
-            padding: 10px 0;
-            font-size: 16px;
-            position: relative;
+            flex-grow: 1; /* 输入框占据剩余空间 */
+            border: none; /* 去除默认边框 */
+            outline: none; /* 去除焦点轮廓 */
+            border-bottom: 2px solid #ccc; /* 添加下划线 */
+            padding: 8px 10px; /* 输入框内部略微填充 */
         }
 
-        .underline-input::after {
-            content: ''; /* 创建伪元素用于显示下划线 */
-            position: absolute;
-            bottom: 0; /* 定位到输入框底部 */
-            left: 0; /* 始终从左侧开始 */
-            width: 100%; /* 初始宽度为100% */
-            height: 2px; /* 下划线厚度 */
-            background-color: grey; /* 初始颜色 */
-            transition: background-color 0.3s ease; /* 只过渡背景颜色的变化 */
+        .underline-input:focus {
+            border-bottom-color: black; /* 聚焦时改变下划线颜色 */
         }
 
-        .underline-input:focus::after {
-            background-color: black; /* 聚焦时颜色变为黑色 */
+        .btn-primary {
+            padding: 8px 16px; /* 按钮内部填充 */
         }
 
     </style>
@@ -137,12 +202,12 @@
             {% if request.user.is_authenticated %}
                 <div class="input-container">
                     <span>
-                        <img src="{{ comment.user.avatar.url }}" alt="User Avatar">
+                        <img src="{{ request.user.avatar.url }}" alt="User Avatar" class="self-avatar">
                     </span>
-                    <form method="post">
+                    <form method="post" style="display: flex; align-items: center; flex-grow: 1;">
                         {% csrf_token %}
                         <input type="text" class="underline-input" placeholder="Add a comment...">
-                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                        <button type="submit" class="btn btn-primary">Comment</button>
                     </form>
                 </div>
             {% else %}
