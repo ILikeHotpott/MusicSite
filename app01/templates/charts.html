@@ -3,6 +3,10 @@
 {% block content %}
     <style>
 
+        .scores, .song-font, .table-title, .star, .star_after_score, .star.rated, .artist {
+            font-family: "Arial Black", serif;
+            font-weight: 400;
+        }
 
         img {
             max-width: 100%; /* 图片最大宽度为容器宽度，保持比例 */
@@ -14,6 +18,7 @@
             width: 100%;
             table-layout: fixed; /* 确保列宽固定不变 */
             border-collapse: collapse; /* 移除单元格之间的间隙 */
+            white-space: nowrap;
         }
 
         table th, table td {
@@ -21,47 +26,57 @@
             padding: 0;
             text-align: center;
             vertical-align: middle;
-            height: 100px; /* 设置所有单元格的高度 */
+            height: 10vw;
+            width: 10vw;
         }
 
+        {#table img {#}
+        {#    width: 100px; #}
+        {#    height: 100px; #}
+        {#    object-fit: fill; #}
+        {#    display: block; #}
+        {#    margin: 0;#}
+
         table img {
-            width: 100px; /* 图片宽度填满单元格 */
-            height: 100px; /* 图片高度填满单元格 */
-            object-fit: fill; /* 图片覆盖整个内容区域 */
-            display: block; /* 防止出现额外空间 */
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            display: block;
             margin: 0;
         }
 
 
         th.rank, td.rank {
-            width: 100px;
+            width: 10vw;
         }
 
         th.pic, td.pic {
-            width: 100px;
+            width: 100%;
+            height: 100%;
         }
 
         .score {
-            width: 200px;
+            width: 15vw;
         }
 
         .scores {
             font-size: 25px;
             font-weight: 600;
             font-family: "Arial Black", serif;
+            width: 10vw;
         }
 
         th.song, td.song {
-            width: 300px;
+            width: 20vw;
         }
 
         th.artist, td.artist {
             text-align: left;
-            width: 180px;
+            width: 18vw;
         }
 
         th.weeks, td.weeks {
-            width: 100px;
+            width: 10vw;
         }
 
         .table-row .rank {
@@ -82,7 +97,6 @@
             text-align: left; /* 使文本靠左对齐 */
             vertical-align: middle; /* 使文本垂直居中 */
             height: 35px; /* 你可以根据需要设置合适的高度 */
-            /* 在左侧添加一些内边距，根据需要调整 */
         }
 
         .table-row .rank {
@@ -94,12 +108,6 @@
             font-weight: 100;
             font-family: "Arial Black", serif;
             font-size: 16px;
-        }
-
-        .table-row .weeks {
-            font-weight: 200;
-            font-family: "Arial Black", serif;
-            font-size: 20px;
         }
 
         .table-row .weeks {
@@ -136,22 +144,12 @@
             border-collapse: collapse;
         }
 
-        th, td {
-            border: none;
-            padding: 10px;
-            text-align: center;
-            vertical-align: middle;
-        }
 
         img {
             max-width: 100%;
             height: auto;
         }
 
-        .scores {
-            font-size: 25px;
-            font-weight: 600;
-            font-family: "Arial Black", serif;
         }
 
         .song-font, .artist {
@@ -207,58 +205,140 @@
         }
 
         @media (max-width: 768px) {
-        .chart-container {
-            margin: 0;
-            overflow-x: auto;
+            .chart-container {
+                margin: 0;
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                table-layout: fixed;
+                border-collapse: collapse;
+                white-space: nowrap;
+            }
         }
 
-        table {
-            white-space: nowrap;
+        .rating {
+            width: 10%;
         }
-    }
+
+        @media (max-width: 1200px) {
+            .scores, .song-font {
+                font-size: 20px;
+                font-weight: 500; /* 适度粗细 */
+            }
+
+            .artist {
+                font-size: 14px;
+                font-weight: 300; /* 维持细字体 */
+            }
+
+            .table-title, .star, .star_after_score, .star.rated {
+                font-size: 16px;
+                font-weight: 400; /* 常规粗细 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .scores, .song-font {
+                font-size: 18px;
+                font-weight: 500;
+            }
+
+            .artist {
+                font-size: 12px;
+                font-weight: 300;
+            }
+
+            .table-title, .star, .star_after_score, .star.rated {
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            .container {
+                margin-left: 0 !important;
+            }
+
+            .table
+        }
+
+        /* 更小屏幕尺寸调整 */
+        @media (max-width: 480px) {
+            .scores, .song-font {
+                font-size: 16px;
+                font-weight: 400; /* 减少粗细 */
+            }
+
+            .artist {
+                font-size: 10px;
+                font-weight: 300;
+            }
+
+            .table-title, .star, .star_after_score, .star.rated {
+                font-size: 12px;
+                font-weight: 400;
+            }
+
+            .container {
+                margin-left: 0 !important;
+            }
+
+            .weeks {
+                display: none;
+            }
+
+            .rating {
+                display: none;
+            }
+
+            .rate .rating {
+                display: none
+            }
+
+        }
 
     </style>
 
 
 
-    <div class="container">
+    <div class="container" id="main-container">
 
-{#        <div class="col-xs-8">#}
-{#            <div>#}
-{#                <div id="carousel-example-generic" class="carousel slide roll" data-ride="carousel">#}
-{#                    <ol class="carousel-indicators">#}
-{#                        <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>#}
-{#                        <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>#}
-{#                        <li data-target="#carousel-example-generic" data-slide-to="2" class="active"></li>#}
-{#                    </ol>#}
-{#                    <div class="carousel-inner" role="listbox">#}
-{#                        <div class="item">#}
-{#                            <img src="https://i.scdn.co/image/ab67616d0000b27380d86d636244b72a3a1eede2"#}
-{#                                 data-holder-rendered="true">#}
-{#                        </div>#}
-{#                        <div class="item">#}
-{#                            <img src="https://i.scdn.co/image/ab67616d0000b2737587213b1be294ac4000f648"#}
-{#                                 data-holder-rendered="true">#}
-{#                        </div>#}
-{#                        <div class="item active">#}
-{#                            <img src="https://i.scdn.co/image/ab67616d0000b273bef221ea02a821e7feeda9cf"#}
-{#                                 alt="Third slide [900x500]" data-holder-rendered="true">#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">#}
-{#                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>#}
-{#                        <span class="sr-only">Previous</span>#}
-{#                    </a>#}
-{#                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">#}
-{#                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>#}
-{#                        <span class="sr-only">Next</span>#}
-{#                    </a>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="col-xs-4">#}
-{##}
-{#        </div>#}
+        {#        <div class="col-xs-8">#}
+        {#            <div>#}
+        {#                <div id="carousel-example-generic" class="carousel slide roll" data-ride="carousel">#}
+        {#                    <ol class="carousel-indicators">#}
+        {#                        <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>#}
+        {#                        <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>#}
+        {#                        <li data-target="#carousel-example-generic" data-slide-to="2" class="active"></li>#}
+        {#                    </ol>#}
+        {#                    <div class="carousel-inner" role="listbox">#}
+        {#                        <div class="item">#}
+        {#                            <img src="https://i.scdn.co/image/ab67616d0000b27380d86d636244b72a3a1eede2"#}
+        {#                                 data-holder-rendered="true">#}
+        {#                        </div>#}
+        {#                        <div class="item">#}
+        {#                            <img src="https://i.scdn.co/image/ab67616d0000b2737587213b1be294ac4000f648"#}
+        {#                                 data-holder-rendered="true">#}
+        {#                        </div>#}
+        {#                        <div class="item active">#}
+        {#                            <img src="https://i.scdn.co/image/ab67616d0000b273bef221ea02a821e7feeda9cf"#}
+        {#                                 alt="Third slide [900x500]" data-holder-rendered="true">#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">#}
+        {#                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>#}
+        {#                        <span class="sr-only">Previous</span>#}
+        {#                    </a>#}
+        {#                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">#}
+        {#                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>#}
+        {#                        <span class="sr-only">Next</span>#}
+        {#                    </a>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        {#        <div class="col-xs-4">#}
+        {##}
+        {#        </div>#}
         {#        <a href="/charts/add" class="btn" style="background-color: black; color: white;">Add Music</a>#}
         <table class="chart-container">
             <thead>
@@ -267,7 +347,7 @@
                 <th class="pic table-title">ALBUM</th>
                 <th class="score table-title">SCORES</th>
                 <th class="song song-text table-title">SONG</th>
-                <th class="weeks table-title">WKS ON CHART</th>
+                <th class="weeks table-title">WEEKS</th>
                 <th class="rate table-title">STARS</th>
             </tr>
             </thead>
@@ -380,10 +460,33 @@
     </script>
 
     <script>
+        /*
         $(function () {
             $('.carousel').carousel({
                 interval: 3
             })
         })
+        */
     </script>
+
+    <script>
+        window.onload = function () {
+            checkContainerClass();
+            window.addEventListener('resize', checkContainerClass);
+        };
+
+        function checkContainerClass() {
+            var container = document.getElementById('main-container');
+            console.log('Checking container class...'); // 日志输出，帮助调试
+
+            if (window.innerWidth < 480) {
+                console.log('Width is less than 480px. Removing container class.');
+                container.classList.remove('container');
+            } else {
+                console.log('Width is 480px or greater. Adding container class.');
+                container.classList.add('container');
+            }
+        }
+    </script>
+
 {% endblock %}
