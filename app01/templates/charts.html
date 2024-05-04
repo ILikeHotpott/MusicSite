@@ -523,7 +523,7 @@
             var container = document.getElementById('main-container');
             console.log('Checking container class...'); // 日志输出，帮助调试
 
-            if (window.innerWidth < 480) {
+            if (window.innerWidth <= 480) {
                 console.log('Width is less than 480px. Removing container class.');
                 container.classList.remove('container');
             } else {

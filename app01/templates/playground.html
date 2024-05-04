@@ -29,13 +29,35 @@
             box-shadow: 6px 0 15px -5px rgba(0, 0, 0, 0.5);
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 480px) {
             .left-bar {
                 display: none;
             }
+
             .right-bar {
-                margin-left: 0;
+                margin-left: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: auto !important;
+            }
+
+            .friends {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100px;
+                overflow-y: auto !important;
+            }
+
+            .post-container {
+                border: 1px solid #ccc;
+                border-radius: 5px;
                 width: 100%;
+                margin: 20px auto;
+                padding: 15px;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+                background-color: #fff;
+                text-align: left;
             }
         }
 
@@ -44,7 +66,7 @@
             margin-left: 25%; /* 根据左侧栏的宽度调整 */
             height: auto;
             text-align: center;
-            width: 75%; /* 剩余宽度 */
+            width: 75%;
             overflow-y: auto;
         }
 
@@ -108,7 +130,6 @@
         .post-container {
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 800px;
             margin: 20px auto;
             padding: 15px;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
@@ -507,7 +528,7 @@
         </div>
 
 
-        <div class="right-bar col-xs-9">
+        <div class="right-bar col-xs-9" id="right-bar">
             <span class="left-bar-menu">
                 <img src="/media/menu.png">
             </span>
@@ -571,7 +592,8 @@
                                         Your browser does not support the video tag.
                                     </video>
                                     <div class="video-modal" onclick="play(this)">
-                                        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/play.png" style="opacity: 0.5; height: 65px;">
+                                        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/play.png"
+                                             style="opacity: 0.5; height: 65px;">
                                     </div>
                                 </div>
                             {% endfor %}
@@ -581,7 +603,8 @@
 
                     <div class="post-actions">
                         <span class="like" data-post-id="{{ item.id }}">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ item.is_liked|yesno:'like_red.png,like_grey.png' }}" class="like-icon"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ item.is_liked|yesno:'like_red.png,like_grey.png' }}"
+                                 class="like-icon"
                                  id="like-img-{{ item.id }}">
                             <span id="like-count-{{ item.id }}">{{ item.likes_count }}</span>
                         </span>
@@ -648,10 +671,12 @@
                         <label for="message-text" class="more-content-title control-label">Add more contents:</label>
                         <div class="upload-pic">
                             <a href="#" id="toggle-upload">
-                                <img style="margin-right: 5px" src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/pic.png">
+                                <img style="margin-right: 5px"
+                                     src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/pic.png">
                             </a>
                             <a href="#">
-                                <img style="height: 31px !important; margin-bottom: 2px;" src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/location.png">
+                                <img style="height: 31px !important; margin-bottom: 2px;"
+                                     src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/location.png">
                             </a>
                         </div>
 
@@ -1065,6 +1090,7 @@
             checkVisibility();
         });
     </script>
+
 
 
 {% endblock %}
