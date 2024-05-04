@@ -298,38 +298,28 @@ def rank(request, region="US"):
 
 @csrf_exempt
 def upload_file_to_s3(request):
-    if request.method == 'POST':
-        file = request.FILES.get('file')
-        if not file:
-            return JsonResponse({"error": "No file provided."}, status=400)
-
-        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-
-        try:
-            # Construct the file name to be saved on S3
-            file_name = f"uploads/{request.user.id}/{file.name}"
-            s3_client.upload_fileobj(
-                file,
-                settings.AWS_STORAGE_BUCKET_NAME,
-                file_name,
-                ExtraArgs={
-                    "ContentType": file.content_type
-                }
-            )
-            file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_name}"
-            moment = models.Moments(user=request.user, content="")
-            if file.content_type.startswith('image/'):
-                moment.image_urls.append(file_url)
-            elif file.content_type.startswith('video/'):
-                moment.video_urls.append(file_url)
-            moment.save()
-
-            return JsonResponse({"message": "File uploaded successfully", "file_url": file_url}, status=200)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
-    else:
+    if request.method != 'POST':
         return JsonResponse({"error": "POST request required."}, status=400)
+
+    file = request.FILES.get('file')
+    if not file:
+        return JsonResponse({"error": "No file provided."}, status=400)
+
+    s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+    try:
+        # Construct the file name to be saved on S3
+        file_name = f"uploads/{request.user.id}/{file.name}"
+        s3_client.upload_fileobj(
+            file,
+            settings.AWS_STORAGE_BUCKET_NAME,
+            file_name,
+            ExtraArgs={"ContentType": file.content_type}
+        )
+        file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_name}"
+        return JsonResponse({"message": "File uploaded successfully", "file_url": file_url}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
 
 
 def rank_api(request, region="US"):

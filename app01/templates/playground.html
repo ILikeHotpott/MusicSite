@@ -738,109 +738,125 @@
         Dropzone.autoDiscover = false;
 
         $(document).ready(function () {
-                let imageUrls = [];
-                let videoUrls = [];
+            var imageUrls = [];  // 存储图片URLs
+            var videoUrls = [];  // 存储视频URLs
+            var isSubmitting = false;  // 标志是否正在提交中，防止重复提交
 
-                if (typeof myDropzone == "undefined") {
-                    var myDropzone = new Dropzone("#my-great-dropzone", {
-                        url: "/upload-to-s3/",
-                        paramName: "file",
-                        maxFilesize: 50,
-                        acceptedFiles: 'image/*, video/*',
-                        addRemoveLinks: true,
-                        success: function (file, response) {
-                            if (response.file_url) {
-                                if (file.type.startsWith('image/')) {
-                                    imageUrls.push(response.file_url);
-                                } else if (file.type.startsWith('video/')) {
-                                    videoUrls.push(response.file_url);
-                                }
-                            } else {
-                                console.error("File upload didn't return file_url.");
-                            }
+            // 初始化Dropzone
+            var myDropzone = new Dropzone("#my-great-dropzone", {
+                url: "/upload-to-s3/",
+                paramName: "file",
+                maxFilesize: 50,
+                acceptedFiles: 'image/*, video/*',
+                addRemoveLinks: true,
+                autoProcessQueue: false,  // 不自动上传文件，手动触发
+                parallelUploads: 9,
+                init: function () {
+                    this.on('success', function (file, response) {
+                        // 根据文件类型分类存储URL
+                        if (file.type.startsWith('image/')) {
+                            imageUrls.push(response.file_url);  // 收集图片URL
+                        } else if (file.type.startsWith('video/')) {
+                            videoUrls.push(response.file_url);  // 收集视频URL
                         }
                     });
                 }
+            });
 
-                // 处理模态框显示时的事件
-                $('#exampleModal').on('show.bs.modal', function (e) {
-                    // 清空图片和视频URL数组以及输入内容
-                    imageUrls = [];
-                    videoUrls = [];
-                    $('#message-text').val('');
-                });
-
-                // 上拉下拉
-                $('#toggle-upload').click(function (e) {
-                    e.preventDefault();
-                    var dz = $("#my-great-dropzone");
-                    if (dz.is(":visible")) {
-                        dz.slideUp();
+            // 绑定按钮点击事件，开始处理上传队列
+            $('#post-button').on('click', function (e) {
+                e.preventDefault();
+                if (!isSubmitting) {
+                    isSubmitting = true;  // 设置正在提交标志
+                    if (myDropzone.getQueuedFiles().length > 0) {
+                        myDropzone.processQueue();  // 有文件则开始上传
+                        myDropzone.on('queuecomplete', function () {
+                            // 确保所有文件上传后提交表单
+                            submitPost();
+                            myDropzone.off('queuecomplete');  // 防止事件重复绑定
+                        });
                     } else {
-                        dz.slideDown();
+                        submitPost();  // 无文件直接提交
                     }
-                });
+                }
+            });
 
-                // 展示更大的image
-                $(document).on('click', '.image-container img', function () {
-                    var src = $(this).attr('src');
-                    $('#imageModalSrc').attr('src', src);
-                    $('#imageModal').modal('show');
-                });
-
-                // comment
-                $(document).on('click', '#comment', function () {
-                    // 尝试找到当前 post-container 内 post-content 下的第一张图片
-                    var imgSrc = $(this).closest('.post-container').find('.post-content img:first').attr('src');
-                    // 如果找到了图片，则设置图片并显示模态框
-                    if (imgSrc) {
-                        $('#commentImageSrc').attr('src', imgSrc);
-                        $('#commentImageSrc').show();
-                    } else {
-                        // 如果没有找到图片，隐藏<img>元素
-                        $('#commentImageSrc').hide();
+            // 提交表单
+            function submitPost() {
+                var postData = {
+                    content: $('#message-text').val(),
+                    imageUrls: imageUrls,
+                    videoUrls: videoUrls
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/save-moment/",
+                    contentType: "application/json",
+                    data: JSON.stringify(postData),
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function (response) {
+                        console.log("Post submitted successfully.");
+                        $('#exampleModal').modal('hide');
+                        location.reload();  // 重新加载页面显示新帖子
+                    },
+                    error: function (error) {
+                        console.error("Error submitting post:", error);
+                    },
+                    complete: function () {
+                        resetForm();  // 重置表单和标志
                     }
-                    $('#commentModal').modal('show');
-                });
-
-                // 发布朋友圈
-                $('#post-button').on('click', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.prop('disabled', true); // 禁用按钮防止重复提交
-
-                    var content = $('#message-text').val();
-                    var formData = {
-                        content: content,
-                        imageUrls: imageUrls,
-                        videoUrls: videoUrls,
-                    };
-
-                    console.log("Form data: ", formData);
-
-                    $.ajax({
-                        type: "POST",
-                        url: "/save-moment/",
-                        contentType: "application/json",
-                        data: JSON.stringify(formData),
-                        beforeSend: function (xhr, settings) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        },
-                        success: function (response) {
-                            console.log("Post submitted successfully.");
-                            $('#exampleModal').modal('hide');
-                            location.reload();
-                        },
-                        error: function (error) {
-                            console.error("Error submitting post:", error);
-                        },
-                        complete: function () {
-                            $this.prop('disabled', false); // 请求完成后重新启用按钮
-                        }
-                    });
                 });
             }
-        );
+
+            // 重置表单和数组
+            function resetForm() {
+                imageUrls = [];
+                videoUrls = [];
+                $('#message-text').val('');
+                isSubmitting = false;  // 重置提交标志
+            }
+
+            // 模态框显示时重置数据
+            $('#exampleModal').on('show.bs.modal', function (e) {
+                resetForm();  // 清空图片和视频URL数组以及输入内容
+            });
+
+            // 上拉下拉
+            $('#toggle-upload').click(function (e) {
+                e.preventDefault();
+                var dz = $("#my-great-dropzone");
+                if (dz.is(":visible")) {
+                    dz.slideUp();
+                } else {
+                    dz.slideDown();
+                }
+            });
+
+            // 展示更大的image
+            $(document).on('click', '.image-container img', function () {
+                var src = $(this).attr('src');
+                $('#imageModalSrc').attr('src', src);
+                $('#imageModal').modal('show');
+            });
+
+            // comment
+            $(document).on('click', '#comment', function () {
+                // 尝试找到当前 post-container 内 post-content 下的第一张图片
+                var imgSrc = $(this).closest('.post-container').find('.post-content img:first').attr('src');
+                // 如果找到了图片，则设置图片并显示模态框
+                if (imgSrc) {
+                    $('#commentImageSrc').attr('src', imgSrc);
+                    $('#commentImageSrc').show();
+                } else {
+                    // 如果没有找到图片，隐藏<img>元素
+                    $('#commentImageSrc').hide();
+                }
+                $('#commentModal').modal('show');
+            });
+        });
+
 
         $(document).on('click', '.like', function (e) {
             var postId = $(this).data('post-id');
