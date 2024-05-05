@@ -19,6 +19,7 @@ from app01.utils.code import check_code
 from app01.models import Music, Comment, US_TopMusic, UserInfo
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
+from app01.utils import search_spotify
 
 
 class MusicModelForm(BootstrapModelForm):
@@ -468,3 +469,13 @@ def delete_post(request, post_id):
             return JsonResponse({"success": True})
         except models.Moments.DoesNotExist:
             return JsonResponse({"success": False, "error": "Post not found or permission denied."})
+
+
+def search(request):
+    return render(request, "search.html")
+
+
+def search_results(request):
+    query = request.GET.get('query', '')
+    results = search_spotify.search_spotify(query)
+    return JsonResponse(results)

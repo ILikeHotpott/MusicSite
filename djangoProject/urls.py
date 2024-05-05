@@ -61,6 +61,9 @@ urlpatterns = [
     path("load-more-comments/", views.load_more_comments, name="load_more_comments"),
 
     path("delete-post/<int:post_id>/", views.delete_post),
+
+    path("search/", views.search, name="search"),
+    path('search/results/', views.search_results, name='search_results'),
 ]
 
 if settings.DEBUG:

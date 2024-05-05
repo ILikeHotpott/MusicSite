@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/static/staticfiles/sass/star.css">
     <title>MusicTop</title>
 </head>
 <style>
@@ -87,39 +89,60 @@
         width: 100%; /* 让容器占据父元素的全部宽度 */
     }
 
+    .star-layer {
+        z-index: 1000;
+        position: absolute;
+        top: 0;
+
+    }
+
+    .star-navbar-container {
+        position: relative;
+        height: 150px;
+    }
+
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
 
 <body>
-<div class="navbar" style="height: 10%; margin-bottom: 0.1vh; width: 100% !important;" id="nav1">
-    <div class="brand-container">
-        <a href="#" style="font-size: calc(2rem + 1.5vw);">MUSICTOP</a>
+<div class="star-navbar-container">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
+        <div class="layer1 star-layer"></div>
+        <div class="layer2 star-layer"></div>
+        <div class="layer3 star-layer"></div>
+        <div class="layer4 star-layer"></div>
+        <div class="layer5 star-layer"></div>
     </div>
-    {% if not request.user.is_authenticated %}
-        <a href="/login/" class="login-button" id="loginButton">LOGIN</a>
-    {% else %}
-        <ul class="nav navbar-nav navbar-right login-button">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false">{{ request.user.username }}<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="/profile/">Profile</a></li>
-                    <li><a href="#">Basic Info</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="/logout/">Quit</a></li>
-                </ul>
-            </li>
-        </ul>
-    {% endif %}
-</div>
+    <div class="navbar" style="height: 8vh; margin-bottom: 0.1vh; width: 100% !important;" id="nav1">
+        <div class="brand-container">
+            <a href="#" style="font-size: calc(2rem + 1.5vw);">MUSICTOP</a>
+        </div>
+        {% if not request.user.is_authenticated %}
+            <a href="/login/" class="login-button" id="loginButton">LOGIN</a>
+        {% else %}
+            <ul class="nav navbar-nav navbar-right login-button">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">{{ request.user.username }}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/profile/">Profile</a></li>
+                        <li><a href="#">Basic Info</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout/">Quit</a></li>
+                    </ul>
+                </li>
+            </ul>
+        {% endif %}
+    </div>
 
-<div class="navbar" style="font-size: calc(0.5rem + 1vw); width: 100% !important;" id="nav2">
-    <div class="link-container container">
-        <a href="/charts/">Home</a>
-        <a href="/rank/">Music Rank</a>
-        <a href="/playground/">Playground</a>
-        <a href="#about">About</a>
+    <div class="navbar" style="font-size: calc(0.5rem + 1vw); width: 100% !important;" id="nav2">
+        <div class="link-container container">
+            <a href="/charts/">Home</a>
+            <a href="/rank/">Music Rank</a>
+            <a href="/playground/">Playground</a>
+            <a href="/search/">Search</a>
+        </div>
     </div>
 </div>
 
@@ -132,7 +155,6 @@
 {#<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>#}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
-
 
 
 {% block extra_js %}{% endblock %}

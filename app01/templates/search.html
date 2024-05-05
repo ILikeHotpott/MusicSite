@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <link rel="stylesheet"
+          href="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/static/staticfiles/sass/star.css">
+    <style>
+
+        /* 搜索框样式 */
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        @media (max-width: 576px) {
+            .search-wrapper {
+                width: 80% !important;
+            }
+
+            .all-results {
+                width: 90% !important;
+            }
+
+        }
+
+        .search-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5%;
+            width: 40%;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 40px;
+            border-radius: 30px;
+            font-size: 20px;
+            padding-left: 20px;
+            border: 2px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            opacity: 50%;
+        }
+
+        /* 搜索结果分类样式 */
+        .result-category {
+            width: 100%;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            font-size: 18px;
+        }
+
+        /* Artist结果横向排列，图片圆形，间距一致 */
+        .artist-results-list {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px; /* 一致的间距 */
+            overflow-x: scroll; /* 水平滚动 */
+            padding-bottom: 10px; /* 给底部多一些填充以免被滚动条覆盖 */
+        }
+
+        .artist-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .artist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* 圆形 */
+            object-fit: cover;
+        }
+    </style>
+    <body>
+
+    <div class="search-container">
+        <div class="search-wrapper">
+            <input type="text" id="search-input" placeholder="Search" class="search-input"
+                   onkeydown="handleKeyDown(event)">
+            <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="search-icon" class="search-icon"
+                 width="25" height="25" onclick="performSearch()">
+        </div>
+
+        <div class="all-results">
+            <!-- 搜索结果分类占据一整行 -->
+            <div id="artist-result" class="result-category" style="display: none;">
+                <strong>Artists:</strong>
+                <div class="artist-results-list"></div>
+            </div>
+            <div id="track-result" class="result-category" style="display: none;">Tracks results go here</div>
+            <div id="album-result" class="result-category" style="display: none;">Albums results go here</div>
+            <div id="playlist-result" class="result-category" style="display: none;">User playlists results go here
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function handleKeyDown(event) {
+            if (event.key === "Enter") {
+                performSearch();  // 按下回车键时执行搜索
+            }
+        }
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value;
+            fetch(`/search/results/?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // 清空并更新每个分类的结果区域
+                    const trackResult = document.getElementById('track-result');
+                    const artistResult = document.getElementById('artist-result');
+                    const albumResult = document.getElementById('album-result');
+
+                    trackResult.style.display = 'block';
+                    artistResult.style.display = 'block';
+                    albumResult.style.display = 'block';
+
+                    // 为 artistResultsList 构建横向排列的项目
+                    const artistResultsList = artistResult.querySelector('.artist-results-list');
+                    artistResultsList.innerHTML = data.artists.map(artist => `
+                        <div class="artist-item">
+                            <img src='${artist.image}' class="artist-image">
+                            ${artist.name}
+                        </div>
+                    `).join('');
+
+                    albumResult.innerHTML = `<strong>Albums:</strong><br>${data.albums.map(album => `<img src='${album.image}' width='100'> ${album.name} by ${album.artist}`).join('<br>')}`;
+                    trackResult.innerHTML = `<strong>Tracks:</strong><br>${data.tracks.map(track => `<img src='${track.image}' width='100'> ${track.name} by ${track.artist}`).join('<br>')}`;
+                });
+        }
+
+    </script>
+{% endblock %}
