@@ -64,6 +64,9 @@ urlpatterns = [
 
     path("search/", views.search, name="search"),
     path('search/results/', views.search_results, name='search_results'),
+    path('create_your_own_chart/', views.create_your_own_chart, name='add_your_own_chart'),
+    path('playlist/<int:playlist_id>/', views.playlist, name="playlist"),
+    path('rank_list/', views.rank_list, name="rank_list"),
 ]
 
 if settings.DEBUG:

@@ -1,73 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>test</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .outer-square {
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            position: relative;
+            overflow: hidden;
+        }
+        .half {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+        .left {
+            left: 0;
+            background-color: blue;
+        }
+        .right {
+            right: 0;
+            background-color: green;
+        }
+    </style>
 </head>
-<style>
-
-    /* 基本样式 */
-    body {
-        font-family: Arial, sans-serif;
-    }
-
-    .chart-container {
-        margin: 20px;
-        overflow-x: auto; /* 使得表格在小屏幕上可以横向滚动 */
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed; /* 保持列宽固定 */
-    }
-
-    th, td {
-        text-align: left;
-        padding: 8px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    /* 响应式布局调整 */
-    @media (max-width: 768px) {
-        .chart-container {
-            margin: 0;
-        }
-
-        table {
-            white-space: nowrap; /* 保持单元格内容不折行 */
-        }
-    }
-
-
-</style>
 <body>
-
-
-<div class="chart-container">
-    <table>
-        <thead>
-        <tr>
-            <th>Rank</th>
-            <th>Title</th>
-            <th>Last Week</th>
-            <th>Peak Pos.</th>
-            <th>Weeks on Chart</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>Fortnight - Taylor Swift Featuring Post Malone</td>
-            <td>-</td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        <!-- 更多行 -->
-        </tbody>
-    </table>
-</div>
-
+    <div class="outer-square">
+        <div class="half left"></div>
+        <div class="half right"></div>
+    </div>
 </body>
 </html>

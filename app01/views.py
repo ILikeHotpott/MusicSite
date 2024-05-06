@@ -16,7 +16,7 @@ from django_redis import get_redis_connection
 from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
-from app01.models import Music, Comment, US_TopMusic, UserInfo
+from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
@@ -479,3 +479,30 @@ def search_results(request):
     query = request.GET.get('query', '')
     results = search_spotify.search_spotify(query)
     return JsonResponse(results)
+
+
+class CreateYourOwnChartModelForm(BootstrapModelForm):
+    class Meta:
+        model = Playlist
+        fields = ['name', 'description', 'playlist_cover']
+
+
+def create_your_own_chart(request):
+    if request.method == 'GET':
+        form = CreateYourOwnChartModelForm()
+        return render(request, "create_your_own_chart.html", {"form": form})
+
+    form = MusicModelForm(data=request.POST, files=request.FILES)
+    if form.is_valid():
+        new_playlist = form.save()
+        return redirect(f"/playlist/{new_playlist.id}")
+
+    return render(request, "create_your_own_chart.html", {"form": form})
+
+
+def playlist(request, playlist_id):  # 待完成，级别第二高
+    return render(request, "playlist.html")
+
+
+def rank_list(request):  # 待完成，级别最高
+    return render(request, "rank_list.html")

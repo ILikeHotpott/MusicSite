@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <style>
+        body {
+            background-image: url('/media/blue_and_black.jpg');
+            background-size: 100% 200%; /* 拉伸背景图像以适应整个页面 */
+            background-position: center; /* 居中对齐 */
+            background-repeat: no-repeat; /* 不重复背景 */
+            margin: 0; /* 确保背景从页面的顶部开始 */
+            min-height: 150vh; /* 页面高度 */
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            font-family: "Briem Hand", cursive;
+            font-weight: 900;
+            font-style: normal;
+            font-size: 75px;
+            color: black;
+        }
+
+        .first-chart {
+            width: 100%;
+            background-color: white;
+        }
+
+        .first-chart-title {
+            margin-top: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .first-chart-line {
+            height: 14px;
+            width: 27%;
+            background-color: #007bff;
+            display: inline-block;
+        }
+
+        .first-chart-word {
+            margin-left: -35px;
+            margin-right: -35px;
+            margin-bottom: 10px;
+            font-size: 40px;
+            font-weight: 500;
+            color: #007bff;
+            font-family: "Briem Hand", cursive;
+        }
+
+        .first-chart-body {
+            height: 300px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .first-chart-item {
+            margin: 0 20px 20px;
+            background-color: green;
+            height: 230px;
+
+        }
+
+        .first-chart-foot {
+            background-color: black;
+            height: 40px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Briem Hand", cursive;
+            font-size: 25px;
+            color: white;
+            padding-bottom: 5px;
+        }
+
+    </style>
+
+    <h1>MusicTop Charts</h1>
+    <div class="container">
+        <div class="first-chart">
+            <div class="first-chart-title">
+                <hr class="first-chart-line">
+                <span class="first-chart-word">MusicTop Hot 100</span>
+                <hr class="first-chart-line">
+            </div>
+
+            <div class="first-chart-body">
+                <div class="col-xs-3 first-chart-item"></div>
+                <div class="col-xs-3 first-chart-item"></div>
+                <div class="col-xs-3 first-chart-item"></div>
+            </div>
+            <div class="first-chart-foot">
+                VIEW CHART
+            </div>
+        </div>
+
+        <div class="second-chart">
+
+        </div>
+    </div>
+
+
+{% endblock %}

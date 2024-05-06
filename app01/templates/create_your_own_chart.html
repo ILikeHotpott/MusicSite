@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <style>
+        h1 {
+            font-family: "Josefin Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+    <div class="container">
+        <h1 style="text-align: center; ">Create Your Own Chart</h1>
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group" style="text-align: center;">
+                            <label style="display: block;">Playlist Cover</label>
+
+                            <img id="cover_preview"
+                                 src="/media/album/default.jpeg"
+                                 alt="Playlist Cover"
+                                 style="cursor: pointer; border: 1px solid #ddd; padding: 4px; max-width: 100%; height: auto;">
+
+                            <!-- 隐藏文件选择输入框 -->
+                            <input type="file" id="id_playlist_cover" name="playlist_cover" style="display: none;">
+                            <span style="color: red">{{ form.playlist_cover.errors.0 }}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label>{{ form.name.label }}</label>
+                            {{ form.name }}
+                            <span style="color: red">{{ form.errors.0 }}</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ form.description.label }}</label>
+                            {{ form.description }}
+                            <span style="color: red">{{ form.errors.0 }}</span>
+                        </div>
+
+                        <div class="form-group" style="text-align: right;">
+                            <button type="submit" class="btn btn-primary">Create!</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取文件输入框和预览图片的 DOM 元素
+        const fileInput = document.getElementById("id_playlist_cover");
+        const coverPreview = document.getElementById("cover_preview");
+
+        // 点击预览图片时触发文件选择
+        coverPreview.addEventListener("click", function () {
+            fileInput.click();  // 打开文件选择框
+        });
+
+        // 选择文件时更新预览图片
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+            if (file) {
+                coverPreview.src = URL.createObjectURL(file);
+            }
+        });
+    </script>
+
+    <style>
+        /* 自定义媒体查询，确保较小屏幕时布局依然适应 */
+        @media (max-width: 480px) {
+            .form-group {
+                text-align: center;
+            }
+
+            .btn-primary {
+                margin-top: 10px;
+            }
+        }
+    </style>
+
+{% endblock %}
