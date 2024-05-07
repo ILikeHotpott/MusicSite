@@ -4,12 +4,12 @@
 
     <style>
         body {
-            background-image: url('/media/blue_and_black.jpg');
-            background-size: 100% 200%; /* 拉伸背景图像以适应整个页面 */
+            background-image: url('/media/black_down.jpg');
+            background-size: 100% 300%; /* 拉伸背景图像以适应整个页面 */
             background-position: center; /* 居中对齐 */
             background-repeat: no-repeat; /* 不重复背景 */
             margin: 0; /* 确保背景从页面的顶部开始 */
-            min-height: 150vh; /* 页面高度 */
+            min-height: 200vh; /* 页面高度 */
         }
 
         h1 {
@@ -25,7 +25,9 @@
         .first-chart {
             width: 100%;
             background-color: white;
+            margin-top: 50px;
         }
+
 
         .first-chart-title {
             margin-top: 15px;
@@ -56,17 +58,16 @@
 
         .first-chart-body {
             height: 300px;
-            text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow-y: auto;
         }
 
         .first-chart-item {
             margin: 0 20px 20px;
-            background-color: green;
             height: 230px;
-
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
         }
 
         .first-chart-foot {
@@ -82,11 +83,143 @@
             padding-bottom: 5px;
         }
 
+        .first-chart-foot a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .first-chart-foot:hover {
+            background-color: #f0f0f0;
+            color: black;
+        }
+
+        .first-chart-pic {
+            margin-top: 20px;
+            height: 100px;
+            width: 100px;
+            margin-left: -10px;
+        }
+
+        .first-chart-rank {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            margin-top: 5px;
+        }
+
+        .first-chart-number {
+            font-size: 40px;
+            font-weight: 700;
+        }
+
+        .first-chart-song-name {
+            display: block;
+            margin-top: 45%;
+            left: 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .first-chart-artist-name {
+            display: block;
+            left: 0;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .first-chart-down-half {
+            height: 40%;
+            width: 100%;
+            background-color: lightgrey;
+            bottom: 0;
+            position: absolute;
+            left: 0;
+            color: #002FA7;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .second-chart {
+            width: 40%;
+            background-color: white;
+            margin-top: 50px;
+            height: 50rem;
+            position: relative;
+        }
+
+        .second-chart-title {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            height: 20%;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .second-chart-item {
+            height: 30%;
+            overflow: hidden;
+        }
+
+
+        .second-chart-rank {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .second-chart-number {
+            display: inline;
+            font-size: 30px;
+            font-weight: 700;
+            color: black;
+        }
+
+        .second-chart-rank img {
+            height: 40px;
+            margin-left: 10px;
+        }
+
+        .second-chart-song-info {
+            text-align: left;
+            margin-left: -20px;
+            margin-top: -10px;
+        }
+
+        .second-chart-song-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .second-chart-artist-name {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .second-chart-pic {
+            width: 134px;
+            display: inline-block;
+        }
+
+        .second-chart-pic img {
+            width: 100%;
+            height: 100%;
+        }
+
     </style>
 
     <h1>MusicTop Charts</h1>
     <div class="container">
-        <div class="first-chart">
+        <div class="first-chart" id="first-chart">
             <div class="first-chart-title">
                 <hr class="first-chart-line">
                 <span class="first-chart-word">MusicTop Hot 100</span>
@@ -94,18 +227,312 @@
             </div>
 
             <div class="first-chart-body">
-                <div class="col-xs-3 first-chart-item"></div>
-                <div class="col-xs-3 first-chart-item"></div>
-                <div class="col-xs-3 first-chart-item"></div>
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">1</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                Enough
+                            </div>
+                            <div class="first-chart-artist-name">Cardi B</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/43_Lover_Taylor_Swift.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">2</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                Lover
+                            </div>
+                            <div class="first-chart-artist-name">Taylor Swift</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/22_What_Was_I_Made_For%3F_Billie_Eilish.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">3</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                What Was I Made For?
+                            </div>
+                            <div class="first-chart-artist-name">Billie Eilish</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+
+
             </div>
-            <div class="first-chart-foot">
-                VIEW CHART
-            </div>
+            <a href="/rank/">
+                <div class="first-chart-foot">
+                    VIEW CHART
+                </div>
+            </a>
         </div>
 
-        <div class="second-chart">
+        <div class="first-chart" id="second-chart">
+            <div class="first-chart-title">
+                <hr class="first-chart-line">
+                <span class="first-chart-word">MusicTop Ratings 100</span>
+                <hr class="first-chart-line">
+            </div>
 
+            <div class="first-chart-body">
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">1</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                Enough
+                            </div>
+                            <div class="first-chart-artist-name">Cardi B</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/43_Lover_Taylor_Swift.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">2</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                Lover
+                            </div>
+                            <div class="first-chart-artist-name">Taylor Swift</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/22_What_Was_I_Made_For%3F_Billie_Eilish.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">3</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                What Was I Made For?
+                            </div>
+                            <div class="first-chart-artist-name">Billie Eilish</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+
+
+            </div>
+            <a href="/rank/">
+                <div class="first-chart-foot">
+                    VIEW CHART
+                </div>
+            </a>
         </div>
+
+        <div class="first-chart" id="third-chart">
+            <div class="first-chart-title">
+                <hr class="first-chart-line" style="width: 20% !important;">
+                <span class="first-chart-word">MusicTop Global Top 100</span>
+                <hr class="first-chart-line" style="width: 20% !important;">
+            </div>
+
+            <div class="first-chart-body">
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">1</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                Enough
+                            </div>
+                            <div class="first-chart-artist-name">Cardi B</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/43_Lover_Taylor_Swift.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">2</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                Lover
+                            </div>
+                            <div class="first-chart-artist-name">Taylor Swift</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+                <div class="col-xs-3 first-chart-item">
+                    <div class="first-chart-top-half">
+                        <div class="col-xs-5">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/22_What_Was_I_Made_For%3F_Billie_Eilish.jpg"
+                                 class="first-chart-pic">
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="first-chart-rank">
+                                <div class="col-xs-3 first-chart-number">3</div>
+                                <div class="col-xs-4 first-chart-change">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/new.jpg"
+                                         style="height: 35px; margin-top: 10px;">
+                                </div>
+                                <div class="col-xs-5"></div>
+                            </div>
+                            <div class="first-chart-song-name">
+                                What Was I Made For?
+                            </div>
+                            <div class="first-chart-artist-name">Billie Eilish</div>
+                        </div>
+                    </div>
+                    <div class="first-chart-down-half">
+                        NEW THIS WEEK!
+                    </div>
+                </div>
+
+
+            </div>
+            <a href="/rank/">
+                <div class="first-chart-foot">
+                    VIEW CHART
+                </div>
+            </a>
+        </div>
+
+        {#        <div class="second-chart">#}
+        {#            <div class="second-chart-title">#}
+        {#                MusicTop GOAT 200#}
+        {#            </div>#}
+        {#            <div class="second-chart-body">#}
+        {#                <div class="second-chart-item">#}
+        {#                    <div class="col-xs-3 second-chart-rank">#}
+        {#                        <div class="second-chart-number">#}
+        {#                            1#}
+        {#                        </div>#}
+        {#                        <div class="second-chart-change">#}
+        {#                            <img src="/media/up_arrow.png">#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                    <div class="col-xs-6 second-chart-song-info">#}
+        {#                        <div class="second-chart-song-name">#}
+        {#                            The Tortured Poets Department#}
+        {#                        </div>#}
+        {#                        <div class="second-chart-artist-name">#}
+        {#                            Taylor Swift#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {##}
+        {#                    <div class="second-chart-pic">#}
+        {#                        <img src="https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33">#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="second-chart-foot">#}
+        {#                VIEW CHART#}
+        {#            </div>#}
+        {#        </div>#}
+
+
+        <div class="third-chart"></div>
     </div>
 
 

@@ -27,7 +27,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}, name='media'),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
-    re_path(r'^$', RedirectView.as_view(url='/charts/', permanent=False)),
+    re_path(r'^$', RedirectView.as_view(url='/rank_list/', permanent=False)),
 
     path('accounts/', include('django.contrib.auth.urls')),
     path("charts/", views.charts),
