@@ -5,12 +5,32 @@
     <style>
         body {
             background-image: url('https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/black_down.jpg');
-            background-size: 100% 300%; /* 拉伸背景图像以适应整个页面 */
+            background-size: 100% 400%; /* 拉伸背景图像以适应整个页面 */
             background-position: center; /* 居中对齐 */
             background-repeat: no-repeat; /* 不重复背景 */
             margin: 0; /* 确保背景从页面的顶部开始 */
-            min-height: 200vh; /* 页面高度 */
+            min-height: 250vh; /* 页面高度 */
         }
+
+        @media (max-width: 576px) {
+            #first-item {
+                margin-left: 600px;
+            }
+
+            h1 {
+                color: #D18AA3 !important;
+            }
+
+            .logo-container {
+                margin-top: 30px;
+                width: 100%;
+            }
+
+            .logo {
+                width: 100% !important;
+            }
+        }
+
 
         h1 {
             text-align: center;
@@ -61,13 +81,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-y: auto;
+            overflow-x: auto;
         }
 
         .first-chart-item {
             margin: 0 20px 20px;
             height: 230px;
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            min-width: 300px;
         }
 
         .first-chart-foot {
@@ -215,10 +236,22 @@
             height: 100%;
         }
 
+        .logo {
+            width: 80%;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
     </style>
 
-    <h1>MusicTop Charts</h1>
-    <div class="container">
+    <div class="logo-container">
+        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logo1.png" class="logo">
+    </div>
+    <div class="container" id="main-container">
         <div class="first-chart" id="first-chart">
             <div class="first-chart-title">
                 <hr class="first-chart-line">
@@ -227,7 +260,7 @@
             </div>
 
             <div class="first-chart-body">
-                <div class="col-xs-3 first-chart-item">
+                <div class="col-xs-3 first-chart-item" id="first-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
@@ -277,7 +310,7 @@
                         NEW THIS WEEK!
                     </div>
                 </div>
-                <div class="col-xs-3 first-chart-item">
+                <div class="col-xs-3 first-chart-item" id="coco">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/22_What_Was_I_Made_For%3F_Billie_Eilish.jpg"
@@ -320,7 +353,7 @@
             </div>
 
             <div class="first-chart-body">
-                <div class="col-xs-3 first-chart-item">
+                <div class="col-xs-3 first-chart-item" id="first-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
@@ -405,6 +438,7 @@
             </a>
         </div>
 
+
         <div class="first-chart" id="third-chart">
             <div class="first-chart-title">
                 <hr class="first-chart-line" style="width: 20% !important;">
@@ -413,7 +447,7 @@
             </div>
 
             <div class="first-chart-body">
-                <div class="col-xs-3 first-chart-item">
+                <div class="col-xs-3 first-chart-item" id="first-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
@@ -534,6 +568,32 @@
 
         <div class="third-chart"></div>
     </div>
+
+    <script>
+        window.onload = window.onresize = function () {
+            checkContainerClass();
+        };
+
+        function checkContainerClass() {
+            // 定义媒体查询条件，替换为你的 @media 规则
+            var mediaQuery = window.matchMedia('(max-width: 576px)');
+
+            // 获取 main-container 元素
+            var container = document.getElementById('main-container');
+            console.log('Checking container class...'); // 日志输出，帮助调试
+
+            // 根据媒体查询条件来移除或添加类
+            if (mediaQuery.matches) {
+                console.log('Media query matches (max-width: 576px). Removing container class.');
+                container.classList.remove('container');
+            } else {
+                console.log('Media query does not match. Adding container class.');
+                container.classList.add('container');
+            }
+        }
+
+
+    </script>
 
 
 {% endblock %}
