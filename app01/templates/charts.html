@@ -414,35 +414,41 @@
 
             <tbody>
             {% for item in queryset %}
-                <tr class="table-row">
-                    <td class="rank" style="background-color: black; margin-left: 50px">{{ forloop.counter }}</td>
-                    <td class="pic"><img src="{{ item.pic.url }}" alt="Artist Image"></td>
-                    <td>
-                        <div class="song song-font song-text">
-                            <a href="{% url 'charts_comment' item.id %}"
-                               style="text-decoration: none; color: black;">{{ item.title }}</a>
-                        </div>
-                        <div class="artist" style="text-align: left">{{ item.artist }}</div>
-                    </td>
-                    {% if not item.average_score %}
-                        <td class="scores">0 <span class="star_after_score">&#9733;</span>
+                {% if item.title %}
+
+
+                    <tr class="table-row">
+                        <td class="rank" style="background-color: black; margin-left: 50px">{{ forloop.counter }}</td>
+                        <td class="pic"><img
+                                src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ item.pic }}"
+                                alt="Artist Image"></td>
+                        <td>
+                            <div class="song song-font song-text">
+                                <a href="{% url 'charts_comment' item.id %}"
+                                   style="text-decoration: none; color: black;">{{ item.title }}</a>
+                            </div>
+                            <div class="artist" style="text-align: left">{{ item.artist }}</div>
                         </td>
-                    {% else %}
-                        <td class="scores">{{ item.average_score | floatformat:1 }}
-                            <span class="star_after_score">&#9733;</span>
+                        {% if not item.average_score %}
+                            <td class="scores">0 <span class="star_after_score">&#9733;</span>
+                            </td>
+                        {% else %}
+                            <td class="scores">{{ item.average_score | floatformat:1 }}
+                                <span class="star_after_score">&#9733;</span>
+                            </td>
+                        {% endif %}
+                        <td class="weeks">{{ item.weeks }}</td>
+                        <td>
+                            <div class="rating" data-music-id="{{ item.id }}">
+                                <span class="star" data-value="1">&#9734;</span>
+                                <span class="star" data-value="2">&#9734;</span>
+                                <span class="star" data-value="3">&#9734;</span>
+                                <span class="star" data-value="4">&#9734;</span>
+                                <span class="star" data-value="5">&#9734;</span>
+                            </div>
                         </td>
-                    {% endif %}
-                    <td class="weeks">{{ item.weeks }}</td>
-                    <td>
-                        <div class="rating" data-music-id="{{ item.id }}">
-                            <span class="star" data-value="1">&#9734;</span>
-                            <span class="star" data-value="2">&#9734;</span>
-                            <span class="star" data-value="3">&#9734;</span>
-                            <span class="star" data-value="4">&#9734;</span>
-                            <span class="star" data-value="5">&#9734;</span>
-                        </div>
-                    </td>
-                </tr>
+                    </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
