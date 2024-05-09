@@ -1,34 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>无缝滚动画廊</title>
     <style>
-        .outer-square {
-            width: 200px;
-            height: 200px;
-            border: 1px solid black;
-            position: relative;
+        /* 画廊容器的样式 */
+        .gallery-container {
+            width: 100%;
             overflow: hidden;
         }
-        .half {
-            width: 50%;
-            height: 100%;
-            position: absolute;
-            top: 0;
+
+        /* 图片滚动区域的样式 */
+        .gallery-content {
+            display: flex;
+            width: fit-content;
+            white-space: nowrap;
         }
-        .left {
-            left: 0;
-            background-color: blue;
-        }
-        .right {
-            right: 0;
-            background-color: green;
+
+        /* 图片的样式 */
+        .gallery-content img {
+            margin: 0 10px;
+            height: 300px;
+            border: 1px solid gray;
         }
     </style>
 </head>
 <body>
-    <div class="outer-square">
-        <div class="half left"></div>
-        <div class="half right"></div>
+    <div class="gallery-container">
+        <div class="gallery-content" id="galleryContent">
+            <img src="/media/album/2_Beautiful_Things_Benson_Boone.jpg" alt="Image 1">
+            <img src="/media/album/4_Going_Home_Mark_Knopfler.jpg" alt="Image 2">
+            <img src="/media/album/5_Let_Me_Calm_Down_Nicki_Minaj.jpg" alt="Image 3">
+            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 4">
+            <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 5">
+        </div>
     </div>
+
+    <script>
+        // 获取滚动容器
+        const galleryContent = document.getElementById("galleryContent");
+
+        // 克隆所有的图片并添加到末尾
+        function cloneImages() {
+            const images = Array.from(galleryContent.children);
+            images.forEach(img => {
+                const clonedImg = img.cloneNode(true);
+                galleryContent.appendChild(clonedImg);
+            });
+        }
+
+        // 滚动容器实现无缝滚动
+        function startScrolling() {
+            let scrollAmount = 0;
+            const scrollStep = 0.5; // 控制滚动速度
+
+            function scrollGallery() {
+                scrollAmount += scrollStep;
+                if (scrollAmount >= galleryContent.scrollWidth / 2) {
+                    scrollAmount = 0;
+                }
+                galleryContent.style.transform = `translateX(${-scrollAmount}px)`;
+                requestAnimationFrame(scrollGallery);
+            }
+            scrollGallery();
+        }
+
+        // 初始化
+        cloneImages();
+        startScrolling();
+    </script>
 </body>
 </html>
