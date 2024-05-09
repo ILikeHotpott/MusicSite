@@ -8,66 +8,127 @@
         .gallery-container {
             width: 100%;
             overflow: hidden;
+            margin-top: 30px;
+            position: relative;
+            height: 270px; /* 增加高度以确保图片显示 */
         }
 
         /* 图片滚动区域的样式 */
         .gallery-content {
             display: flex;
-            width: fit-content;
             white-space: nowrap;
+            position: absolute;
+            left: 0; /* 初始化位置从0开始 */
         }
 
         /* 图片的样式 */
         .gallery-content img {
             margin: 0 10px;
-            height: 300px;
+            height: 250px; /* 固定高度 */
+            width: 250px; /* 固定宽度 */
             border: 1px solid gray;
         }
     </style>
 </head>
 <body>
+<!-- 第一个画廊 -->
     <div class="gallery-container">
-        <div class="gallery-content" id="galleryContent">
-            <img src="/media/album/2_Beautiful_Things_Benson_Boone.jpg" alt="Image 1">
-            <img src="/media/album/4_Going_Home_Mark_Knopfler.jpg" alt="Image 2">
-            <img src="/media/album/5_Let_Me_Calm_Down_Nicki_Minaj.jpg" alt="Image 3">
-            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 4">
-            <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 5">
+        <div class="gallery-content" id="gallery1">
+            <img src="https://i.scdn.co/image/ab67616d0000b273c5716278abba6a103ad13aa7" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa" alt="Image 2">
+            <img src="https://i.scdn.co/image/ab67616d0000b273e5a25ed08d1e7e0fbb440cef" alt="Image 3">
+            <img src="https://i.scdn.co/image/ab67616d0000b2737c68face1dc58127f3a7b1cc" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b273b5d4b4ed17ec86c4b3944af2" alt="Image 1">
+            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
         </div>
     </div>
 
-    <script>
-        // 获取滚动容器
-        const galleryContent = document.getElementById("galleryContent");
+<!-- 第二个画廊 -->
+<div class="gallery-container">
+    <div class="gallery-content" id="gallery2">
+        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+        <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 2">
+        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+        <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 2">
+        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+    </div>
+</div>
 
-        // 克隆所有的图片并添加到末尾
-        function cloneImages() {
-            const images = Array.from(galleryContent.children);
-            images.forEach(img => {
-                const clonedImg = img.cloneNode(true);
-                galleryContent.appendChild(clonedImg);
-            });
-        }
+<!-- 第三个画廊 -->
+<div class="gallery-container">
+    <div class="gallery-content" id="gallery3">
+        <img src="/media/album/2_Beautiful_Things_Benson_Boone.jpg" alt="Image 1">
+        <img src="/media/album/4_Going_Home_Mark_Knopfler.jpg" alt="Image 2">
+        <img src="/media/album/5_Let_Me_Calm_Down_Nicki_Minaj.jpg" alt="Image 3">
+        <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 2">
+        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
+    </div>
+</div>
 
-        // 滚动容器实现无缝滚动
-        function startScrolling() {
-            let scrollAmount = 0;
-            const scrollStep = 0.5; // 控制滚动速度
+<script>
+    // 滚动速度
+    const scrollSpeed = 0.5;
 
-            function scrollGallery() {
-                scrollAmount += scrollStep;
-                if (scrollAmount >= galleryContent.scrollWidth / 2) {
-                    scrollAmount = 0;
-                }
-                galleryContent.style.transform = `translateX(${-scrollAmount}px)`;
-                requestAnimationFrame(scrollGallery);
+    /**
+     * 为了实现无缝滚动，我们需要重复每个画廊的内容
+     */
+    function duplicateContent(id) {
+        const gallery = document.getElementById(id);
+        const children = Array.from(gallery.children);
+        children.forEach(child => {
+            const clone = child.cloneNode(true);
+            gallery.appendChild(clone);
+        });
+    }
+
+    // 向右滚动的函数
+    function scrollRight(id) {
+        const gallery = document.getElementById(id);
+        let position = parseInt(gallery.style.left, 10) || 0;
+
+        function animate() {
+            position -= scrollSpeed;
+            if (position <= -gallery.scrollWidth / 2) {
+                position = 0;
             }
-            scrollGallery();
+            gallery.style.left = position + 'px';
+            requestAnimationFrame(animate);
         }
 
-        // 初始化
-        cloneImages();
-        startScrolling();
-    </script>
+        animate();
+    }
+
+    // 向左滚动的函数
+    function scrollLeft(id) {
+        const gallery = document.getElementById(id);
+        let position = parseInt(gallery.style.left, 10) || 0;
+
+        function animate() {
+            position += scrollSpeed;
+            if (position >= 0) {
+                position = -gallery.scrollWidth / 2;
+            }
+            gallery.style.left = position + 'px';
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    }
+
+    // 重复内容以实现无缝滚动
+    duplicateContent('gallery1');
+    duplicateContent('gallery2');
+    duplicateContent('gallery3');
+
+    // 开始滚动
+    scrollRight('gallery1');
+    scrollLeft('gallery2');
+    scrollRight('gallery3');
+</script>
+
 </body>
 </html>

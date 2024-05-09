@@ -5,7 +5,7 @@
     <style>
         body {
             background-image: url('https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/black_down.jpg');
-            background-size: 100% 400%; /* 拉伸背景图像以适应整个页面 */
+            background-size: 100% 600%; /* 拉伸背景图像以适应整个页面 */
             background-position: center; /* 居中对齐 */
             background-repeat: no-repeat; /* 不重复背景 */
             margin: 0; /* 确保背景从页面的顶部开始 */
@@ -246,12 +246,55 @@
             align-items: center;
         }
 
+        .gallery-container {
+            width: 100%;
+            overflow: hidden;
+            margin-top: 50px;
+            position: relative;
+            height: 270px; /* 增加高度以确保图片显示 */
+        }
+
+        /* 图片滚动区域的样式 */
+        .gallery-content {
+            display: flex;
+            white-space: nowrap;
+            position: absolute;
+            left: 0; /* 初始化位置从0开始 */
+        }
+
+        /* 图片的样式 */
+        .gallery-content img {
+            margin: 0 10px;
+            height: 250px; /* 固定高度 */
+            width: 250px; /* 固定宽度 */
+            border: 1px solid gray;
+        }
+
     </style>
 
     <div class="logo-container">
-{#        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logo1.png" class="logo">#}
-                <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logo4.png" class="logo">
+        {#        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logo1.png" class="logo">#}
+        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logo4.png" class="logo">
     </div>
+
+    <div class="gallery-container">
+        <div class="gallery-content" id="gallery1">
+
+            <img src="https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa" alt="Image 2">
+            <img src="https://i.scdn.co/image/ab67616d0000b273e5a25ed08d1e7e0fbb440cef" alt="Image 3">
+            <img src="https://i.scdn.co/image/ab67616d0000b2739b9b36b0e22870b9f542d937" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b273c5716278abba6a103ad13aa7" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b273d441b2e9b63f0b9f9d90be19" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b2737c68face1dc58127f3a7b1cc" alt="Image 4">
+            <img src="https://i.scdn.co/image/ab67616d0000b273b5d4b4ed17ec86c4b3944af2" alt="Image 5">
+            <img src="https://i.scdn.co/image/ab67616d0000b2734973a7d9304de53e18583220" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526" alt="Image 1">
+
+            <img src="https://i.scdn.co/image/ab67616d0000b273879e9318cb9f4e05ee552ac9" alt="lana">
+
+        </div>
+    </div>
+
     <div class="container" id="main-container">
         <div class="first-chart" id="first-chart">
             <div class="first-chart-title">
@@ -345,7 +388,25 @@
                 </div>
             </a>
         </div>
+    </div>
 
+
+    <div class="gallery-container">
+        <div class="gallery-content" id="gallery2">
+            <img src="https://i.scdn.co/image/ab67616d0000b273f7ecaf9daf2c1d5ca89f7312" alt="ABBA">
+            <img src="https://i.scdn.co/image/ab67616d0000b27359998815d706661e2c404d9f" alt="killer queen">
+            <img src="https://i.scdn.co/image/ab67616d0000b273f72f1e38e9bd48f18a17ed9b" alt="Goodbye yellow brick road">
+            <img src="https://i.scdn.co/image/ab67616d0000b27359ae8cf65d498afdd5585634" alt="lana">
+            <img src="https://i.scdn.co/image/ab67616d0000b2731d5cf960a92bb8b03fc2be7f" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b2739e16930796a07f1195002389" alt="fuji kaze">
+            <img src="https://i.scdn.co/image/ab67616d0000b273dc30583ba717007b00cceb25" alt="The Beatles">
+            <img src="https://i.scdn.co/image/ab67616d0000b2734121faee8df82c526cbab2be" alt="MJ">
+            <img src="https://i.scdn.co/image/ab67616d0000b273726d48d93d02e1271774f023" alt="Eminem">
+            <img src="https://i.scdn.co/image/ab67616d0000b273ab5e496971b38a864fefdb8d" alt="Ding">
+        </div>
+    </div>
+
+    <div class="container" id="main-container">
         <div class="first-chart" id="second-chart">
             <div class="first-chart-title">
                 <hr class="first-chart-line">
@@ -357,7 +418,7 @@
                 <div class="col-xs-3 first-chart-item" id="first-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/snooze_vnjeOob.jpeg"
                                  class="first-chart-pic">
                         </div>
                         <div class="col-xs-7">
@@ -370,9 +431,9 @@
                                 <div class="col-xs-5"></div>
                             </div>
                             <div class="first-chart-song-name">
-                                Enough
+                                Snooze
                             </div>
-                            <div class="first-chart-artist-name">Cardi B</div>
+                            <div class="first-chart-artist-name">SZA</div>
                         </div>
                     </div>
                     <div class="first-chart-down-half">
@@ -382,7 +443,7 @@
                 <div class="col-xs-3 first-chart-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/43_Lover_Taylor_Swift.jpg"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/blonde_QG6xC7m.jpeg"
                                  class="first-chart-pic">
                         </div>
                         <div class="col-xs-7">
@@ -395,9 +456,9 @@
                                 <div class="col-xs-5"></div>
                             </div>
                             <div class="first-chart-song-name">
-                                Lover
+                                Pink + White
                             </div>
-                            <div class="first-chart-artist-name">Taylor Swift</div>
+                            <div class="first-chart-artist-name">Frank Ocean</div>
                         </div>
                     </div>
                     <div class="first-chart-down-half">
@@ -407,7 +468,7 @@
                 <div class="col-xs-3 first-chart-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/22_What_Was_I_Made_For%3F_Billie_Eilish.jpg"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/LetTheLightIn_YUIubch.webp"
                                  class="first-chart-pic">
                         </div>
                         <div class="col-xs-7">
@@ -420,9 +481,9 @@
                                 <div class="col-xs-5"></div>
                             </div>
                             <div class="first-chart-song-name">
-                                What Was I Made For?
+                                Let the light in
                             </div>
-                            <div class="first-chart-artist-name">Billie Eilish</div>
+                            <div class="first-chart-artist-name">Lana del rey</div>
                         </div>
                     </div>
                     <div class="first-chart-down-half">
@@ -438,8 +499,24 @@
                 </div>
             </a>
         </div>
+    </div>
 
+    <div class="gallery-container">
+        <div class="gallery-content" id="gallery3">
+            <img src="https://i.scdn.co/image/ab67616d0000b27356ac7b86e090f307e218e9c8" alt="Ariana">
+            <img src="https://i.scdn.co/image/ab67616d0000b273775e8184725e0fb89337dd9a" alt="Image 2">
+            <img src="https://i.scdn.co/image/ab67616d0000b273125b1a330b6f6100ab19dbed" alt="Image 3">
+            <img src="https://i.scdn.co/image/ab67616d0000b273b4bf5aa282f90b0f92e5d85a" alt="Eason">
+            <img src="https://i.scdn.co/image/ab67616d0000b2734637341b9f507521afa9a778" alt="Eagles">
+            <img src="https://i.scdn.co/image/ab67616d0000b2735f96f9df056aa682c854e720" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b273199b850d4877866cf7e318d1" alt="Stephen">
+            <img src="https://i.scdn.co/image/ab67616d0000b273df55e326ed144ab4f5cecf95" alt="radiohead">
+            <img src="https://i.scdn.co/image/ab67616d0000b273295e5a613cb3fb9f7ccf532e" alt="Leslie">
+            <img src="https://i.scdn.co/image/ab67616d0000b273e5a95573f1b91234630fd2cf" alt="coldplay">
+        </div>
+    </div>
 
+    <div class="container" id="main-container">
         <div class="first-chart" id="third-chart">
             <div class="first-chart-title">
                 <hr class="first-chart-line" style="width: 20% !important;">
@@ -451,7 +528,7 @@
                 <div class="col-xs-3 first-chart-item" id="first-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/3_Enough_Cardi_B.jpg"
+                            <img src="https://i.scdn.co/image/ab67616d0000b273125b1a330b6f6100ab19dbed"
                                  class="first-chart-pic">
                         </div>
                         <div class="col-xs-7">
@@ -464,9 +541,9 @@
                                 <div class="col-xs-5"></div>
                             </div>
                             <div class="first-chart-song-name">
-                                Enough
+                                Butterfly
                             </div>
-                            <div class="first-chart-artist-name">Cardi B</div>
+                            <div class="first-chart-artist-name">Jason Marz</div>
                         </div>
                     </div>
                     <div class="first-chart-down-half">
@@ -476,7 +553,7 @@
                 <div class="col-xs-3 first-chart-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/43_Lover_Taylor_Swift.jpg"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/wonder_Yx2vcT2.jpg"
                                  class="first-chart-pic">
                         </div>
                         <div class="col-xs-7">
@@ -489,9 +566,9 @@
                                 <div class="col-xs-5"></div>
                             </div>
                             <div class="first-chart-song-name">
-                                Lover
+                                Look up at the stars
                             </div>
-                            <div class="first-chart-artist-name">Taylor Swift</div>
+                            <div class="first-chart-artist-name">Shawn Mendes</div>
                         </div>
                     </div>
                     <div class="first-chart-down-half">
@@ -501,7 +578,7 @@
                 <div class="col-xs-3 first-chart-item">
                     <div class="first-chart-top-half">
                         <div class="col-xs-5">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/22_What_Was_I_Made_For%3F_Billie_Eilish.jpg"
+                            <img src="https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36"
                                  class="first-chart-pic">
                         </div>
                         <div class="col-xs-7">
@@ -514,9 +591,9 @@
                                 <div class="col-xs-5"></div>
                             </div>
                             <div class="first-chart-song-name">
-                                What Was I Made For?
+                                After Hours
                             </div>
-                            <div class="first-chart-artist-name">Billie Eilish</div>
+                            <div class="first-chart-artist-name">The Weeknd</div>
                         </div>
                     </div>
                     <div class="first-chart-down-half">
@@ -532,42 +609,44 @@
                 </div>
             </a>
         </div>
-
-        {#        <div class="second-chart">#}
-        {#            <div class="second-chart-title">#}
-        {#                MusicTop GOAT 200#}
-        {#            </div>#}
-        {#            <div class="second-chart-body">#}
-        {#                <div class="second-chart-item">#}
-        {#                    <div class="col-xs-3 second-chart-rank">#}
-        {#                        <div class="second-chart-number">#}
-        {#                            1#}
-        {#                        </div>#}
-        {#                        <div class="second-chart-change">#}
-        {#                            <img src="/media/up_arrow.png">#}
-        {#                        </div>#}
-        {#                    </div>#}
-        {#                    <div class="col-xs-6 second-chart-song-info">#}
-        {#                        <div class="second-chart-song-name">#}
-        {#                            The Tortured Poets Department#}
-        {#                        </div>#}
-        {#                        <div class="second-chart-artist-name">#}
-        {#                            Taylor Swift#}
-        {#                        </div>#}
-        {#                    </div>#}
-        {##}
-        {#                    <div class="second-chart-pic">#}
-        {#                        <img src="https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33">#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#            <div class="second-chart-foot">#}
-        {#                VIEW CHART#}
-        {#            </div>#}
-        {#        </div>#}
+    </div>
 
 
-        <div class="third-chart"></div>
+    {#        <div class="second-chart">#}
+    {#            <div class="second-chart-title">#}
+    {#                MusicTop GOAT 200#}
+    {#            </div>#}
+    {#            <div class="second-chart-body">#}
+    {#                <div class="second-chart-item">#}
+    {#                    <div class="col-xs-3 second-chart-rank">#}
+    {#                        <div class="second-chart-number">#}
+    {#                            1#}
+    {#                        </div>#}
+    {#                        <div class="second-chart-change">#}
+    {#                            <img src="/media/up_arrow.png">#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                    <div class="col-xs-6 second-chart-song-info">#}
+    {#                        <div class="second-chart-song-name">#}
+    {#                            The Tortured Poets Department#}
+    {#                        </div>#}
+    {#                        <div class="second-chart-artist-name">#}
+    {#                            Taylor Swift#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                    <div class="second-chart-pic">#}
+    {#                        <img src="https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33">#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#            <div class="second-chart-foot">#}
+    {#                VIEW CHART#}
+    {#            </div>#}
+    {#        </div>#}
+
+
+    <div class="third-chart"></div>
     </div>
 
     <script>
@@ -594,6 +673,67 @@
         }
 
 
+    </script>
+
+    <script>
+        // 滚动速度
+        const scrollSpeed = 0.5;
+
+        /**
+         * 为了实现无缝滚动，我们需要重复每个画廊的内容
+         */
+        function duplicateContent(id) {
+            const gallery = document.getElementById(id);
+            const children = Array.from(gallery.children);
+            children.forEach(child => {
+                const clone = child.cloneNode(true);
+                gallery.appendChild(clone);
+            });
+        }
+
+        // 向右滚动的函数
+        function scrollRight(id) {
+            const gallery = document.getElementById(id);
+            let position = parseInt(gallery.style.left, 10) || 0;
+
+            function animate() {
+                position -= scrollSpeed;
+                if (position <= -gallery.scrollWidth / 2) {
+                    position = 0;
+                }
+                gallery.style.left = position + 'px';
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // 向左滚动的函数
+        function scrollLeft(id) {
+            const gallery = document.getElementById(id);
+            let position = parseInt(gallery.style.left, 10) || 0;
+
+            function animate() {
+                position += scrollSpeed;
+                if (position >= 0) {
+                    position = -gallery.scrollWidth / 2;
+                }
+                gallery.style.left = position + 'px';
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // 重复内容以实现无缝滚动
+        duplicateContent('gallery1');
+        duplicateContent('gallery2');
+        duplicateContent('gallery3');
+
+        // 开始滚动
+        scrollRight('gallery1');
+        scrollLeft('gallery2');
+        scrollRight('gallery3');
     </script>
 
 
