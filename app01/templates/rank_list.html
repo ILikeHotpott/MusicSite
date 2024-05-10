@@ -5,11 +5,11 @@
     <style>
         body {
             background-image: url('https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/black_down.jpg');
-            background-size: 100% 600%; /* 拉伸背景图像以适应整个页面 */
+            background-size: 100% 800%; /* 拉伸背景图像以适应整个页面 */
             background-position: center; /* 居中对齐 */
             background-repeat: no-repeat; /* 不重复背景 */
             margin: 0; /* 确保背景从页面的顶部开始 */
-            min-height: 250vh; /* 页面高度 */
+            min-height: 300vh; /* 页面高度 */
         }
 
         @media (max-width: 576px) {
@@ -676,65 +676,66 @@
     </script>
 
     <script>
-        // 滚动速度
-        const scrollSpeed = 0.5;
+    // 滚动速度（像素）
+    const scrollSpeed = 1;
 
-        /**
-         * 为了实现无缝滚动，我们需要重复每个画廊的内容
-         */
-        function duplicateContent(id) {
-            const gallery = document.getElementById(id);
-            const children = Array.from(gallery.children);
-            children.forEach(child => {
-                const clone = child.cloneNode(true);
-                gallery.appendChild(clone);
-            });
-        }
+    /**
+     * 为了实现无缝滚动，我们需要重复每个画廊的内容
+     */
+    function duplicateContent(id) {
+        const gallery = document.getElementById(id);
+        const children = Array.from(gallery.children);
+        children.forEach(child => {
+            const clone = child.cloneNode(true);
+            gallery.appendChild(clone);
+        });
+    }
 
-        // 向右滚动的函数
-        function scrollRight(id) {
-            const gallery = document.getElementById(id);
-            let position = parseInt(gallery.style.left, 10) || 0;
+    // 向右滚动的函数
+    function scrollRight(id) {
+        const gallery = document.getElementById(id);
+        let position = parseInt(gallery.style.left, 10) || 0;
 
-            function animate() {
-                position -= scrollSpeed;
-                if (position <= -gallery.scrollWidth / 2) {
-                    position = 0;
-                }
-                gallery.style.left = position + 'px';
-                requestAnimationFrame(animate);
+        function animate() {
+            position -= scrollSpeed;
+            if (position <= -gallery.scrollWidth / 2) {
+                position = 0;
             }
-
-            animate();
+            gallery.style.left = position + 'px';
+            requestAnimationFrame(animate);
         }
 
-        // 向左滚动的函数
-        function scrollLeft(id) {
-            const gallery = document.getElementById(id);
-            let position = parseInt(gallery.style.left, 10) || 0;
+        animate();
+    }
 
-            function animate() {
-                position += scrollSpeed;
-                if (position >= 0) {
-                    position = -gallery.scrollWidth / 2;
-                }
-                gallery.style.left = position + 'px';
-                requestAnimationFrame(animate);
+    // 向左滚动的函数
+    function scrollLeft(id) {
+        const gallery = document.getElementById(id);
+        let position = parseInt(gallery.style.left, 10) || 0;
+
+        function animate() {
+            position += scrollSpeed;
+            if (position >= 0) {
+                position = -gallery.scrollWidth / 2;
             }
-
-            animate();
+            gallery.style.left = position + 'px';
+            requestAnimationFrame(animate);
         }
 
-        // 重复内容以实现无缝滚动
-        duplicateContent('gallery1');
-        duplicateContent('gallery2');
-        duplicateContent('gallery3');
+        animate();
+    }
 
-        // 开始滚动
-        scrollRight('gallery1');
-        scrollLeft('gallery2');
-        scrollRight('gallery3');
-    </script>
+    // 重复内容以实现无缝滚动
+    duplicateContent('gallery1');
+    duplicateContent('gallery2');
+    duplicateContent('gallery3');
+
+    // 开始滚动
+    scrollRight('gallery1');
+    scrollLeft('gallery2');
+    scrollRight('gallery3');
+</script>
+
 
 
 {% endblock %}
