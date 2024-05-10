@@ -59,8 +59,8 @@
     }
 
     .navbar:first-of-type {
-    {#margin-bottom: 0.3px;#} justify-content: center; /* 居中对齐MUSICTOP */
-        height: 70px; /* 设置高度 */
+        justify-content: center;
+        height: 70px;
     }
 
     .navbar .brand-container {
@@ -194,6 +194,18 @@
 {#<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>#}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+<script>
+    // 等待页面加载完毕
+    document.addEventListener('DOMContentLoaded', function () {
+        // 获取 nav1 和 nav2 的高度
+        const nav1Height = document.getElementById('nav1').offsetHeight;
+        const nav2Height = document.getElementById('nav2').offsetHeight;
+        const totalHeight = nav1Height + nav2Height - 1;
+
+        // 设置 star-navbar-container 的高度
+        document.querySelector('.star-navbar-container').style.height = totalHeight + 'px';
+    });
+</script>
 
 
 {% block extra_js %}{% endblock %}
