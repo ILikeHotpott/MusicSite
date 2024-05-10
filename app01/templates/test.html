@@ -2,133 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>无缝滚动画廊</title>
+    <title>Scale Animation</title>
     <style>
-        /* 画廊容器的样式 */
-        .gallery-container {
-            width: 100%;
-            overflow: hidden;
-            margin-top: 30px;
-            position: relative;
-            height: 270px; /* 增加高度以确保图片显示 */
-        }
-
-        /* 图片滚动区域的样式 */
-        .gallery-content {
+        body {
+            margin: 0;
             display: flex;
-            white-space: nowrap;
-            position: absolute;
-            left: 0; /* 初始化位置从0开始 */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* 图片的样式 */
-        .gallery-content img {
-            margin: 0 10px;
-            height: 250px; /* 固定高度 */
-            width: 250px; /* 固定宽度 */
-            border: 1px solid gray;
+        /* Wrapper that reduces height by 30% */
+        .container {
+            position: relative;
+            width: 100%;
+            height: 70vh; /* 100% - 30% */
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        /* Full-screen video inside the wrapper */
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Mask container that displays the image */
+        .mask-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background-image: url("/media/word1.png"); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            transform: scale(100); /* Initial scale at 100x */
+            animation: shrinkToFull 3s ease forwards; /* Animation effect */
+        }
+
+        /* Animation from 100x scale to 1x */
+        @keyframes shrinkToFull {
+            0% {
+                transform: scale(100); /* Start at 100x scale */
+            }
+            100% {
+                transform: scale(1); /* Reduce to 1x scale */
+            }
         }
     </style>
 </head>
 <body>
-<!-- 第一个画廊 -->
-    <div class="gallery-container">
-        <div class="gallery-content" id="gallery1">
-            <img src="https://i.scdn.co/image/ab67616d0000b273c5716278abba6a103ad13aa7" alt="Image 1">
-            <img src="https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa" alt="Image 2">
-            <img src="https://i.scdn.co/image/ab67616d0000b273e5a25ed08d1e7e0fbb440cef" alt="Image 3">
-            <img src="https://i.scdn.co/image/ab67616d0000b2737c68face1dc58127f3a7b1cc" alt="Image 1">
-            <img src="https://i.scdn.co/image/ab67616d0000b273b5d4b4ed17ec86c4b3944af2" alt="Image 1">
-            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-            <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-        </div>
+    <div class="container">
+        <!-- Play video -->
+        <video src="/media/bgv2.mov" autoplay loop muted></video> <!-- Replace with your video path -->
+        <!-- Mask container to directly show the image -->
+        <div class="mask-container"></div>
     </div>
-
-<!-- 第二个画廊 -->
-<div class="gallery-container">
-    <div class="gallery-content" id="gallery2">
-        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-        <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 2">
-        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-        <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 2">
-        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-    </div>
-</div>
-
-<!-- 第三个画廊 -->
-<div class="gallery-container">
-    <div class="gallery-content" id="gallery3">
-        <img src="/media/album/2_Beautiful_Things_Benson_Boone.jpg" alt="Image 1">
-        <img src="/media/album/4_Going_Home_Mark_Knopfler.jpg" alt="Image 2">
-        <img src="/media/album/5_Let_Me_Calm_Down_Nicki_Minaj.jpg" alt="Image 3">
-        <img src="/media/album/11_Back_On_74_Jungle.jpg" alt="Image 2">
-        <img src="/media/album/10_GOOD_DAY_Forrest_Frank.jpg" alt="Image 1">
-    </div>
-</div>
-
-<script>
-    // 滚动速度
-    const scrollSpeed = 0.5;
-
-    /**
-     * 为了实现无缝滚动，我们需要重复每个画廊的内容
-     */
-    function duplicateContent(id) {
-        const gallery = document.getElementById(id);
-        const children = Array.from(gallery.children);
-        children.forEach(child => {
-            const clone = child.cloneNode(true);
-            gallery.appendChild(clone);
-        });
-    }
-
-    // 向右滚动的函数
-    function scrollRight(id) {
-        const gallery = document.getElementById(id);
-        let position = parseInt(gallery.style.left, 10) || 0;
-
-        function animate() {
-            position -= scrollSpeed;
-            if (position <= -gallery.scrollWidth / 2) {
-                position = 0;
-            }
-            gallery.style.left = position + 'px';
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    }
-
-    // 向左滚动的函数
-    function scrollLeft(id) {
-        const gallery = document.getElementById(id);
-        let position = parseInt(gallery.style.left, 10) || 0;
-
-        function animate() {
-            position += scrollSpeed;
-            if (position >= 0) {
-                position = -gallery.scrollWidth / 2;
-            }
-            gallery.style.left = position + 'px';
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    }
-
-    // 重复内容以实现无缝滚动
-    duplicateContent('gallery1');
-    duplicateContent('gallery2');
-    duplicateContent('gallery3');
-
-    // 开始滚动
-    scrollRight('gallery1');
-    scrollLeft('gallery2');
-    scrollRight('gallery3');
-</script>
-
 </body>
 </html>
