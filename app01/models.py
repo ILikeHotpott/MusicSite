@@ -116,7 +116,7 @@ class Playlist(models.Model):
     playlist_cover = models.ImageField(max_length=512, verbose_name='playlist_cover', upload_to="playlist_cover/",
                                        null=True,
                                        blank=True,
-                                       default='playlist_cover/default.png')
+                                       default='https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/default.jpeg')
     track_number = models.PositiveIntegerField(verbose_name='Track Number', default=0)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
 

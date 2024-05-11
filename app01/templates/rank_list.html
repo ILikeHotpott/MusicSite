@@ -309,7 +309,7 @@
                 transform: scale(200);
             }
             100% {
-                transform: scale(1.4);
+                transform: scale(1.5);
             }
         }
 
@@ -319,21 +319,34 @@
             }
         }
 
+        .create-chart-container {
+            height: 200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0f0f0f;
+            font-size: 40px;
+            font-weight: 600;
+            color: #9acfea
+        }
+
 
     </style>
 
-    {#    <div class="logo-container">#}
-    {#        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logo1.png" class="logo">#}
-    {#        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logo4.png" class="logo">#}
-    {#    </div>#}
 
     <div class="video-logo-container">
         <!-- Play video -->
-        <video src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/blackhole_15_1080.mp4" autoplay loop muted playsinline></video>
+        <video src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/blackhole_5x.mp4" autoplay loop muted playsinline></video>
         <!-- Mask container to directly show the image -->
         <div class="mask-container"></div>
     </div>
 
+{#    <a href="/create_your_own_chart/" class="btn create-chart-container">#}
+{#        <div >#}
+{#            CREATE YOUR OWN CHART#}
+{#        </div>#}
+{#    </a>#}
 
 
     <div class="gallery-container">
