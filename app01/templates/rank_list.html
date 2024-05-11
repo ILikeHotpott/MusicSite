@@ -300,16 +300,16 @@
             background-image: url("https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/word1.png");
             background-size: cover;
             background-position: center;
-            transform: scale(150);
-            animation: shrinkToFull 2.5s ease forwards;
+            transform: scale(200);
+            animation: shrinkToFull 4s ease forwards;
         }
 
         @keyframes shrinkToFull {
             0% {
-                transform: scale(150);
+                transform: scale(200);
             }
             100% {
-                transform: scale(1.5);
+                transform: scale(1.4);
             }
         }
 
@@ -329,7 +329,7 @@
 
     <div class="video-logo-container">
         <!-- Play video -->
-        <video src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/bgv2.mp4" autoplay loop muted playsinline></video> <!-- Replace with your video path -->
+        <video src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/blackhole_15_1080.mp4" autoplay loop muted playsinline></video>
         <!-- Mask container to directly show the image -->
         <div class="mask-container"></div>
     </div>
@@ -789,9 +789,9 @@
         duplicateContent('gallery3');
 
         // 开始滚动
-        scrollRight('gallery1');
-        scrollLeft('gallery2');
-        scrollRight('gallery3');
+        scrollLeft('gallery1');
+        scrollRight('gallery2');
+        scrollLeft('gallery3');
     </script>
 
 
