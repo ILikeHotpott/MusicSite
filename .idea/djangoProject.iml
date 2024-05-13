@@ -29,6 +29,8 @@
     <orderEntry type="library" name="star" level="application" />
     <orderEntry type="library" name="tailwindcss" level="application" />
     <orderEntry type="library" name="materialize" level="application" />
+    <orderEntry type="library" name="vivus" level="application" />
+    <orderEntry type="library" name="Sortable" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

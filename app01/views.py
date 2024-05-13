@@ -504,5 +504,5 @@ def playlist(request, playlist_id):  # 待完成，级别第二高
     return render(request, "playlist.html")
 
 
-def rank_list(request):  # 待完成，级别最高
+def rank_list(request):  # 待完成，级别最高/ 几乎完成
     return render(request, "rank_list.html")

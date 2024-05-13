@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded shadow">
+        <ul id="itemList" class="space-y-2">
+            <li class="bg-blue-100 p-2 rounded cursor-pointer">Item 1</li>
+            <li class="bg-blue-100 p-2 rounded cursor-pointer">Item 2</li>
+            <li class="bg-blue-100 p-2 rounded cursor-pointer">Item 3</li>
+        </ul>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js"></script>
+    <script>
+        new Sortable(document.getElementById('itemList'), {
+            animation: 150
+        });
+    </script>
+</body>
+</html>

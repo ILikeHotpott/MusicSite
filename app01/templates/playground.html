@@ -746,10 +746,10 @@
             var myDropzone = new Dropzone("#my-great-dropzone", {
                 url: "/upload-to-s3/",
                 paramName: "file",
-                maxFilesize: 50,
+                maxFilesize: 100,
                 acceptedFiles: 'image/*, video/*',
                 addRemoveLinks: true,
-                autoProcessQueue: false,  // 不自动上传文件，手动触发
+                autoProcessQueue: true,  // 不自动上传文件，手动触发
                 parallelUploads: 9,
                 init: function () {
                     this.on('success', function (file, response) {
