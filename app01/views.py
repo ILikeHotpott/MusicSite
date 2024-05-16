@@ -16,7 +16,7 @@ from django_redis import get_redis_connection
 from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
-from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist
+from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist, PlaylistMusic
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
@@ -501,8 +501,15 @@ def create_your_own_chart(request):
 
 
 def playlist(request, playlist_id):  # 待完成，级别第二高
-    return render(request, "playlist.html")
+    playlist_info = get_object_or_404(Playlist, id=playlist_id)
+    tracks = playlist_info.tracks.all()
+
+    return render(request, "playlist.html", {"playlist_info": playlist_info, "tracks": tracks})
 
 
 def rank_list(request):  # 待完成，级别最高/ 几乎完成
     return render(request, "rank_list.html")
+
+
+def home(request):
+    return render(request, "home.html")

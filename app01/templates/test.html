@@ -3,22 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draggable List</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css" rel="stylesheet">
+    <title>Mouse Tracking Animation</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .title-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: clip-path 0.1s;
+        }
+
+        .image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image.overlay {
+            clip-path: inset(0 100% 0 0);
+        }
+
+        .img-container img {
+            height: 75%;
+        }
+
+        @media (max-width: 576px) {
+            .img-container img {
+                height: 18%;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-200 flex items-center justify-center h-screen">
-    <div class="bg-white p-6 rounded shadow">
-        <ul id="itemList" class="space-y-2">
-            <li class="bg-blue-100 p-2 rounded cursor-pointer">Item 1</li>
-            <li class="bg-blue-100 p-2 rounded cursor-pointer">Item 2</li>
-            <li class="bg-blue-100 p-2 rounded cursor-pointer">Item 3</li>
-        </ul>
+<body>
+
+<div class="title-container">
+    <div class="img-container">
+        <div class="image base">
+            <img src="/media/title1.png" alt="Base Image">
+        </div>
+        <div class="image overlay">
+            <img src="/media/title2.png" alt="Overlay Image">
+        </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js"></script>
-    <script>
-        new Sortable(document.getElementById('itemList'), {
-            animation: 150
-        });
-    </script>
+</div>
+<script>
+    const container = document.querySelector('.title-container');
+    const overlayImage = document.querySelector('.image.overlay');
+
+    container.addEventListener('mousemove', (event) => {
+        const rect = container.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const percentage = (mouseX / rect.width) * 100;
+        overlayImage.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+    });
+</script>
 </body>
 </html>

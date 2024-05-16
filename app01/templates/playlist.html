@@ -53,6 +53,37 @@
         </div>
     </div>
 
+    <div class="container">
+        {% for track in tracks %}
+            <tr class="table-row">
+                <td class="rank" style="background-color: black; margin-left: 50px">{{ forloop.counter }}</td>
+
+                {% if song_info.absolute_cover_url %}
+                    <td class="pic">
+                        <img src="{{ track.music.pic }}" alt="Album Cover" loading="lazy">
+                    </td>
+                {% else %}
+                    <td class="pic">
+                        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/album/default.jpeg"
+                             alt="">
+                    </td>
+                {% endif %}
+
+                <td>
+                    <div class="song song-font song-text" style="text-decoration: none; color: black;">
+                        {% if track.music.title|length > 20 %}
+                            {{ track.title|slice:":20" }}...
+                        {% else %}
+                            {{ track.title }}
+                        {% endif %}
+                    </div>
+                    <div class="artist" style="text-align: left">{{ track.music.artist }}</div>
+                </td>
+            </tr>
+        {% endfor %}
+    </div>
+
+
 
 
 {% endblock %}

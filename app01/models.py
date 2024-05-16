@@ -105,7 +105,7 @@ class MomentComment(models.Model):
         return f"Comment by {self.user.username} on {self.moment.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
 
     def is_reply(self):
-        """Check if the comment is a reply to another comment."""
+        """ Check if the comment is a reply to another comment. """
         return self.parent is not None
 
 
@@ -122,9 +122,6 @@ class Playlist(models.Model):
 
     def __str__(self):
         return f"{self.name} by {self.user.username}"
-
-    def id(self):
-        return self.id
 
 
 class PlaylistMusic(models.Model):
