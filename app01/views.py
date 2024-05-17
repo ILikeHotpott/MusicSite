@@ -16,10 +16,11 @@ from django_redis import get_redis_connection
 from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
-from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist
+from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist, Like
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
+from app01.notifi import Notification
 
 
 class MusicModelForm(BootstrapModelForm):
@@ -409,7 +410,8 @@ def like_post(request):
         redis_conn.sadd(likes_key, user.id)
         liked = True
         moment.likes_count = redis_conn.scard(likes_key)  # 更新likes_count
-
+        like = Like.objects.create(user=user, moment=moment)
+        Notification.notify_like(like, moment)
     moment.save()  # 保存修改到数据库
 
     return JsonResponse({'liked': liked, 'like_count': moment.likes_count})
@@ -433,6 +435,7 @@ def submit_moment_comment(request):
                 content=comment_text,
             )
             comment.save()
+            Notification.notify_comment(comment, moment, 1)
             return JsonResponse({'message': 'Comment submitted successfully'})
 
         except Exception as e:

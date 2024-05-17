@@ -25,7 +25,7 @@ class UserInfo(AbstractUser):
     profile_info = models.CharField(max_length=256, verbose_name='profile_info', null=True, blank=True)
     avatar = models.FileField(max_length=256, verbose_name='avatar', upload_to="avatar/", null=True, blank=True,
                               default='profile/default.png')
-
+    unread_count = models.IntegerField(default = 0)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['age']
 
@@ -138,3 +138,33 @@ class PlaylistMusic(models.Model):
 
     def __str__(self):
         return f"{self.music.title} in {self.playlist.name} at position {self.position}"
+    
+
+class NotifiCenter(models.Model):
+    NOTIFI_TYPE_CHOICES = [
+        (0, 'Like to post'),
+        (1, 'Comment to post'),
+        (2, 'Comment to comment'),
+    ]
+
+    user = models.ForeignKey('UserInfo', on_delete=models.CASCADE, verbose_name='User', db_index=True)
+    time = models.DateTimeField(auto_now_add=True, verbose_name='Time Created')
+    read = models.BooleanField(default=False, verbose_name='Read')
+    types = models.IntegerField(choices=NOTIFI_TYPE_CHOICES, verbose_name='Notification Type')
+
+
+class NotifiLikesPost(models.Model):
+    notifi = models.OneToOneField(NotifiCenter, on_delete=models.CASCADE, primary_key=True, verbose_name='Notification')
+    like = models.ForeignKey('Like', on_delete=models.CASCADE, verbose_name='Like')
+
+
+class NotifiPostComment(models.Model):
+    notifi = models.OneToOneField(NotifiCenter, on_delete=models.CASCADE, primary_key=True, verbose_name='Notification')
+    post_id = models.IntegerField(verbose_name='Post ID')
+    comment_id = models.IntegerField(verbose_name='Comment ID')
+
+
+class NotifiCommentComment(models.Model):
+    notifi = models.OneToOneField(NotifiCenter, on_delete=models.CASCADE, primary_key=True, verbose_name='Notification')
+    p_comment_id = models.IntegerField(verbose_name='Parent Comment ID')
+    c_comment_id = models.IntegerField(verbose_name='Child Comment ID')
