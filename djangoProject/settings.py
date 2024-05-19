@@ -32,8 +32,7 @@ SECRET_KEY = "django-insecure-jbomzr_8&=h+r#s_4)($+6jbelxe70wusc8jf=x*=p%+bis)1r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "www.music-top.com", '0.0.0.0', '44.217.110.116']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "www.music-top.com", '0.0.0.0', '44.217.110.116', '*']
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -136,6 +135,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# Previous
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
+
+# Previous
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -145,6 +153,7 @@ CACHES = {
         }
     }
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -175,12 +184,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ASGI_APPLICATION = "djangoProject.asgi.application"
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-    }
-}
 
 SPOTIFY_CLIENT_ID = '4ed1dc13d9df4e07a742656a340eb1a2'
 SPOTIFY_CLIENT_SECRET = '8f23c185ddde4847afe06b5d83552108'

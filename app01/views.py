@@ -500,7 +500,7 @@ def create_your_own_chart(request):
     return render(request, "create_your_own_chart.html", {"form": form})
 
 
-def playlist(request, playlist_id):  # 待完成，级别第二高
+def playlist(request, playlist_id):  # 待完成，级别第三高
     playlist_info = get_object_or_404(Playlist, id=playlist_id)
     tracks = playlist_info.tracks.all()
 
@@ -511,5 +511,5 @@ def rank_list(request):  # 待完成，级别最高/ 几乎完成
     return render(request, "rank_list.html")
 
 
-def home(request):
+def home(request):  # 待完成，级别第二高
     return render(request, "home.html")

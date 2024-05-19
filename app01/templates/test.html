@@ -3,77 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mouse Tracking Animation</title>
+    <link rel="stylesheet"
+          href="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/static/staticfiles/sass/star.css">
+    <title>3D Carousel</title>
     <style>
         body {
-            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #000;
-            overflow: hidden;
+            background-color: black;
+            margin: 0;
         }
 
-        .title-container {
+        .carousel {
+            width: 300px;
+            height: 300px;
             position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+            perspective: 1500px; /* Increase perspective for more dramatic 3D effect */
         }
 
-        .image {
+        .carousel__track {
+            width: 100%;
+            height: 100%;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transition: clip-path 0.1s;
+            transform-style: preserve-3d;
+            animation: rotate 20s infinite linear;
         }
 
-        .image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .carousel__slide {
+            width: 80%; /* Reduce width to make images smaller */
+            height: 80%; /* Reduce height to make images smaller */
+            position: absolute;
+            top: 10%; /* Center the smaller images vertically */
+            left: 10%; /* Center the smaller images horizontally */
+            background-size: cover;
+            background-position: center;
         }
 
-        .image.overlay {
-            clip-path: inset(0 100% 0 0);
-        }
-
-        .img-container img {
-            height: 75%;
-        }
-
-        @media (max-width: 576px) {
-            .img-container img {
-                height: 18%;
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
             }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .carousel__slide:nth-child(1) {
+            transform: rotateY(0deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa');
+        }
+
+        .carousel__slide:nth-child(2) {
+            transform: rotateY(36deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b273e5a25ed08d1e7e0fbb440cef');
+        }
+
+        .carousel__slide:nth-child(3) {
+            transform: rotateY(72deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b2739b9b36b0e22870b9f542d937');
+        }
+
+        .carousel__slide:nth-child(4) {
+            transform: rotateY(108deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b273c5716278abba6a103ad13aa7');
+        }
+
+        .carousel__slide:nth-child(5) {
+            transform: rotateY(144deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b273d441b2e9b63f0b9f9d90be19');
+        }
+
+        .carousel__slide:nth-child(6) {
+            transform: rotateY(180deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b2737c68face1dc58127f3a7b1cc');
+        }
+
+        .carousel__slide:nth-child(7) {
+            transform: rotateY(216deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b273b5d4b4ed17ec86c4b3944af2');
+        }
+
+        .carousel__slide:nth-child(8) {
+            transform: rotateY(252deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b2734973a7d9304de53e18583220');
+        }
+
+        .carousel__slide:nth-child(9) {
+            transform: rotateY(288deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526');
+        }
+
+        .carousel__slide:nth-child(10) {
+            transform: rotateY(324deg) translateZ(500px);
+            background-image: url('https://i.scdn.co/image/ab67616d0000b273879e9318cb9f4e05ee552ac9');
         }
     </style>
 </head>
 <body>
 
-<div class="title-container">
-    <div class="img-container">
-        <div class="image base">
-            <img src="/media/title1.png" alt="Base Image">
-        </div>
-        <div class="image overlay">
-            <img src="/media/title2.png" alt="Overlay Image">
+<div class="star-navbar-container">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
+        <div class="layer1 star-layer"></div>
+        <div class="layer2 star-layer"></div>
+        <div class="layer3 star-layer"></div>
+        <div class="layer4 star-layer"></div>
+        <div class="layer5 star-layer"></div>
+    </div>
+    <div class="carousel">
+        <div class="carousel__track">
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
+            <div class="carousel__slide"></div>
         </div>
     </div>
 </div>
-<script>
-    const container = document.querySelector('.title-container');
-    const overlayImage = document.querySelector('.image.overlay');
-
-    container.addEventListener('mousemove', (event) => {
-        const rect = container.getBoundingClientRect();
-        const mouseX = event.clientX - rect.left;
-        const percentage = (mouseX / rect.width) * 100;
-        overlayImage.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-    });
-</script>
 </body>
 </html>
