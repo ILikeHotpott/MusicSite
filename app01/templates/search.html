@@ -4,7 +4,6 @@
     <link rel="stylesheet"
           href="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/static/staticfiles/sass/star.css">
     <style>
-
         /* 搜索框样式 */
         .search-container {
             display: flex;
@@ -24,7 +23,6 @@
             .all-results {
                 width: 90% !important;
             }
-
         }
 
         .search-wrapper {
@@ -87,6 +85,43 @@
             border-radius: 50%; /* 圆形 */
             object-fit: cover;
         }
+
+        /* 播放列表选择框 */
+        .playlist-selection {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        .playlist-item {
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .playlist-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .add-song-button {
+            display: none;
+            position: fixed;
+            top: 20%;
+            right: 20%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
     <body>
 
@@ -104,12 +139,19 @@
                 <strong>Artists:</strong>
                 <div class="artist-results-list"></div>
             </div>
-            <div id="track-result" class="result-category" style="display: none;">Tracks results go here</div>
+            <div id="track-result" class="result-category" style="display: none;">
+                <strong>Tracks:</strong>
+                <div class="track-results-list"></div>
+            </div>
             <div id="album-result" class="result-category" style="display: none;">Albums results go here</div>
             <div id="playlist-result" class="result-category" style="display: none;">User playlists results go here
             </div>
         </div>
     </div>
+
+    <!-- 播放列表选择弹窗 -->
+    <div id="playlist-selection" class="playlist-selection"></div>
+    <button id="add-song-button" class="add-song-button">Add to Playlist</button>
 
     <script>
 
@@ -143,9 +185,77 @@
                     `).join('');
 
                     albumResult.innerHTML = `<strong>Albums:</strong><br>${data.albums.map(album => `<img src='${album.image}' width='100'> ${album.name} by ${album.artist}`).join('<br>')}`;
-                    trackResult.innerHTML = `<strong>Tracks:</strong><br>${data.tracks.map(track => `<img src='${track.image}' width='100'> ${track.name} by ${track.artist}`).join('<br>')}`;
+                    trackResult.innerHTML = `<strong>Tracks:</strong><br>${data.tracks.map(track => `
+                        <div class="track-item">
+                            <img src='${track.image}' width='100'>
+                            ${track.name} by ${track.artist}
+                            <button onclick="showPlaylists('${track.name}', '${track.artist}', '${track.image}')">+</button>
+                        </div>
+                    `).join('')}`;
                 });
         }
 
+        function showPlaylists(trackName, trackArtist, trackImage) {
+            fetch('/get_user_playlists/')
+                .then(response => response.json())
+                .then(data => {
+                    const playlistSelection = document.getElementById('playlist-selection');
+                    playlistSelection.innerHTML = data.playlists.map(playlist => `
+                        <div class="playlist-item" onclick="selectPlaylist(${playlist.id}, '${trackName}', '${trackArtist}', '${trackImage}')">
+                            ${playlist.name}
+                        </div>
+                    `).join('');
+                    playlistSelection.style.display = 'block';
+                });
+        }
+
+        function selectPlaylist(playlistId, trackName, trackArtist, trackImage) {
+            const addButton = document.getElementById('add-song-button');
+            addButton.style.display = 'block';
+            addButton.onclick = function () {
+                addSongToPlaylist(playlistId, trackName, trackArtist, trackImage);
+            };
+        }
+
+        function addSongToPlaylist(playlistId, trackName, trackArtist, trackImage) {
+            fetch('/add_song_to_playlist/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  // Ensure you have a function to get CSRF token
+                },
+                body: JSON.stringify({
+                    playlist_id: playlistId,
+                    track_name: trackName,
+                    track_artist: trackArtist,
+                    track_image: trackImage
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Song added to playlist!');
+                    } else {
+                        alert('Failed to add song to playlist.');
+                    }
+                    document.getElementById('playlist-selection').style.display = 'none';
+                    document.getElementById('add-song-button').style.display = 'none';
+                });
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
     </script>
 {% endblock %}

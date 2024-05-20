@@ -69,6 +69,9 @@ urlpatterns = [
     path('rank_list/', views.rank_list, name="rank_list"),
 
     path('home/', views.home, name="home"),
+
+    path('get_user_playlists/', views.get_user_playlists, name='get_user_playlists'),
+    path('add_song_to_playlist/', views.add_song_to_playlist, name='add_song_to_playlist'),
 ]
 
 if settings.DEBUG:

@@ -5,8 +5,12 @@
         body {
             margin: 0;
             background-color: #000;
-            height: 250vh;
+            height: auto;
             overflow-x: hidden;
+        }
+
+        a {
+            text-underline-mode: none;
         }
 
         .title-section {
@@ -124,6 +128,15 @@
             object-fit: cover; /* Ensure the video covers the entire section while maintaining aspect ratio */
         }
 
+        .star-style {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            z-index: -1;
+        }
+
         @media (max-width: 576px) {
             .first-title {
                 font-size: 3rem; /* Adjust font size for smaller screens */
@@ -141,6 +154,14 @@
                 height: auto;
                 justify-content: center;
                 text-align: center !important;
+            }
+
+            .star-style {
+                height: 50% !important;
+            }
+
+            .layer5 {
+                display: none !important;
             }
 
             .carousel {
@@ -261,12 +282,12 @@
     <div class="title-section">
         <div class="title-video">
             <video src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/519black.mp4" autoplay loop
-                   muted></video>
+                   muted playsinline></video>
         </div>
     </div>
 
     <div class="star-navbar-container">
-        <div style="position: relative; top: 0; left: 0; width: 100%; height: 200%; z-index: -1;">
+        <div class="star-style">
             <div class="layer1 star-layer"></div>
             <div class="layer2 star-layer"></div>
             <div class="layer3 star-layer"></div>
@@ -278,6 +299,7 @@
             Guide you to music bliss,
             <br>effortlessly.
         </div>
+
 
         <div class="explore-button">
             <a href="/rank_list/">Explore now!</a>
@@ -324,7 +346,7 @@
                     circleSection.style.opacity = '1';
                     circleSection.style.justifyContent = 'center';
                     circleSection.style.alignItems = 'center';
-                }, 100); // Slight delay for smooth transition
+                }, 100);
             }
         });
 

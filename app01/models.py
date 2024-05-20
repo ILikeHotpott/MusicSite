@@ -117,21 +117,9 @@ class Playlist(models.Model):
                                        null=True,
                                        blank=True,
                                        default='https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/default.jpeg')
+    tracks = models.JSONField(default=list)
     track_number = models.PositiveIntegerField(verbose_name='Track Number', default=0)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
 
     def __str__(self):
         return f"{self.name} by {self.user.username}"
-
-
-class PlaylistMusic(models.Model):
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, verbose_name='Playlist', related_name='tracks')
-    music = models.ForeignKey(Music, on_delete=models.CASCADE, verbose_name='Music')
-    position = models.PositiveIntegerField(verbose_name='Track Position', default=1)
-
-    class Meta:
-        unique_together = ('playlist', 'music')
-        ordering = ['position']
-
-    def __str__(self):
-        return f"{self.music.title} in {self.playlist.name} at position {self.position}"

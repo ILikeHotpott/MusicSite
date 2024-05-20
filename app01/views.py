@@ -16,7 +16,7 @@ from django_redis import get_redis_connection
 from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
-from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist, PlaylistMusic
+from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
@@ -492,24 +492,71 @@ def create_your_own_chart(request):
         form = CreateYourOwnChartModelForm()
         return render(request, "create_your_own_chart.html", {"form": form})
 
-    form = MusicModelForm(data=request.POST, files=request.FILES)
+    form = CreateYourOwnChartModelForm(data=request.POST, files=request.FILES)
     if form.is_valid():
-        new_playlist = form.save()
+        new_playlist = form.save(commit=False)
+        new_playlist.user = request.user
+        form.save()
+        print(form.cleaned_data)
+        print(new_playlist)
         return redirect(f"/playlist/{new_playlist.id}")
 
     return render(request, "create_your_own_chart.html", {"form": form})
 
 
+class SongForm(forms.ModelForm):
+    class Meta:
+        model = Music
+        fields = ['title', 'artist', 'pic']
+
+
 def playlist(request, playlist_id):  # 待完成，级别第三高
     playlist_info = get_object_or_404(Playlist, id=playlist_id)
-    tracks = playlist_info.tracks.all()
+    songs = playlist_info.tracks
+    print("playlist_info", playlist_info)
+    print("songs", songs)
 
-    return render(request, "playlist.html", {"playlist_info": playlist_info, "tracks": tracks})
+    return render(request, "playlist.html", {"playlist_info": playlist_info, "songs": songs})
 
 
-def rank_list(request):  # 待完成，级别最高/ 几乎完成
+def rank_list(request):
     return render(request, "rank_list.html")
 
 
 def home(request):  # 待完成，级别第二高
     return render(request, "home.html")
+
+
+@login_required
+def get_user_playlists(request):
+    playlists = Playlist.objects.filter(user=request.user).values('id', 'name')
+    return JsonResponse({'playlists': list(playlists)})
+
+
+@csrf_exempt
+@login_required
+def add_song_to_playlist(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        playlist_id = data.get('playlist_id')
+        track_name = data.get('track_name')
+        track_artist = data.get('track_artist')
+        track_image = data.get('track_image')
+
+        playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
+        music, created = Music.objects.get_or_create(
+            title=track_name,
+            artist=track_artist,
+            defaults={'pic': track_image}
+        )
+        playlist.tracks.append({
+            'title': track_name,
+            'artist': track_artist,
+            'pic_url': track_image,
+            'position': playlist.track_number + 1
+        })
+        playlist.track_number += 1
+        playlist.save()
+
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
