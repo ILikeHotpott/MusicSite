@@ -127,7 +127,7 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             request.session.set_expiry(86400 * 30)
-            return redirect("/charts/")
+            return redirect("/rank_list/")
         else:
             form.add_error("password", "Incorrect username or password")
             return render(request, "login.html", {"form": form})
@@ -485,6 +485,10 @@ class CreateYourOwnChartModelForm(BootstrapModelForm):
     class Meta:
         model = Playlist
         fields = ['name', 'description', 'playlist_cover']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': "John's Top 100 Playlist", 'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'placeholder': 'My favourite songs of 2024', 'class': 'form-control'}),
+        }
 
 
 def create_your_own_chart(request):
@@ -496,9 +500,7 @@ def create_your_own_chart(request):
     if form.is_valid():
         new_playlist = form.save(commit=False)
         new_playlist.user = request.user
-        form.save()
-        print(form.cleaned_data)
-        print(new_playlist)
+        new_playlist.save()
         return redirect(f"/playlist/{new_playlist.id}")
 
     return render(request, "create_your_own_chart.html", {"form": form})

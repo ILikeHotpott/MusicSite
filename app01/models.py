@@ -111,7 +111,7 @@ class MomentComment(models.Model):
 
 class Playlist(models.Model):
     user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='User', related_name='playlists')
-    name = models.CharField(max_length=128, verbose_name='Playlist Name')
+    name = models.CharField(max_length=128, verbose_name='Name')
     description = models.TextField(verbose_name='Description', blank=True)
     playlist_cover = models.ImageField(max_length=512, verbose_name='playlist_cover', upload_to="playlist_cover/",
                                        null=True,

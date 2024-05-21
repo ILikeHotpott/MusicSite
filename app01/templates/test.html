@@ -3,128 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-          href="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/static/staticfiles/sass/star.css">
-    <title>3D Carousel</title>
+    <title>高级按钮</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
-            margin: 0;
+        .post-input {
+            font-family: "Poetsen One", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-top: 30px;
+            height: 40px;
+            width: 60%;
+            border-radius: 20px;
+            font-size: 28px;
+            color: #414141;
+            background-color: #dadada; /* 深蓝色背景 */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.08),
+            0 5px 10px rgba(0, 0, 0, 0.1),
+            0 3px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .carousel {
-            width: 300px;
-            height: 300px;
-            position: relative;
-            perspective: 1500px; /* Increase perspective for more dramatic 3D effect */
+        .post-input:hover {
+            background-color: #004080; /* 略深的蓝色 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+            0 2px 3px rgba(0, 0, 0, 0.08),
+            0 10px 20px rgba(0, 0, 0, 0.1),
+            0 6px 6px rgba(0, 0, 0, 0.1);
+            color: white; /* 白色字体 */
         }
 
-        .carousel__track {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: rotate 20s infinite linear;
-        }
-
-        .carousel__slide {
-            width: 80%; /* Reduce width to make images smaller */
-            height: 80%; /* Reduce height to make images smaller */
-            position: absolute;
-            top: 10%; /* Center the smaller images vertically */
-            left: 10%; /* Center the smaller images horizontally */
-            background-size: cover;
-            background-position: center;
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotateY(0deg);
-            }
-            to {
-                transform: rotateY(360deg);
-            }
-        }
-
-        .carousel__slide:nth-child(1) {
-            transform: rotateY(0deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa');
-        }
-
-        .carousel__slide:nth-child(2) {
-            transform: rotateY(36deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b273e5a25ed08d1e7e0fbb440cef');
-        }
-
-        .carousel__slide:nth-child(3) {
-            transform: rotateY(72deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b2739b9b36b0e22870b9f542d937');
-        }
-
-        .carousel__slide:nth-child(4) {
-            transform: rotateY(108deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b273c5716278abba6a103ad13aa7');
-        }
-
-        .carousel__slide:nth-child(5) {
-            transform: rotateY(144deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b273d441b2e9b63f0b9f9d90be19');
-        }
-
-        .carousel__slide:nth-child(6) {
-            transform: rotateY(180deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b2737c68face1dc58127f3a7b1cc');
-        }
-
-        .carousel__slide:nth-child(7) {
-            transform: rotateY(216deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b273b5d4b4ed17ec86c4b3944af2');
-        }
-
-        .carousel__slide:nth-child(8) {
-            transform: rotateY(252deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b2734973a7d9304de53e18583220');
-        }
-
-        .carousel__slide:nth-child(9) {
-            transform: rotateY(288deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526');
-        }
-
-        .carousel__slide:nth-child(10) {
-            transform: rotateY(324deg) translateZ(500px);
-            background-image: url('https://i.scdn.co/image/ab67616d0000b273879e9318cb9f4e05ee552ac9');
+        .post-input:active {
+            background-color: #002244; /* 更深的蓝色 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.08),
+            0 5px 10px rgba(0, 0, 0, 0.1),
+            0 3px 3px rgba(0, 0, 0, 0.1);
+            transform: translateY(1px);
         }
     </style>
 </head>
 <body>
-
-<div class="star-navbar-container">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
-        <div class="layer1 star-layer"></div>
-        <div class="layer2 star-layer"></div>
-        <div class="layer3 star-layer"></div>
-        <div class="layer4 star-layer"></div>
-        <div class="layer5 star-layer"></div>
-    </div>
-    <div class="carousel">
-        <div class="carousel__track">
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-            <div class="carousel__slide"></div>
-        </div>
-    </div>
+<div class="post-square" style="text-align: center;">
+    <button class="post-input" data-toggle="modal" data-target="#exampleModal">
+        Share your music experience!
+    </button>
 </div>
 </body>
 </html>

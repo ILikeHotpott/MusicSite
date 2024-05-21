@@ -13,46 +13,36 @@
         <h1 style="text-align: center; ">Create Your Own Chart</h1>
         <div class="panel panel-default">
             <div class="panel-body">
-
                 <form method="post" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
-
+                    {{ form.non_field_errors }}
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group" style="text-align: center;">
                             <label style="display: block;">Playlist Cover</label>
-
                             <img id="cover_preview"
                                  src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/default.jpeg"
                                  alt="Playlist Cover"
                                  style="cursor: pointer; border: 1px solid #ddd; padding: 4px; max-width: 100%; height: auto;">
-
-                            <!-- 隐藏文件选择输入框 -->
                             <input type="file" id="id_playlist_cover" name="playlist_cover" style="display: none;">
                             <span style="color: red">{{ form.playlist_cover.errors.0 }}</span>
                         </div>
                     </div>
-
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group">
-                            <label>{{ form.name.label }}</label>
+                            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
                             {{ form.name }}
-                            <span style="color: red">{{ form.errors.0 }}</span>
+                            <span style="color: red">{{ form.name.errors }}</span>
                         </div>
-
                         <div class="form-group">
-                            <label>{{ form.description.label }}</label>
+                            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
                             {{ form.description }}
-                            <span style="color: red">{{ form.errors.0 }}</span>
+                            <span style="color: red">{{ form.description.errors }}</span>
                         </div>
-
                         <div class="form-group" style="text-align: right;">
-                            <a href="/rank_list/" class="btn">
-                                Cancel
-                            </a>
+                            <a href="/rank_list/" class="btn">Cancel</a>
                             <button type="submit" class="btn btn-primary">Create!</button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -75,10 +65,25 @@
                 coverPreview.src = URL.createObjectURL(file);
             }
         });
+
+        // 设置表单字段的 placeholder
+        document.addEventListener("DOMContentLoaded", function() {
+            const nameField = document.getElementById("id_name");
+            const descriptionField = document.getElementById("id_description");
+
+            if (nameField) {
+                nameField.setAttribute("placeholder", "John's Top 100 Playlist");
+                nameField.classList.add("form-control");
+            }
+
+            if (descriptionField) {
+                descriptionField.setAttribute("placeholder", "My favourite songs of 2024");
+                descriptionField.classList.add("form-control");
+            }
+        });
     </script>
 
     <style>
-        /* 自定义媒体查询，确保较小屏幕时布局依然适应 */
         @media (max-width: 480px) {
             .form-group {
                 text-align: center;
@@ -89,5 +94,4 @@
             }
         }
     </style>
-
 {% endblock %}

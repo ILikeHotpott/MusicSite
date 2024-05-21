@@ -29,7 +29,7 @@
             box-shadow: 6px 0 15px -5px rgba(0, 0, 0, 0.5);
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
             .left-bar {
                 display: none;
             }
@@ -59,6 +59,10 @@
                 background-color: #fff;
                 text-align: left;
             }
+
+            .post-input {
+                width: 100% !important;
+            }
         }
 
         .right-bar {
@@ -71,11 +75,40 @@
         }
 
         .post-input {
-            margin-top: 30px;
+            margin-bottom: 10px;
             height: 40px;
             width: 60%;
-            border-radius: 30px;
-            font-size: 20px;
+            border-radius: 20px;
+            font-size: 22px;
+            color: #414141;
+            background-color: #DFDFDF; /* 深蓝色背景 */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.08),
+            0 5px 10px rgba(0, 0, 0, 0.1),
+            0 3px 3px rgba(0, 0, 0, 0.1);
+            font-family: "Poetsen One", sans-serif;
+            font-weight: 400;
+        }
+
+        .post-input:hover {
+            background-color: #004080; /* 略深的蓝色 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+            0 2px 3px rgba(0, 0, 0, 0.08),
+            0 10px 20px rgba(0, 0, 0, 0.1),
+            0 6px 6px rgba(0, 0, 0, 0.1);
+            color: white !important;
+        }
+
+        .post-input:active {
+            background-color: #002244; /* 更深的蓝色 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.08),
+            0 5px 10px rgba(0, 0, 0, 0.1),
+            0 3px 3px rgba(0, 0, 0, 0.1);
+            transform: translateY(1px);
         }
 
         .pic-upload {
@@ -533,8 +566,10 @@
 {#                <img src="/media/menu.png">#}
             </span>
             <div class="post-square">
-                <input class="post-input btn" placeholder="Share what's new to you!" data-toggle="modal"
-                       data-target="#exampleModal">
+                <button class="post-input btn" data-toggle="modal"
+                        data-target="#exampleModal">
+                    Share your music experience!
+                </button>
             </div>
 
             {% for item in queryset %}
