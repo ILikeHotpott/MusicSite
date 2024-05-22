@@ -72,6 +72,8 @@ urlpatterns = [
 
     path('get_user_playlists/', views.get_user_playlists, name='get_user_playlists'),
     path('add_song_to_playlist/', views.add_song_to_playlist, name='add_song_to_playlist'),
+
+    path('playlist_list/', views.playlist_list, name="playlist_list"),
 ]
 
 if settings.DEBUG:

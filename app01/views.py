@@ -562,3 +562,9 @@ def add_song_to_playlist(request):
 
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
+
+
+def playlist_list(request):
+    user = request.user
+    playlists = Playlist.objects.filter(user=user).order_by('-created_at')
+    return render(request, "playlist_list.html", {"playlists": playlists})

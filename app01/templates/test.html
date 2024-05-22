@@ -2,56 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高级按钮</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
-    <style>
-        .post-input {
-            font-family: "Poetsen One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            margin-top: 30px;
-            height: 40px;
-            width: 60%;
-            border-radius: 20px;
-            font-size: 28px;
-            color: #414141;
-            background-color: #dadada; /* 深蓝色背景 */
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.5s ease, box-shadow 0.5s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
-            0 1px 2px rgba(0, 0, 0, 0.08),
-            0 5px 10px rgba(0, 0, 0, 0.1),
-            0 3px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .post-input:hover {
-            background-color: #004080; /* 略深的蓝色 */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
-            0 2px 3px rgba(0, 0, 0, 0.08),
-            0 10px 20px rgba(0, 0, 0, 0.1),
-            0 6px 6px rgba(0, 0, 0, 0.1);
-            color: white; /* 白色字体 */
-        }
-
-        .post-input:active {
-            background-color: #002244; /* 更深的蓝色 */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
-            0 1px 2px rgba(0, 0, 0, 0.08),
-            0 5px 10px rgba(0, 0, 0, 0.1),
-            0 3px 3px rgba(0, 0, 0, 0.1);
-            transform: translateY(1px);
-        }
-    </style>
+    <title>My Django and React App</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-<div class="post-square" style="text-align: center;">
-    <button class="post-input" data-toggle="modal" data-target="#exampleModal">
-        Share your music experience!
-    </button>
-</div>
+    <!-- Modal HTML -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '{% url "login" %}',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        $('#loginModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        alert('Login failed. Please try again.');
+                    }
+                });
+            });
+
+            $(document).ajaxError(function (event, jqxhr) {
+                if (jqxhr.status === 401) {
+                    $('#loginModal').modal('show');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

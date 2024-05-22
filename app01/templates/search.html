@@ -87,19 +87,6 @@
         }
 
         /* 播放列表选择框 */
-        .playlist-selection {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            z-index: 1000;
-        }
-
         .playlist-item {
             cursor: pointer;
             padding: 10px;
@@ -110,20 +97,83 @@
             background-color: #f0f0f0;
         }
 
-        .add-song-button {
-            display: none;
-            position: fixed;
-            top: 20%;
-            right: 20%;
+        /* 新增样式 */
+        .result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .result-item img {
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+        }
+
+        .result-item div {
+            flex-grow: 1;
+        }
+
+        .result-item .title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result-item .artist {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .result-item button {
             background-color: #4CAF50;
             color: white;
-            padding: 10px;
             border: none;
             border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        /* 自定义模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
             cursor: pointer;
         }
     </style>
-    <body>
 
     <div class="search-container">
         <div class="search-wrapper">
@@ -139,20 +189,31 @@
                 <strong>Artists:</strong>
                 <div class="artist-results-list"></div>
             </div>
+
             <div id="track-result" class="result-category" style="display: none;">
                 <strong>Tracks:</strong>
                 <div class="track-results-list"></div>
             </div>
-            <div id="album-result" class="result-category" style="display: none;">Albums results go here</div>
+
+            <div id="album-result" class="result-category" style="display: none;">
+                <strong>Albums:</strong>
+                <div class="album-results-list"></div>
+            </div>
             <div id="playlist-result" class="result-category" style="display: none;">User playlists results go here
             </div>
         </div>
     </div>
 
     <!-- 播放列表选择弹窗 -->
-    <div id="playlist-selection" class="playlist-selection"></div>
-    <button id="add-song-button" class="add-song-button">Add to Playlist</button>
+    <div id="playlistModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h5>Select Playlist</h5>
+            <div id="playlist-selection"></div>
+        </div>
+    </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
 
         function handleKeyDown(event) {
@@ -184,14 +245,26 @@
                         </div>
                     `).join('');
 
-                    albumResult.innerHTML = `<strong>Albums:</strong><br>${data.albums.map(album => `<img src='${album.image}' width='100'> ${album.name} by ${album.artist}`).join('<br>')}`;
-                    trackResult.innerHTML = `<strong>Tracks:</strong><br>${data.tracks.map(track => `
-                        <div class="track-item">
-                            <img src='${track.image}' width='100'>
-                            ${track.name} by ${track.artist}
+                    albumResult.querySelector('.album-results-list').innerHTML = data.albums.map(album => `
+                        <div class="result-item">
+                            <img src='${album.image}'>
+                            <div>
+                                <div class="title">${album.name}</div>
+                                <div class="artist">${album.artist}</div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    trackResult.querySelector('.track-results-list').innerHTML = data.tracks.map(track => `
+                        <div class="result-item">
+                            <img src='${track.image}'>
+                            <div>
+                                <div class="title">${track.name}</div>
+                                <div class="artist">${track.artist}</div>
+                            </div>
                             <button onclick="showPlaylists('${track.name}', '${track.artist}', '${track.image}')">+</button>
                         </div>
-                    `).join('')}`;
+                    `).join('');
                 });
         }
 
@@ -201,20 +274,12 @@
                 .then(data => {
                     const playlistSelection = document.getElementById('playlist-selection');
                     playlistSelection.innerHTML = data.playlists.map(playlist => `
-                        <div class="playlist-item" onclick="selectPlaylist(${playlist.id}, '${trackName}', '${trackArtist}', '${trackImage}')">
+                        <div class="playlist-item" onclick="addSongToPlaylist(${playlist.id}, '${trackName}', '${trackArtist}', '${trackImage}')">
                             ${playlist.name}
                         </div>
                     `).join('');
-                    playlistSelection.style.display = 'block';
+                    document.getElementById('playlistModal').style.display = 'block';
                 });
-        }
-
-        function selectPlaylist(playlistId, trackName, trackArtist, trackImage) {
-            const addButton = document.getElementById('add-song-button');
-            addButton.style.display = 'block';
-            addButton.onclick = function () {
-                addSongToPlaylist(playlistId, trackName, trackArtist, trackImage);
-            };
         }
 
         function addSongToPlaylist(playlistId, trackName, trackArtist, trackImage) {
@@ -238,9 +303,12 @@
                     } else {
                         alert('Failed to add song to playlist.');
                     }
-                    document.getElementById('playlist-selection').style.display = 'none';
-                    document.getElementById('add-song-button').style.display = 'none';
+                    closeModal();
                 });
+        }
+
+        function closeModal() {
+            document.getElementById('playlistModal').style.display = 'none';
         }
 
         function getCookie(name) {
@@ -256,6 +324,13 @@
                 }
             }
             return cookieValue;
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('playlistModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 {% endblock %}
