@@ -531,6 +531,8 @@ def home(request):  # 待完成，级别第二高
 
 @login_required
 def get_user_playlists(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)
     playlists = Playlist.objects.filter(user=request.user).values('id', 'name')
     return JsonResponse({'playlists': list(playlists)})
 
@@ -539,29 +541,32 @@ def get_user_playlists(request):
 @login_required
 def add_song_to_playlist(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        playlist_id = data.get('playlist_id')
-        track_name = data.get('track_name')
-        track_artist = data.get('track_artist')
-        track_image = data.get('track_image')
+        try:
+            data = json.loads(request.body)
+            playlist_id = data.get('playlist_id')
+            track_name = data.get('track_name')
+            track_artist = data.get('track_artist')
+            track_image = data.get('track_image')
 
-        playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
-        music, created = Music.objects.get_or_create(
-            title=track_name,
-            artist=track_artist,
-            defaults={'pic': track_image}
-        )
-        playlist.tracks.append({
-            'title': track_name,
-            'artist': track_artist,
-            'pic_url': track_image,
-            'position': playlist.track_number + 1
-        })
-        playlist.track_number += 1
-        playlist.save()
+            playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
+            music, created = Music.objects.get_or_create(
+                title=track_name,
+                artist=track_artist,
+                defaults={'pic': track_image}
+            )
+            playlist.tracks.append({
+                'title': track_name,
+                'artist': track_artist,
+                'pic_url': track_image,
+                'position': playlist.track_number + 1
+            })
+            playlist.track_number += 1
+            playlist.save()
 
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    return JsonResponse({'success': False}, status=400)
 
 
 def playlist_list(request):

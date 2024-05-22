@@ -225,7 +225,12 @@
         function performSearch() {
             const query = document.getElementById('search-input').value;
             fetch(`/search/results/?query=${encodeURIComponent(query)}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     // 清空并更新每个分类的结果区域
                     const trackResult = document.getElementById('track-result');
@@ -265,12 +270,20 @@
                             <button onclick="showPlaylists('${track.name}', '${track.artist}', '${track.image}')">+</button>
                         </div>
                     `).join('');
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
                 });
         }
 
         function showPlaylists(trackName, trackArtist, trackImage) {
             fetch('/get_user_playlists/')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const playlistSelection = document.getElementById('playlist-selection');
                     playlistSelection.innerHTML = data.playlists.map(playlist => `
@@ -279,6 +292,9 @@
                         </div>
                     `).join('');
                     document.getElementById('playlistModal').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
                 });
         }
 
@@ -296,7 +312,12 @@
                     track_image: trackImage
                 })
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         alert('Song added to playlist!');
@@ -304,6 +325,9 @@
                         alert('Failed to add song to playlist.');
                     }
                     closeModal();
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
                 });
         }
 
