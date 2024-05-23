@@ -76,9 +76,10 @@ urlpatterns = [
     path('playlist_list/', views.playlist_list, name="playlist_list"),
 
     path('spotify-auth/', views.spotify_auth, name='spotify_auth'),
-    path('callback/', views.spotify_callback, name='spotify_callback'),
-    path('export-to-spotify/', views.export_to_spotify, name='export_to_spotify'),
+    path('spotify-callback/', views.spotify_callback, name='spotify_callback'),
+    path('create-spotify-playlist/', views.create_spotify_playlist, name='create_spotify_playlist'),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

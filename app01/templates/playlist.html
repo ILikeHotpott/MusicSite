@@ -1,7 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
     <style>
         body {
             background-color: #1b1b1b;
@@ -27,8 +26,10 @@
         }
 
         h1 {
-            color: #eca9d9;
+            color: #ffffff;
             font-size: 100px;
+            font-family: "REM", sans-serif;
+            font-weight: 700;
         }
 
         .playlist-name {
@@ -42,16 +43,15 @@
             text-align: center;
             align-items: center;
             justify-content: center;
+
         }
 
         .songs-container {
             padding: 20px;
-            background-color: #2c2c2c;
             border-radius: 10px;
             margin-top: 20px;
             color: #ffffff;
             align-content: center;
-
         }
 
         .song-item {
@@ -83,6 +83,25 @@
             color: #bbb;
         }
 
+        .song-item-number {
+            text-align: center;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin-right: 15px;
+            background-color: #1b1b1b;
+        }
+
+        .number-span {
+            width: 60px;
+            font-weight: bold;
+            font-size: 50px;
+            text-align: center;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
         @media (max-width: 576px) {
             .song-title {
                 font-size: 20px;
@@ -101,6 +120,14 @@
                 width: 100px;
                 height: 100px;
             }
+
+            .song-item-number {
+                width: 30px !important; /* 适应小屏幕 */
+            }
+
+            .number-span {
+                font-size: 40px;
+            }
         }
     </style>
 
@@ -112,23 +139,50 @@
         </div>
     </div>
 
-    <button id="exportToSpotify" onclick="exportToSpotify()">Export Playlist to Spotify</button>
+    {#    <button id="exportToSpotify" onclick="exportToSpotify()">导出到 Spotify</button>#}
+
     <div class="songs-container">
         {% for song in songs %}
-            <div class="song-item">
-                <img src="{{ song.pic_url }}" alt="{{ song.title }}">
-                <div class="song-details">
-                    <div class="song-title">{{ song.title }}</div>
-                    <div class="song-artist">{{ song.artist }}</div>
-                </div>
-            </div>
+            <table>
+                <tbody>
+                <tr class="song-item">
+                    <td class="song-item-number">
+                        <span class="number-span">{{ forloop.counter }}</span>
+                    </td>
+                    <td><img src="{{ song.pic_url }}" alt="{{ song.title }}"></td>
+                    <td class="song-details">
+                        <div class="song-title">{{ song.title }}</div>
+                        <div class="song-artist">{{ song.artist }}</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         {% endfor %}
     </div>
 
     <script>
-        function exportToSpotify() {
-            window.location.href = "{% url 'spotify_auth' %}";
+        async function exportToSpotify() {
+            const playlistName = "{{ playlist_info.name }}";
+            const tracks = [
+                {% for song in songs %}
+                    "{{ song.spotify_uri }}",
+                {% endfor %}
+            ];
+
+            const response = await fetch('/create-spotify-playlist/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({tracks, playlist_name: playlistName}),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Playlist created successfully: ' + result.playlist_id);
+            } else {
+                alert('Failed to create playlist');
+            }
         }
     </script>
-
 {% endblock %}
