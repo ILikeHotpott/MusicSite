@@ -1,6 +1,7 @@
 from io import BytesIO
 import json
 import boto3
+import requests
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
@@ -20,6 +21,7 @@ from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
+from djangoProject.settings import SPOTIFY_REDIRECT_URI, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 
 
 class MusicModelForm(BootstrapModelForm):
@@ -512,13 +514,17 @@ class SongForm(forms.ModelForm):
         fields = ['title', 'artist', 'pic']
 
 
-def playlist(request, playlist_id):  # 待完成，级别第三高
+def playlist(request, playlist_id):
     playlist_info = get_object_or_404(Playlist, id=playlist_id)
-    songs = playlist_info.tracks
-    print("playlist_info", playlist_info)
-    print("songs", songs)
+    songs = playlist_info.tracks  # 直接从 JSONField 获取歌曲列表
 
-    return render(request, "playlist.html", {"playlist_info": playlist_info, "songs": songs})
+    # 将歌曲的 Spotify URI 和其他信息存储在 session 中
+    request.session['playlist_name'] = playlist_info.name
+    request.session['songs'] = [{'spotify_uri': song['spotify_uri']} for song in songs]
+    track_uris = [song['spotify_uri'] for song in request.session.get('songs', [])]
+    print(track_uris)  # 输出 track_uris 以进行调试
+
+    return render(request, 'playlist.html', {'playlist_info': playlist_info, 'songs': songs})
 
 
 def rank_list(request):
@@ -547,17 +553,14 @@ def add_song_to_playlist(request):
             track_name = data.get('track_name')
             track_artist = data.get('track_artist')
             track_image = data.get('track_image')
+            track_uri = data.get('track_uri')
 
             playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
-            music, created = Music.objects.get_or_create(
-                title=track_name,
-                artist=track_artist,
-                defaults={'pic': track_image}
-            )
             playlist.tracks.append({
                 'title': track_name,
                 'artist': track_artist,
                 'pic_url': track_image,
+                'spotify_uri': track_uri,
                 'position': playlist.track_number + 1
             })
             playlist.track_number += 1
@@ -573,3 +576,70 @@ def playlist_list(request):
     user = request.user
     playlists = Playlist.objects.filter(user=user).order_by('-created_at')
     return render(request, "playlist_list.html", {"playlists": playlists})
+
+
+def spotify_auth(request):
+    scope = 'playlist-modify-private'
+    auth_url = (
+        f'https://accounts.spotify.com/authorize?response_type=code&client_id={settings.SPOTIFY_CLIENT_ID}'
+        f'&scope={scope}&redirect_uri={settings.SPOTIFY_REDIRECT_URI}'
+    )
+    return redirect(auth_url)
+
+
+def spotify_callback(request):
+    code = request.GET.get('code')
+    token_url = 'https://accounts.spotify.com/api/token'
+    response = requests.post(
+        token_url,
+        data={
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+            'client_id': settings.SPOTIFY_CLIENT_ID,
+            'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+        },
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    )
+    token_data = response.json()
+    access_token = token_data.get('access_token')
+
+    # 存储 access_token 到 session 或数据库
+    request.session['spotify_access_token'] = access_token
+
+    return redirect('export_to_spotify')
+
+
+def export_to_spotify(request):
+    access_token = request.session.get('spotify_access_token')
+    if not access_token:
+        return redirect('spotify_auth')
+
+    # 获取播放列表和歌曲信息
+    playlist_id = request.GET.get('playlist_id')
+    playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
+    playlist_name = playlist.name
+    track_uris = [track['spotify_uri'] for track in playlist.tracks]
+
+    headers = {'Authorization': f'Bearer {access_token}', 'Content-Type': 'application/json'}
+
+    # 创建歌单
+    user_profile_response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+    user_id = user_profile_response.json().get('id')
+    create_playlist_response = requests.post(
+        f'https://api.spotify.com/v1/users/{user_id}/playlists',
+        headers=headers,
+        json={'name': playlist_name, 'description': 'Imported from My Website', 'public': False}
+    )
+    create_playlist_response.raise_for_status()  # 如果请求失败，则引发异常
+    playlist_id = create_playlist_response.json().get('id')
+
+    # 添加歌曲到歌单
+    add_tracks_response = requests.post(
+        f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks',
+        headers=headers,
+        json={'uris': track_uris}
+    )
+    add_tracks_response.raise_for_status()  # 如果请求失败，则引发异常
+
+    return render(request, 'export_success.html', {'playlist_url': f'https://open.spotify.com/playlist/{playlist_id}'})

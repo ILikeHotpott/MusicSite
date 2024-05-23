@@ -267,7 +267,7 @@
                                 <div class="title">${track.name}</div>
                                 <div class="artist">${track.artist}</div>
                             </div>
-                            <button onclick="showPlaylists('${track.name}', '${track.artist}', '${track.image}')">+</button>
+                            <button onclick="showPlaylists('${track.name}', '${track.artist}', '${track.image}', '${track.spotify_uri}')">+</button>
                         </div>
                     `).join('');
                 })
@@ -276,7 +276,7 @@
                 });
         }
 
-        function showPlaylists(trackName, trackArtist, trackImage) {
+        function showPlaylists(trackName, trackArtist, trackImage, trackUri) {
             fetch('/get_user_playlists/')
                 .then(response => {
                     if (!response.ok) {
@@ -287,7 +287,7 @@
                 .then(data => {
                     const playlistSelection = document.getElementById('playlist-selection');
                     playlistSelection.innerHTML = data.playlists.map(playlist => `
-                        <div class="playlist-item" onclick="addSongToPlaylist(${playlist.id}, '${trackName}', '${trackArtist}', '${trackImage}')">
+                        <div class="playlist-item" onclick="addSongToPlaylist(${playlist.id}, '${trackName}', '${trackArtist}', '${trackImage}', '${trackUri}')">
                             ${playlist.name}
                         </div>
                     `).join('');
@@ -298,7 +298,7 @@
                 });
         }
 
-        function addSongToPlaylist(playlistId, trackName, trackArtist, trackImage) {
+        function addSongToPlaylist(playlistId, trackName, trackArtist, trackImage, trackUri) {
             fetch('/add_song_to_playlist/', {
                 method: 'POST',
                 headers: {
@@ -309,7 +309,8 @@
                     playlist_id: playlistId,
                     track_name: trackName,
                     track_artist: trackArtist,
-                    track_image: trackImage
+                    track_image: trackImage,
+                    track_uri: trackUri
                 })
             })
                 .then(response => {

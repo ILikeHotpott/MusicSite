@@ -74,6 +74,10 @@ urlpatterns = [
     path('add_song_to_playlist/', views.add_song_to_playlist, name='add_song_to_playlist'),
 
     path('playlist_list/', views.playlist_list, name="playlist_list"),
+
+    path('spotify-auth/', views.spotify_auth, name='spotify_auth'),
+    path('callback/', views.spotify_callback, name='spotify_callback'),
+    path('export-to-spotify/', views.export_to_spotify, name='export_to_spotify'),
 ]
 
 if settings.DEBUG:

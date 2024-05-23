@@ -50,19 +50,20 @@
             border-radius: 10px;
             margin-top: 20px;
             color: #ffffff;
+            align-content: center;
+
         }
 
         .song-item {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
+            padding: 20px;
             border-bottom: 1px solid #444;
         }
 
         .song-item img {
-            width: 100px;
-            height: 100px;
+            width: 130px;
+            height: 130px;
             border-radius: 5px;
             margin-right: 15px;
         }
@@ -81,15 +82,37 @@
             font-size: 20px;
             color: #bbb;
         }
+
+        @media (max-width: 576px) {
+            .song-title {
+                font-size: 20px;
+                color: #eca9d9;
+            }
+
+            .song-artist {
+                font-size: 15px;
+            }
+
+            .song-item {
+                padding: 10px;
+            }
+
+            .song-item img {
+                width: 100px;
+                height: 100px;
+            }
+        }
     </style>
 
     <div class="video-logo-container">
-        <video src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/blackhole_5x.mp4" autoplay loop muted playsinline></video>
+        <video src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/blackhole_5x.mp4" autoplay loop muted
+               playsinline></video>
         <div class="playlist-name">
             <h1>{{ playlist_info.name }}</h1>
         </div>
     </div>
 
+    <button id="exportToSpotify" onclick="exportToSpotify()">Export Playlist to Spotify</button>
     <div class="songs-container">
         {% for song in songs %}
             <div class="song-item">
@@ -101,5 +124,11 @@
             </div>
         {% endfor %}
     </div>
+
+    <script>
+        function exportToSpotify() {
+            window.location.href = "{% url 'spotify_auth' %}";
+        }
+    </script>
 
 {% endblock %}

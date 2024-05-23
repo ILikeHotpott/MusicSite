@@ -187,6 +187,7 @@ ASGI_APPLICATION = "djangoProject.asgi.application"
 
 SPOTIFY_CLIENT_ID = '4ed1dc13d9df4e07a742656a340eb1a2'
 SPOTIFY_CLIENT_SECRET = '8f23c185ddde4847afe06b5d83552108'
+SPOTIFY_REDIRECT_URI = 'https://www.music-top.com/callback'
 MUSIXMATCH_API_KEY = '5851d97baf1dc0e9ad50041ce6a273bc'
 
 AWS_STORAGE_BUCKET_NAME = 'musictop-bucket'
