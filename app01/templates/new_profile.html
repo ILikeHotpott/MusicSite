@@ -91,10 +91,11 @@
             overflow: hidden;
             border: 1px solid #d3d3d3; /* 浅灰色边框 */
             position: relative;
-            top: -60px; /* 覆盖部分背景图 */
+            top: -40px; /* 覆盖部分背景图 */
             left: 5%;
             z-index: 5; /* 确保头像显示在上方 */
             background-color: white; /* 边框颜色 */
+            display: inline-flex;
         }
 
         .profile-picture img {
@@ -103,10 +104,25 @@
             object-fit: cover;
         }
 
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-left: 5%; /* 调整名字与头像的距离 */
+        }
+
+        .profile-username {
+            color: black;
+            font-size: 40px;
+            margin-left: 40px;
+            height: 50px;
+            margin-bottom: 20%;
+        }
+
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 10px; /* 调整按钮间距 */
         }
+
 
         .btn {
             padding: 10px 20px;
@@ -162,6 +178,131 @@
             justify-content: center;
             align-items: center;
         }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* 可以根据需要调整 */
+            width: 100%;
+        }
+
+
+        .playlist {
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+            height: 200px;
+            border-radius: 15px;
+        }
+
+        .post-list {
+            height: auto;
+            text-align: center;
+            width: 75%;
+            overflow-y: auto;
+        }
+
+        .post-container {
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            text-align: left;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .name, .time {
+            flex-grow: 1; /* 允许这些元素填充额外空间 */
+            white-space: nowrap; /* 防止内容折行 */
+            overflow: hidden;
+            text-overflow: ellipsis; /* 超出部分显示省略号 */
+        }
+
+        .post-header img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .post-header .name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-right: 20px;
+        }
+
+        .post-header .time {
+            margin-left: auto;
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        .post-content {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+
+        .image-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 创建三列 */
+            gap: 10px; /* 设置列与列之间的间隔 */
+        }
+
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .image-container div {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .post-actions {
+            border-top: 1px solid #eee;
+            padding-top: 9px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 1.2em;
+            color: #555;
+            height: 30px;
+        }
+
+        .post-actions img {
+            height: 25px;
+            margin-right: 5px;
+            margin-top: -3px;
+        }
+
+        .post-actions span:hover {
+            cursor: pointer;
+        }
+
+        .profile-post-avatar {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+
     </style>
 
     <div class="background-image-container">
@@ -175,8 +316,11 @@
 
     <div class="user-info">
         <div class="user-info-container">
-            <div class="profile-picture">
-                <img src="/media/green.jpg" alt="Profile Picture">
+            <div class="profile-info">
+                <div class="profile-picture">
+                    <img src="/media/green.jpg" alt="Profile Picture">
+                </div>
+                <span class="profile-username">Last Whisper</span>
             </div>
             <div class="button-group">
                 <span><button class="btn btn-primary">Post</button></span>
@@ -184,6 +328,7 @@
             </div>
         </div>
     </div>
+
 
     <div style="display: flex; justify-content: center; align-items: center;">
         <div class="split-line"></div>
@@ -206,6 +351,121 @@
             <img src="https://i.scdn.co/image/ab67616d0000b273ab5e496971b38a864fefdb8d" alt="Ding">
         </div>
     </div>
+
+
+    <div class="container">
+        <div class="col-xs-4 playlist">
+
+        </div>
+
+        <div class="col-xs-7 post-list">
+
+            <div class="post-container">
+                <div class="post-header">
+                    <span class="profile-post-avatar">
+                        <img src="/media/green.jpg" alt="Profile Picture">
+                    </span>
+                    <span class="name">Last Whisper</span>
+                    <span class="time">2024 Dec 15th 13:00</span>
+                    <span class="dropdown">
+                            <span class="more-options dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                  aria-expanded="false"><img style="width:25px; height:25px; opacity: 70%;"
+                                                             src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/more.png"></span>
+                        {% if request.user.is_authenticated and item.user == request.user %}
+                            <ul class="dropdown-menu dropdown-menu-left">
+                                <li><a class="delete-post" data-post-id="{{ item.id }}" href="javascript:void(0);"
+                                       style="color: #CB1212">Delete Post</a></li>
+                            </ul>
+                        {% else %}
+                            <ul class="dropdown-menu dropdown-menu-left">
+                                <li><a href="/#/">Not Interested</a></li>
+                                <li><a href="/#/">Follow User</a></li>
+                                <li><a href="/#/">Block User</a></li>
+                            </ul>
+                        {% endif %}
+                        </span>
+                </div>
+                <div class="post-content">
+                    Good day, mate!
+                </div>
+                {% if item.image_urls %}
+                    <div class="image-container">
+                        {% for image_url in item.image_urls %}
+                            <div>
+                                <img src="{{ image_url }}" class="responsive-img" loading="lazy">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if item.video_urls %}
+                    <div class="video-container">
+                        {% for video_url in item.video_urls %}
+                            <div class="video-container">
+                                <video controls class="responsive-video" autoplay muted>
+                                    <source src="{{ video_url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div class="video-modal" onclick="play(this)">
+                                    <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/play.png"
+                                         style="opacity: 0.5; height: 65px;">
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                {% endif %}
+
+                <div class="post-actions">
+                        <span class="like" data-post-id="{{ item.id }}">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ item.is_liked|yesno:'like_red.png,like_grey.png' }}"
+                                 class="like-icon"
+                                 id="like-img-{{ item.id }}">
+                            <span id="like-count-{{ item.id }}">{{ item.likes_count }}</span>
+                        </span>
+
+                    <span class="comment" data-post-id="{{ item.id }}">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/comment.png">
+                        </span>
+                    <span id="share">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/share.png">
+                        </span>
+                </div>
+                <div id="commentInput-{{ item.id }}" class="comment-input-container" style="display:none;">
+                    <textarea class="form-control" placeholder="Write a comment..."></textarea>
+                    <button class="btn btn-primary submit-comment" data-post-id="{{ item.id }}">Comment</button>
+                </div>
+                <div class="comments-container">
+                    {% with item.comments.all|slice:":5" as initial_comments %}
+                        {% for comment in initial_comments %}
+                            <div class="moment-comment">
+                                <strong>
+                                        <span>
+                                            <img src="{{ comment.user.avatar.url }}"
+                                                 style="height: 30px; border-radius: 50%">
+                                        </span>
+                                    <span
+                                            class="moment-comment-name">{{ comment.user.username }}
+                                        </span>
+                                </strong>: {{ comment.content }}
+                            </div>
+                        {% endfor %}
+                    {% endwith %}
+                    {% if item.comments.count > 5 %}
+                        <button class="btn btn-link load-more-comments" data-post-id="{{ item.id }}"
+                                data-offset="5">Load more
+                            comments
+                        </button>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {#background picture drag#}
     <script>
         const container = document.querySelector('.background-image-container');
         const imageWrapper = document.querySelector('.background-image');
@@ -265,6 +525,7 @@
         });
     </script>
 
+    {#    gallery#}
     <script>
         const scrollSpeed = 0.5;
 
@@ -299,5 +560,7 @@
         // 开始滚动
         scrollRight('gallery2');
     </script>
+
+
 
 {% endblock %}
