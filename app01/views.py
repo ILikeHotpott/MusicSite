@@ -628,4 +628,30 @@ def create_spotify_playlist(request):
 
 
 def new_profile(request):
-    return render(request, 'new_profile.html')
+    user = request.user
+    queryset = None
+    if user.is_authenticated:
+        queryset = models.Moments.objects.prefetch_related('comments').filter(user=user).order_by('-created_at')
+
+    return render(request, 'new_profile.html', {'queryset': queryset, 'user': user})
+
+
+def playground(request):
+    if request.method == "GET":
+        user_info = None
+        if request.user.is_authenticated:
+            user_info = models.UserInfo.objects.filter(username=request.user.username).first()
+
+        queryset = models.Moments.objects.prefetch_related('comments').all().order_by('-created_at')
+
+        redis_conn = get_redis_connection('default')
+        user_id = request.user.id if request.user.is_authenticated else None
+
+        for moment in queryset:
+            likes_key = f'post_likes:{moment.id}'
+            moment.like_count = redis_conn.scard(likes_key)
+            moment.is_liked = redis_conn.sismember(likes_key, user_id) if user_id else False
+
+        return render(request, "playground.html", {"queryset": queryset, "user_info": user_info})
+
+
