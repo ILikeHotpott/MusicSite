@@ -2,65 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Django and React App</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Hello Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <!-- Modal HTML -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="loginForm">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<canvas id="canvas" width="800" height="200"></canvas>
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'black';
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#loginForm').on('submit', function (event) {
-                event.preventDefault();
-                $.ajax({
-                    url: '{% url "login" %}',
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function (data) {
-                        $('#loginModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function (xhr) {
-                        alert('Login failed. Please try again.');
-                    }
-                });
-            });
+    const paths = [
+        // H
+        [{x: 50, y: 50}, {x: 50, y: 150}],
+        [{x: 100, y: 50}, {x: 100, y: 150}],
+        [{x: 50, y: 100}, {x: 100, y: 100}],
+        // e
+        [{x: 150, y: 100}, {x: 200, y: 100}, {x: 200, y: 75}, {x: 150, y: 75}, {x: 150, y: 125}, {x: 200, y: 125}],
+        // l
+        [{x: 250, y: 50}, {x: 250, y: 150}],
+        // l
+        [{x: 300, y: 50}, {x: 300, y: 150}],
+        // o
+        [{x: 350, y: 100}, {x: 400, y: 100}, {x: 400, y: 75}, {x: 350, y: 75}, {x: 350, y: 125}, {x: 400, y: 125}]
+    ];
 
-            $(document).ajaxError(function (event, jqxhr) {
-                if (jqxhr.status === 401) {
-                    $('#loginModal').modal('show');
-                }
-            });
-        });
-    </script>
+    let currentPath = 0;
+    let currentPoint = 0;
+
+    function draw() {
+        if (currentPath < paths.length) {
+            const path = paths[currentPath];
+            if (currentPoint < path.length - 1) {
+                const start = path[currentPoint];
+                const end = path[currentPoint + 1];
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.stroke();
+                currentPoint++;
+                requestAnimationFrame(draw);
+            } else {
+                currentPath++;
+                currentPoint = 0;
+                requestAnimationFrame(draw);
+            }
+        }
+    }
+
+    draw();
+</script>
 </body>
 </html>

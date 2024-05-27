@@ -739,7 +739,6 @@
             var container = document.getElementById('main-container');
             console.log('Checking container class...'); // 日志输出，帮助调试
 
-            // 根据媒体查询条件来移除或添加类
             if (mediaQuery.matches) {
                 console.log('Media query matches (max-width: 576px). Removing container class.');
                 container.classList.remove('container');
@@ -753,12 +752,8 @@
     </script>
 
     <script>
-        // 滚动速度（像素）
         const scrollSpeed = 1;
 
-        /**
-         * 为了实现无缝滚动，我们需要重复每个画廊的内容
-         */
         function duplicateContent(id) {
             const gallery = document.getElementById(id);
             const children = Array.from(gallery.children);

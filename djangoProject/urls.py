@@ -78,6 +78,8 @@ urlpatterns = [
     path('spotify-auth/', views.spotify_auth, name='spotify_auth'),
     path('spotify-callback/', views.spotify_callback, name='spotify_callback'),
     path('create-spotify-playlist/', views.create_spotify_playlist, name='create_spotify_playlist'),
+
+    path('new_profile/', views.new_profile, name='new_profile'),
 ]
 
 

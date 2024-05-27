@@ -625,3 +625,26 @@ def create_spotify_playlist(request):
         return JsonResponse({'success': True, 'playlist_id': playlist_id})
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+def new_profile(request):
+    return render(request, 'new_profile.html')
+
+
+# @login_required
+# def profile(request):
+#     user = request.user
+#     queryset = None
+#     if user.is_authenticated:
+#         queryset = models.Moments.objects.filter(user=user).order_by('-created_at')
+#
+#     if request.method == 'POST':
+#         form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+#         print("form", form)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('/profile')
+#     else:
+#         form = UserUpdateForm(instance=request.user)
+#
+#     return render(request, "profile.html", {"form": form, "queryset": queryset})

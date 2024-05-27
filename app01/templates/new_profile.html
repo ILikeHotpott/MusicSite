@@ -1,0 +1,303 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <style>
+
+
+        .background-image-container {
+            position: relative;
+            height: 50vh;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        .background-image {
+            position: absolute;
+            cursor: grab;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: auto;
+        }
+
+        .background-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            max-width: none;
+        }
+
+        .drag-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .drag-button.active {
+            background-color: #0056b3;
+        }
+
+        .left-gradient, .right-gradient {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .left-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12.5vw;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+        }
+
+        .right-gradient {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 12.5vw;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+        }
+
+        .user-info {
+            position: relative;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 25vh;
+        }
+
+        .user-info-container {
+            display: flex;
+            width: 80vw;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-picture {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid #d3d3d3; /* 浅灰色边框 */
+            position: relative;
+            top: -60px; /* 覆盖部分背景图 */
+            left: 5%;
+            z-index: 5; /* 确保头像显示在上方 */
+            background-color: white; /* 边框颜色 */
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-default {
+            background-color: #f0f0f0;
+        }
+
+        .split-line {
+            height: 1px;
+            background-color: grey;
+            position: relative;
+            width: 80%;
+        }
+
+        .gallery-container {
+            width: 100%;
+            overflow: hidden;
+            margin-top: 30px;
+            position: relative;
+            height: 250px;
+        }
+
+        .gallery-content {
+            display: flex;
+            white-space: nowrap;
+            position: absolute;
+            left: 0;
+        }
+
+        .gallery-content img {
+            margin: 0 10px;
+            height: 200px; /* 固定高度 */
+            width: 200px; /* 固定宽度 */
+            border: 1px solid gray;
+        }
+
+        .gallery-title {
+            font-size: 36px;
+            font-family: "Josefin Sans", sans-serif;
+            font-weight: 500;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <div class="background-image-container">
+        <button class="drag-button">Enable Drag</button>
+        <div class="left-gradient"></div>
+        <div class="right-gradient"></div>
+        <div class="background-image">
+            <img src="/media/profile_bgp.jpeg" alt="Background Image">
+        </div>
+    </div>
+
+    <div class="user-info">
+        <div class="user-info-container">
+            <div class="profile-picture">
+                <img src="/media/green.jpg" alt="Profile Picture">
+            </div>
+            <div class="button-group">
+                <span><button class="btn btn-primary">Post</button></span>
+                <span><button class="btn btn-default">Edit</button></span>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div class="split-line"></div>
+    </div>
+
+    <div class="gallery-title">
+        Favourite Albums
+    </div>
+    <div class="gallery-container">
+        <div class="gallery-content" id="gallery2">
+            <img src="https://i.scdn.co/image/ab67616d0000b273f7ecaf9daf2c1d5ca89f7312" alt="ABBA">
+            <img src="https://i.scdn.co/image/ab67616d0000b27359998815d706661e2c404d9f" alt="killer queen">
+            <img src="https://i.scdn.co/image/ab67616d0000b273f72f1e38e9bd48f18a17ed9b" alt="Goodbye yellow brick road">
+            <img src="https://i.scdn.co/image/ab67616d0000b27359ae8cf65d498afdd5585634" alt="lana">
+            <img src="https://i.scdn.co/image/ab67616d0000b2731d5cf960a92bb8b03fc2be7f" alt="Image 1">
+            <img src="https://i.scdn.co/image/ab67616d0000b2739e16930796a07f1195002389" alt="fuji kaze">
+            <img src="https://i.scdn.co/image/ab67616d0000b273dc30583ba717007b00cceb25" alt="The Beatles">
+            <img src="https://i.scdn.co/image/ab67616d0000b2734121faee8df82c526cbab2be" alt="MJ">
+            <img src="https://i.scdn.co/image/ab67616d0000b273726d48d93d02e1271774f023" alt="Eminem">
+            <img src="https://i.scdn.co/image/ab67616d0000b273ab5e496971b38a864fefdb8d" alt="Ding">
+        </div>
+    </div>
+    <script>
+        const container = document.querySelector('.background-image-container');
+        const imageWrapper = document.querySelector('.background-image');
+        const image = document.querySelector('.background-image img');
+        const dragButton = document.querySelector('.drag-button');
+
+        let isDragging = false;
+        let dragEnabled = false;
+        let startY, initialTop;
+
+        // Load saved position from localStorage
+        const savedTop = localStorage.getItem('imageTop');
+        if (savedTop !== null) {
+            imageWrapper.style.top = `${savedTop}px`;
+        }
+
+        dragButton.addEventListener('click', () => {
+            dragEnabled = !dragEnabled;
+            dragButton.classList.toggle('active');
+            dragButton.textContent = dragEnabled ? 'Disable Drag' : 'Enable Drag';
+            imageWrapper.style.cursor = dragEnabled ? 'grab' : 'default';
+        });
+
+        imageWrapper.addEventListener('mousedown', (e) => {
+            if (dragEnabled) {
+                isDragging = true;
+                startY = e.clientY;
+                initialTop = imageWrapper.offsetTop;
+                imageWrapper.style.cursor = 'grabbing';
+                e.preventDefault();  // Prevent default behavior to avoid any issues with dragging
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging && dragEnabled) {
+                const dy = e.clientY - startY;
+                let newTop = initialTop + dy;
+
+                // Prevent dragging out of bounds
+                const containerHeight = container.clientHeight;
+                const imageHeight = imageWrapper.clientHeight;
+                newTop = Math.min(newTop, 0);  // Prevent dragging down beyond the top of the container
+                newTop = Math.max(newTop, containerHeight - imageHeight);  // Prevent dragging up beyond the bottom of the image
+
+                imageWrapper.style.top = `${newTop}px`;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                imageWrapper.style.cursor = dragEnabled ? 'grab' : 'default';
+
+                // Save position to localStorage
+                localStorage.setItem('imageTop', imageWrapper.offsetTop);
+            }
+        });
+    </script>
+
+    <script>
+        const scrollSpeed = 0.5;
+
+        function duplicateContent(id) {
+            const gallery = document.getElementById(id);
+            const children = Array.from(gallery.children);
+            children.forEach(child => {
+                const clone = child.cloneNode(true);
+                gallery.appendChild(clone);
+            });
+        }
+
+        // 向右滚动的函数
+        function scrollRight(id) {
+            const gallery = document.getElementById(id);
+            let position = parseInt(gallery.style.left, 10) || 0;
+
+            function animate() {
+                position -= scrollSpeed;
+                if (position <= -gallery.scrollWidth / 2) {
+                    position = 0;
+                }
+                gallery.style.left = position + 'px';
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        duplicateContent('gallery2');
+
+        // 开始滚动
+        scrollRight('gallery2');
+    </script>
+
+{% endblock %}
