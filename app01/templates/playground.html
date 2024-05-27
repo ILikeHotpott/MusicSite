@@ -520,15 +520,12 @@
             <div class="left-bar-tools">
                 <div class="avatar">
                     <a href="/profile/">
-                        {% if not request.user.is_authenticated %}
-                            {#                            <img src="/media/profile/default.png">#}
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png">
-                        {% elif request.user and not user_info.avatar %}
-                            {#                            <img src="/media/profile/default.png">#}
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png">
+                        {% if user.is_authenticated %}
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ user_info.avatar }}"
+                                 alt="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png">
                         {% else %}
-                            {#                            <img src="/media/{{ user_info.avatar }}">#}
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/{{ user_info.avatar }}">
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png"
+                                 alt="nothing">
                         {% endif %}
                     </a>
                 </div>
