@@ -1,10 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-
     <style>
-
         body {
             background-color: #f0edf6;
         }
@@ -93,12 +90,12 @@
             height: 200px;
             border-radius: 50%;
             overflow: hidden;
-            border: 1px solid #d3d3d3; /* 浅灰色边框 */
+            border: 1px solid #d3d3d3;
             position: relative;
-            top: -40px; /* 覆盖部分背景图 */
+            top: -40px;
             left: 5%;
-            z-index: 5; /* 确保头像显示在上方 */
-            background-color: white; /* 边框颜色 */
+            z-index: 5;
+            background-color: white;
             display: inline-flex;
         }
 
@@ -111,7 +108,7 @@
         .profile-info {
             display: flex;
             align-items: center;
-            margin-left: 5%; /* 调整名字与头像的距离 */
+            margin-left: 5%;
         }
 
         .profile-username {
@@ -124,9 +121,8 @@
 
         .button-group {
             display: flex;
-            gap: 10px; /* 调整按钮间距 */
+            gap: 10px;
         }
-
 
         .btn {
             padding: 10px 20px;
@@ -168,8 +164,8 @@
 
         .gallery-content img {
             margin: 0 10px;
-            height: 200px; /* 固定高度 */
-            width: 200px; /* 固定宽度 */
+            height: 200px;
+            width: 200px;
             border: 1px solid gray;
         }
 
@@ -186,17 +182,16 @@
         .container {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start; /* 可以根据需要调整 */
+            align-items: flex-start;
             width: 100%;
         }
-
 
         .post-list {
             height: auto;
             text-align: center;
             width: 55%;
             overflow-y: auto;
-            max-height: 80vh; /* 限制post-list的高度 */
+            max-height: 80vh;
         }
 
         .post-container {
@@ -218,10 +213,10 @@
         }
 
         .name, .time {
-            flex-grow: 1; /* 允许这些元素填充额外空间 */
-            white-space: nowrap; /* 防止内容折行 */
+            flex-grow: 1;
+            white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis; /* 超出部分显示省略号 */
+            text-overflow: ellipsis;
         }
 
         .post-header img {
@@ -234,7 +229,7 @@
         .post-header .name {
             font-weight: bold;
             font-size: 16px;
-            margin-right: 20px;
+            margin-left: 20px;
         }
 
         .post-header .time {
@@ -248,11 +243,10 @@
             font-size: 20px;
         }
 
-
         .image-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 创建三列 */
-            gap: 10px; /* 调整列间距 */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
 
         .responsive-img {
@@ -308,29 +302,28 @@
             height: auto;
             border-radius: 15px;
             display: flex;
-            flex-direction: column; /* 确保子元素垂直排列 */
-            align-items: flex-start; /* 左对齐 */
+            flex-direction: column;
+            align-items: flex-start;
             background-color: white;
             position: sticky;
         }
 
-
         .playlist-header {
             font-size: 35px;
-            margin-bottom: 20px; /* 添加下边距以分隔标题和内容 */
-            width: 100%; /* 确保标题占据全部宽度 */
-            text-align: left; /* 标题左对齐 */
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: left;
         }
 
         .playlist-content ul {
-            list-style: none; /* 去除默认的列表样式 */
-            padding: 0; /* 去除默认的内边距 */
-            margin: 0; /* 去除默认的外边距 */
-            width: 100%; /* 确保列表占据全部宽度 */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
         }
 
         .playlist-content li {
-            margin-bottom: 15px; /* 每个播放列表项之间的间距 */
+            margin-bottom: 15px;
         }
 
         .playlist-item {
@@ -343,18 +336,16 @@
         }
 
         .playlist-cover {
-            width: 100px; /* 封面的宽度 */
-            height: 100px; /* 封面的高度 */
-            margin-right: 10px; /* 封面和名称之间的间距 */
-            object-fit: cover; /* 确保封面图片不会变形 */
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+            object-fit: cover;
         }
 
         .playlist-name {
             font-size: 18px;
             color: black;
         }
-
-
     </style>
 
     <div class="background-image-container">
@@ -371,23 +362,11 @@
             <div class="profile-info">
                 <div class="profile-picture">
                     {% if user.avatar %}
-                        <img src="{{ user.avatar.url }}" alt="User Profile">
+                        <img src="{{ user.avatar.url }}" alt="User Profile" loading="lazy">
                     {% else %}
-                        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png" alt="Nothing">
+                        <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/profile/default.png"
+                             alt="Nothing" loading="lazy">
                     {% endif %}
-
-
-                    {% if user.avatar %}
-                        <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
-                            <img src="{{ user.avatar.url }}" alt="User Profile" class="img-circle avatar">
-                        </a>
-                    {% else %}
-                        <a href="#" data-toggle="modal" data-target="#avatarUpdateModal">
-                            <img src="/media/profile/default.png" alt="User Profile" class="img-circle avatar">
-                        </a>
-                    {% endif %}
-
-
                 </div>
                 <span class="profile-username">{{ user.username }}</span>
             </div>
@@ -398,29 +377,28 @@
         </div>
     </div>
 
-
     <div style="display: flex; justify-content: center; align-items: center;">
         <div class="split-line"></div>
     </div>
 
-    <div class="gallery-title">
-        Favourite Albums
-    </div>
+    <div class="gallery-title">Favourite Albums</div>
     <div class="gallery-container">
         <div class="gallery-content" id="gallery2">
-            <img src="https://i.scdn.co/image/ab67616d0000b273f7ecaf9daf2c1d5ca89f7312" alt="ABBA">
-            <img src="https://i.scdn.co/image/ab67616d0000b27359998815d706661e2c404d9f" alt="killer queen">
-            <img src="https://i.scdn.co/image/ab67616d0000b273f72f1e38e9bd48f18a17ed9b" alt="Goodbye yellow brick road">
-            <img src="https://i.scdn.co/image/ab67616d0000b27359ae8cf65d498afdd5585634" alt="lana">
-            <img src="https://i.scdn.co/image/ab67616d0000b2731d5cf960a92bb8b03fc2be7f" alt="Image 1">
-            <img src="https://i.scdn.co/image/ab67616d0000b2739e16930796a07f1195002389" alt="fuji kaze">
-            <img src="https://i.scdn.co/image/ab67616d0000b273dc30583ba717007b00cceb25" alt="The Beatles">
-            <img src="https://i.scdn.co/image/ab67616d0000b2734121faee8df82c526cbab2be" alt="MJ">
-            <img src="https://i.scdn.co/image/ab67616d0000b273726d48d93d02e1271774f023" alt="Eminem">
-            <img src="https://i.scdn.co/image/ab67616d0000b273ab5e496971b38a864fefdb8d" alt="Ding">
+            <img src="https://i.scdn.co/image/ab67616d0000b273f7ecaf9daf2c1d5ca89f7312" alt="ABBA" loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b27359998815d706661e2c404d9f" alt="killer queen"
+                 loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b273f72f1e38e9bd48f18a17ed9b" alt="Goodbye yellow brick road"
+                 loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b27359ae8cf65d498afdd5585634" alt="lana" loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b2731d5cf960a92bb8b03fc2be7f" alt="Image 1" loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b2739e16930796a07f1195002389" alt="fuji kaze" loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b273dc30583ba717007b00cceb25" alt="The Beatles"
+                 loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b2734121faee8df82c526cbab2be" alt="MJ" loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b273726d48d93d02e1271774f023" alt="Eminem" loading="lazy">
+            <img src="https://i.scdn.co/image/ab67616d0000b273ab5e496971b38a864fefdb8d" alt="Ding" loading="lazy">
         </div>
     </div>
-
 
     <div class="container">
         <div class="col-xs-4 playlist">
@@ -430,7 +408,7 @@
                     <li>
                         <div class="playlist-item">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/4_Beautiful_Things_Benson_Boone.jpg"
-                                 alt="Beautiful Things" class="playlist-cover">
+                                 alt="Beautiful Things" class="playlist-cover" loading="lazy">
                             <span class="playlist-name">Playlist1</span>
                         </div>
                     </li>
@@ -438,21 +416,21 @@
                     <li>
                         <div class="playlist-item">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/10_GOOD_DAY_Forrest_Frank.jpg"
-                                 alt="Another Cover" class="playlist-cover">
+                                 alt="Another Cover" class="playlist-cover" loading="lazy">
                             <span class="playlist-name">Playlist2</span>
                         </div>
                     </li>
                     <li>
                         <div class="playlist-item">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/27_DNA_Billy_Gillies.jpg"
-                                 alt="Another Cover" class="playlist-cover">
+                                 alt="Another Cover" class="playlist-cover" loading="lazy">
                             <span class="playlist-name">Playlist3</span>
                         </div>
                     </li>
                     <li>
                         <div class="playlist-item">
                             <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/39_A_Country_Boy_Can_Survive_Hank_Williams%2C_Jr..jpg"
-                                 alt="Another Cover" class="playlist-cover">
+                                 alt="Another Cover" class="playlist-cover" loading="lazy">
                             <span class="playlist-name">Playlist4</span>
                         </div>
                     </li>
@@ -465,7 +443,7 @@
                 <div class="post-container">
                     <div class="post-header">
                     <span class="profile-post-avatar">
-                        <img src="{{ item.user.avatar.url }}" alt="Profile Picture">
+                        <img src="{{ item.user.avatar.url }}" alt="Profile Picture" loading="lazy">
                     </span>
                         <span class="name">{{ item.user.username }}</span>
                         <span class="time">{{ item.created_at|date:"M d, Y g:i a" }}</span>
@@ -487,9 +465,7 @@
                             {% endif %}
                     </span>
                     </div>
-                    <div class="post-content">
-                        {{ item.content }}
-                    </div>
+                    <div class="post-content">{{ item.content }}</div>
                     {% if item.image_urls %}
                         <div class="image-container">
                             {% for image_url in item.image_urls %}
@@ -535,7 +511,7 @@
                                     <strong>
                                     <span>
                                         <img src="{{ comment.user.avatar.url }}"
-                                             style="height: 30px; border-radius: 50%">
+                                             style="height: 30px; border-radius: 50%" loading="lazy">
                                     </span>
                                         <span class="moment-comment-name">{{ comment.user.username }}</span>
                                     </strong>: {{ comment.content }}
@@ -568,7 +544,6 @@
             </div>
         </div>
     </div>
-
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -668,7 +643,6 @@
         scrollRight('gallery2');
     </script>
 
-
     {#    展示更大的image#}
     <script>
         // 展示更大的image
@@ -677,9 +651,5 @@
             $('#imageModalSrc').attr('src', src);
             $('#imageModal').modal('show');
         });
-
     </script>
-
-
-
 {% endblock %}
