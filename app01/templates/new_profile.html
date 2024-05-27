@@ -2,10 +2,11 @@
 
 {% block content %}
 
+
     <style>
 
         body {
-            background-color: #F3F3EB;
+            background-color: #f0edf6;
         }
 
         .background-image-container {
@@ -204,6 +205,7 @@
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
             background-color: #fff;
             text-align: left;
+            margin-bottom: 20px;
         }
 
         .post-header {
@@ -249,7 +251,7 @@
         .image-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr); /* 创建三列 */
-            gap: 10px; /* 设置列与列之间的间隔 */
+            gap: 10px; /* 调整列间距 */
         }
 
         .responsive-img {
@@ -408,7 +410,8 @@
                 <ul>
                     <li>
                         <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/4_Beautiful_Things_Benson_Boone.jpg" alt="Beautiful Things"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/4_Beautiful_Things_Benson_Boone.jpg"
+                                 alt="Beautiful Things"
                                  class="playlist-cover">
                             <span class="playlist-name">Playlist1</span>
                         </div>
@@ -416,7 +419,8 @@
                     <!-- 添加更多的播放列表项 -->
                     <li>
                         <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/10_GOOD_DAY_Forrest_Frank.jpg" alt="Another Cover"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/10_GOOD_DAY_Forrest_Frank.jpg"
+                                 alt="Another Cover"
                                  class="playlist-cover">
                             <span class="playlist-name">Playlist2</span>
                         </div>
@@ -424,7 +428,8 @@
 
                     <li>
                         <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/27_DNA_Billy_Gillies.jpg" alt="Another Cover"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/27_DNA_Billy_Gillies.jpg"
+                                 alt="Another Cover"
                                  class="playlist-cover">
                             <span class="playlist-name">Playlist3</span>
                         </div>
@@ -432,7 +437,8 @@
 
                     <li>
                         <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/39_A_Country_Boy_Can_Survive_Hank_Williams%2C_Jr..jpg" alt="Another Cover"
+                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/39_A_Country_Boy_Can_Survive_Hank_Williams%2C_Jr..jpg"
+                                 alt="Another Cover"
                                  class="playlist-cover">
                             <span class="playlist-name">Playlist4</span>
                         </div>
@@ -473,15 +479,16 @@
                 <div class="post-content">
                     Good day, mate!
                 </div>
-                {% if item.image_urls %}
-                    <div class="image-container">
-                        {% for image_url in item.image_urls %}
-                            <div>
-                                <img src="{{ image_url }}" class="responsive-img" loading="lazy">
-                            </div>
-                        {% endfor %}
+
+                <div class="image-container">
+                    <div>
+                        <img src="/media/blue_and_black.jpg" class="responsive-img" loading="lazy">
                     </div>
-                {% endif %}
+
+                    <div>
+                        <img src="/media/album/2_Dizzy_Olly_Alexander.jpg" class="responsive-img" loading="lazy">
+                    </div>
+                </div>
                 {% if item.video_urls %}
                     <div class="video-container">
                         {% for video_url in item.video_urls %}
@@ -547,8 +554,26 @@
 
         </div>
 
+        <!-- Image Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="" id="imageModalSrc" style="width: 100%;"> <!-- 留空的src，稍后用JS填充 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     {#background picture drag#}
     <script>
@@ -644,6 +669,18 @@
 
         // 开始滚动
         scrollRight('gallery2');
+    </script>
+
+
+    {#    展示更大的image#}
+    <script>
+        // 展示更大的image
+        $(document).on('click', '.image-container img', function () {
+            var src = $(this).attr('src');
+            $('#imageModalSrc').attr('src', src);
+            $('#imageModal').modal('show');
+        });
+
     </script>
 
 
