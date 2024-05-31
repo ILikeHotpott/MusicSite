@@ -67,6 +67,8 @@ urlpatterns = [
     path('create_your_own_chart/', views.create_your_own_chart, name='add_your_own_chart'),
     path('playlist/<int:playlist_id>/', views.playlist, name="playlist"),
     path('rank_list/', views.rank_list, name="rank_list"),
+
+    path('message_center/', views.message_center, name='message_center')
 ]
 
 if settings.DEBUG:

@@ -70,8 +70,7 @@ ROOT_URLCONF = "djangoProject.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": os.path.join(BASE_DIR, 'templates')
-        ,
+        "DIRS": [os.path.join(BASE_DIR, 'app01', 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -96,27 +95,39 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 #     }
 # }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'music',
+        'USER': 'root',
+        'PASSWORD': 'LUOth1997',
+        'HOST': '127.0.0.1',
+        'PORT': 3306
+    }
+}
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'music',
 #         'USER': 'root',
 #         'PASSWORD': 'Lcy741125',
-#         'HOST': '127.0.0.1',
+#         'HOST': '44.217.110.116',
 #         'PORT': 3306
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'music',
-        'USER': 'root',
-        'PASSWORD': 'Lcy741125',
-        'HOST': '44.217.110.116',
-        'PORT': 3306
-    }
-}
+# local notification sys database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'LUOth1997',
+#         'HOST': '127.0.0.1',
+#         'PORT': 3306
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

@@ -25,7 +25,7 @@ class UserInfo(AbstractUser):
     profile_info = models.CharField(max_length=256, verbose_name='profile_info', null=True, blank=True)
     avatar = models.FileField(max_length=256, verbose_name='avatar', upload_to="avatar/", null=True, blank=True,
                               default='profile/default.png')
-    unread_count = models.IntegerField(default = 0)
+    unread_count = models.IntegerField(default = 0, null=True, blank=True)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['age']
 
