@@ -108,8 +108,8 @@ DATABASES = {
         'NAME': 'music',
         'USER': 'root',
         'PASSWORD': 'Lcy741125',
-        'HOST': '54.161.192.29',
-        'PORT': 3306
+        'HOST': '3.86.215.66',
+        'PORT': '3306',
     }
 }
 
