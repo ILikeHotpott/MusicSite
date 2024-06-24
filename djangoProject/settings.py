@@ -90,28 +90,28 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 
 
 # 本地测试用这个！！
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'music_test',
-#         'USER': 'root',
-#         'PASSWORD': 'Lcy741125',
-#         'HOST': '127.0.0.1',
-#         'PORT': 3306
-#     }
-# }
-
-#项目上线一定要用这个！！
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'music',
+        'NAME': 'music_test',
         'USER': 'root',
         'PASSWORD': 'Lcy741125',
-        'HOST': '54.161.192.29',
+        'HOST': '127.0.0.1',
         'PORT': 3306
     }
 }
+
+# #项目上线一定要用这个！！
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'Lcy741125',
+#         'HOST': '54.161.192.29',
+#         'PORT': 3306
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
