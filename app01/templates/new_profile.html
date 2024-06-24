@@ -306,6 +306,8 @@
             align-items: flex-start;
             background-color: white;
             position: sticky;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .playlist-header {
@@ -404,37 +406,21 @@
         <div class="col-xs-4 playlist">
             <div class="playlist-header">Playlists</div>
             <div class="playlist-content">
+
                 <ul>
+                    {% for playlist in playlists %}
                     <li>
-                        <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/4_Beautiful_Things_Benson_Boone.jpg"
-                                 alt="Beautiful Things" class="playlist-cover" loading="lazy">
-                            <span class="playlist-name">Playlist1</span>
-                        </div>
+                        <a href="/playlist/{{ playlist.id }}">
+                            <div class="playlist-item">
+                                <img src="{{ playlist.playlist_cover }}"
+                                     alt="Beautiful Things" class="playlist-cover" loading="lazy">
+                                <span class="playlist-name">{{ playlist.name }}</span>
+                            </div>
+                        </a>
                     </li>
-                    <!-- 添加更多的播放列表项 -->
-                    <li>
-                        <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/10_GOOD_DAY_Forrest_Frank.jpg"
-                                 alt="Another Cover" class="playlist-cover" loading="lazy">
-                            <span class="playlist-name">Playlist2</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/27_DNA_Billy_Gillies.jpg"
-                                 alt="Another Cover" class="playlist-cover" loading="lazy">
-                            <span class="playlist-name">Playlist3</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="playlist-item">
-                            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/39_A_Country_Boy_Can_Survive_Hank_Williams%2C_Jr..jpg"
-                                 alt="Another Cover" class="playlist-cover" loading="lazy">
-                            <span class="playlist-name">Playlist4</span>
-                        </div>
-                    </li>
+                    {% endfor %}
                 </ul>
+
             </div>
         </div>
 

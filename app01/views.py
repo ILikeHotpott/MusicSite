@@ -484,9 +484,11 @@ def search_results(request):
 
 
 class CreateYourOwnChartModelForm(BootstrapModelForm):
+    selected_cover_url = forms.CharField(widget=forms.HiddenInput(), required=False)
+
     class Meta:
         model = Playlist
-        fields = ['name', 'description', 'playlist_cover']
+        fields = ['name', 'description', 'playlist_cover', 'selected_cover_url']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': "John's Top 100 Playlist", 'class': 'form-control'}),
             'description': forms.Textarea(attrs={'placeholder': 'My favourite songs of 2024', 'class': 'form-control'}),
@@ -502,6 +504,11 @@ def create_your_own_chart(request):
     if form.is_valid():
         new_playlist = form.save(commit=False)
         new_playlist.user = request.user
+        selected_cover_url = form.cleaned_data.get('selected_cover_url')
+
+        if selected_cover_url:
+            new_playlist.playlist_cover = selected_cover_url
+
         new_playlist.save()
         return redirect(f"/playlist/{new_playlist.id}")
 
@@ -625,27 +632,16 @@ def create_spotify_playlist(request):
 
 def new_profile(request):
     user = request.user
-    queryset = None
     if user.is_authenticated:
         queryset = models.Moments.objects.prefetch_related('comments').filter(user=user).order_by('-created_at')
+        playlists = models.Playlist.objects.filter(user=user).order_by('-created_at')
 
-    return render(request, 'new_profile.html', {'queryset': queryset, 'user': user})
+        context = {
+            'queryset': queryset,
+            'user': user,
+            'playlists': playlists,
+        }
 
-
-def playground(request):
-    if request.method == "GET":
-        user_info = None
-        if request.user.is_authenticated:
-            user_info = models.UserInfo.objects.filter(username=request.user.username).first()
-
-        queryset = models.Moments.objects.prefetch_related('comments').all().order_by('-created_at')
-
-        redis_conn = get_redis_connection('default')
-        user_id = request.user.id if request.user.is_authenticated else None
-
-        for moment in queryset:
-            likes_key = f'post_likes:{moment.id}'
-            moment.like_count = redis_conn.scard(likes_key)
-            moment.is_liked = redis_conn.sismember(likes_key, user_id) if user_id else False
-
-        return render(request, "playground.html", {"queryset": queryset, "user_info": user_info})
+        return render(request, 'new_profile.html', context)
+    else:
+        return redirect('/login')
