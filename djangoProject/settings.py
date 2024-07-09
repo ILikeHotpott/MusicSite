@@ -30,7 +30,7 @@ LOGIN_URL = '/login/'
 SECRET_KEY = "django-insecure-jbomzr_8&=h+r#s_4)($+6jbelxe70wusc8jf=x*=p%+bis)1r"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "www.music-top.com", '0.0.0.0', '3.86.215.66', '*', "music-top.com"]
 
@@ -94,7 +94,7 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-# # 本地测试用这个！！
+# 本地测试用这个！！
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -106,7 +106,7 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 #     }
 # }
 
-# # #项目上线一定要用这个！！
+#项目上线一定要用这个！！
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

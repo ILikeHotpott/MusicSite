@@ -3,69 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handwritten Hello Animation</title>
+    <title>Gradient Text Example</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
             margin: 0;
+            background-color: #fff;
         }
-
-        canvas {
-            border: 1px solid black;
+        .gradient-text {
+            font-size: 5em;
+            font-weight: bold;
+            background: linear-gradient(80deg, #007AFF, #8E8EFF, #FF2D55, #FF9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
         }
     </style>
 </head>
 <body>
-<canvas id="canvas" width="800" height="200"></canvas>
-<script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'black';
-
-    const paths = [
-        // H
-        [{x: 50, y: 50}, {x: 50, y: 150}],
-        [{x: 100, y: 50}, {x: 100, y: 150}],
-        [{x: 50, y: 100}, {x: 100, y: 100}],
-        // e
-        [{x: 150, y: 100}, {x: 200, y: 100}, {x: 200, y: 75}, {x: 150, y: 75}, {x: 150, y: 125}, {x: 200, y: 125}],
-        // l
-        [{x: 250, y: 50}, {x: 250, y: 150}],
-        // l
-        [{x: 300, y: 50}, {x: 300, y: 150}],
-        // o
-        [{x: 350, y: 100}, {x: 400, y: 100}, {x: 400, y: 75}, {x: 350, y: 75}, {x: 350, y: 125}, {x: 400, y: 125}]
-    ];
-
-    let currentPath = 0;
-    let currentPoint = 0;
-
-    function draw() {
-        if (currentPath < paths.length) {
-            const path = paths[currentPath];
-            if (currentPoint < path.length - 1) {
-                const start = path[currentPoint];
-                const end = path[currentPoint + 1];
-                ctx.beginPath();
-                ctx.moveTo(start.x, start.y);
-                ctx.lineTo(end.x, end.y);
-                ctx.stroke();
-                currentPoint++;
-                requestAnimationFrame(draw);
-            } else {
-                currentPath++;
-                currentPoint = 0;
-                requestAnimationFrame(draw);
-            }
-        }
-    }
-
-    draw();
-</script>
+    <div class="gradient-text">Write</div>
 </body>
 </html>
