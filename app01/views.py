@@ -13,10 +13,15 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from django_redis import get_redis_connection
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import check_password
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
-from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist
+from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist, ReactUser
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
@@ -645,3 +650,21 @@ def new_profile(request):
         return render(request, 'new_profile.html', context)
     else:
         return redirect('/login')
+
+
+@csrf_exempt
+def react_login(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            password = data.get('password')
+            print(email, password)
+
+            if email == "123" and password == "123":
+                return JsonResponse({'message': 'Login successful', 'access': 'dummy_token'})
+            else:
+                return JsonResponse({'error': 'Incorrect email or password'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

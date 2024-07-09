@@ -24,6 +24,11 @@ from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}, name='media'),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
@@ -80,8 +85,9 @@ urlpatterns = [
     path('create-spotify-playlist/', views.create_spotify_playlist, name='create_spotify_playlist'),
 
     path('new_profile/', views.new_profile, name='new_profile'),
-]
 
+    path('api/react-login/', views.react_login, name='react_login'),
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

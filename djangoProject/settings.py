@@ -51,10 +51,15 @@ INSTALLED_APPS = [
     "app01.apps.App01Config",
     "channels",
     "storages",
+    'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -89,29 +94,29 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-# 本地测试用这个！！
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'music_test',
-#         'USER': 'root',
-#         'PASSWORD': 'Lcy741125',
-#         'HOST': '127.0.0.1',
-#         'PORT': 3306
-#     }
-# }
-
-# # #项目上线一定要用这个！！
+# # 本地测试用这个！！
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'music',
+        'NAME': 'music_test',
         'USER': 'root',
         'PASSWORD': 'Lcy741125',
-        'HOST': '3.86.215.66',
-        'PORT': '3306',
+        'HOST': '127.0.0.1',
+        'PORT': 3306
     }
 }
+
+# # # #项目上线一定要用这个！！
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'Lcy741125',
+#         'HOST': '3.86.215.66',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -131,7 +136,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Previous
 CHANNEL_LAYERS = {
     "default": {
@@ -150,6 +154,28 @@ CACHES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -196,3 +222,7 @@ AWS_LOCATION = 'media/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+
+CORS_ALLOW_ALL_ORIGINS = True
+

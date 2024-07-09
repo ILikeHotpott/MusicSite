@@ -123,3 +123,12 @@ class Playlist(models.Model):
 
     def __str__(self):
         return f"{self.name} by {self.user.username}"
+
+
+class ReactUser(models.Model):
+    email = models.EmailField(unique=True, verbose_name='Email')
+    password = models.CharField(max_length=128, verbose_name='Password')
+
+    def __str__(self):
+        return self.email
+
