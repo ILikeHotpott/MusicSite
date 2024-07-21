@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 from app01 import views
+from react_app.views import account, playground, profile, search, test, chatbot
 from django.urls import re_path
 from django.views.static import serve
 from django.conf import settings
@@ -34,11 +35,13 @@ urlpatterns = [
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
     re_path(r'^$', RedirectView.as_view(url='/home/', permanent=False)),
 
+    # chart page, but it's not used
     path('accounts/', include('django.contrib.auth.urls')),
     path("charts/", views.charts),
     path("charts/add/", views.charts_add),
     path("charts/<int:nid>/comment/", views.charts_comment, name='charts_comment'),
 
+    # login page
     path("login/", views.login),
     path("logout/", views.logout),
     path("register/", views.register),
@@ -46,10 +49,12 @@ urlpatterns = [
 
     path("rate-music/", views.rate_music, name="rate_music"),
 
+    # rank page
     path("rank/", views.rank, name='rank_default'),
     path('rank/<str:region>/', views.rank, name='rank_region'),
     path('rank_api/', views.rank_api),
 
+    # profile
     path("profile/", views.profile),
     path("profile/edit/", views.profile_edit),
     path('profile/avatar/', views.profile_avatar, name='profile_avatar'),
@@ -58,21 +63,23 @@ urlpatterns = [
     path("chat3/", views.chat3),
     path("chat/", views.chat, name="chat"),
 
+    # playground
     path("playground/", views.playground),
     path("upload-to-s3/", views.upload_file_to_s3),
     path("save-moment/", views.save_moment),
     path("like-post/", views.like_post, name="like_post"),
     path("submit-moment-comment/", views.submit_moment_comment, name="submit_moment_comment"),
     path("load-more-comments/", views.load_more_comments, name="load_more_comments"),
-
     path("delete-post/<int:post_id>/", views.delete_post),
 
+    # search page and playlist page
     path("search/", views.search, name="search"),
     path('search/results/', views.search_results, name='search_results'),
     path('create_your_own_chart/', views.create_your_own_chart, name='add_your_own_chart'),
     path('playlist/<int:playlist_id>/', views.playlist, name="playlist"),
     path('rank_list/', views.rank_list, name="rank_list"),
 
+    # home page
     path('home/', views.home, name="home"),
 
     path('get_user_playlists/', views.get_user_playlists, name='get_user_playlists'),
@@ -86,7 +93,29 @@ urlpatterns = [
 
     path('new_profile/', views.new_profile, name='new_profile'),
 
-    path('api/react-login/', views.react_login, name='react_login'),
+
+    # react apis below
+
+    # account
+    path('api/react-login/', account.LoginView.as_view(), name='react_login'),
+    path('api/register/', account.RegisterUser.as_view(), name='react_register'),
+
+    # profile
+    path('api/user/profile/', profile.ReactUserProfileView.as_view(), name='react_user_profile'),
+
+    # search
+    path('api/search_result/', search.react_search_result, name='react_search_result'),
+
+    # playground
+    path('api/playground/', playground.PlaygroundView.as_view(), name='playground'),
+
+    # test
+    path('api/test/', test.TestView.as_view(), name='test'),
+    path('api/user/', test.UserView.as_view(), name='user'),
+
+    # chatbot
+    path('api/chatbot/', chatbot.ChatbotView.as_view(), name='chatbot')
+
 ]
 
 if settings.DEBUG:

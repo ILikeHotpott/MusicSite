@@ -28,9 +28,10 @@ LOGIN_URL = '/login/'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-jbomzr_8&=h+r#s_4)($+6jbelxe70wusc8jf=x*=p%+bis)1r"
+JWT_SECRET_KEY = "7_uAooS_jQv3djZ8Yj5AX-w_sGKcsupGUOZDdl0SIraFk77BYwmdBN8VBCcEwZIIXDU"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "www.music-top.com", '0.0.0.0', '3.86.215.66', '*', "music-top.com"]
 
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "app01.apps.App01Config",
+    "react_app.apps.ReactAppConfig",
     "channels",
     "storages",
     'corsheaders',
@@ -94,29 +96,29 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-# 本地测试用这个！！
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'music_test',
-#         'USER': 'root',
-#         'PASSWORD': 'Lcy741125',
-#         'HOST': '127.0.0.1',
-#         'PORT': 3306
-#     }
-# }
-
-#项目上线一定要用这个！！
+# # 本地测试用这个！！
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'music',
+        'NAME': 'music_test',
         'USER': 'root',
         'PASSWORD': 'Lcy741125',
-        'HOST': '3.86.215.66',
-        'PORT': '3306',
+        'HOST': '127.0.0.1',
+        'PORT': 3306
     }
 }
+
+# #项目上线一定要用这个！！
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'Lcy741125',
+#         'HOST': '3.86.215.66',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -158,6 +160,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    "DEFAULT_THROTTLE_RATES": {
+        "ip": "5/m",
+        "user": "10/m"
+    }
+}
+
+AUTHENTICATION_BACKENDS = {
+    'django.contrib.auth.backends.ModelBackend',
+    'react_app.authentication.CustomUserBackend'
 }
 
 from datetime import timedelta
@@ -165,16 +176,12 @@ from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
+    'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('Bearer',),
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
 # Internationalization
@@ -223,6 +230,6 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
-
 CORS_ALLOW_ALL_ORIGINS = True
 
+openai_api_key = os.environ.get('OPENAI_API_KEY')
