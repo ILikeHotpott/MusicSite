@@ -649,4 +649,8 @@ def new_profile(request):
         return redirect('/login')
 
 
+def chatbot(request):
+    return render(request, 'build/index.html')
+
+
 
