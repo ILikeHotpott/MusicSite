@@ -92,8 +92,6 @@ urlpatterns = [
     path('create-spotify-playlist/', views.create_spotify_playlist, name='create_spotify_playlist'),
 
     path('new_profile/', views.new_profile, name='new_profile'),
-    path('chatbot/', views.chatbot, name='chatbot'),
-
 
     # react apis below
 
