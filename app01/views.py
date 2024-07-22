@@ -1,6 +1,9 @@
 from io import BytesIO
 import json
 import boto3
+import os
+from openai import OpenAI
+import markdown
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
@@ -648,6 +651,41 @@ def new_profile(request):
     else:
         return redirect('/login')
 
+
+@csrf_exempt
+def chatbot(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            content = data.get("content")
+            if content is None:
+                return JsonResponse({'error': 'Content parameter is missing'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            return JsonResponse({'error': 'OpenAI API key not found'}, status=500)
+
+        client = OpenAI(api_key=api_key)
+        try:
+            completion = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "user", "content": content}
+                ]
+            )
+        except Exception as e:
+            return JsonResponse({'error': f'Error contacting OpenAI API: {str(e)}'}, status=500)
+
+        response_content = completion.choices[0].message.content
+        html = markdown.markdown(response_content)
+
+        print(html)
+
+        return HttpResponse(html, content_type="text/html")
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
 

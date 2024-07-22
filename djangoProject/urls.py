@@ -93,6 +93,9 @@ urlpatterns = [
 
     path('new_profile/', views.new_profile, name='new_profile'),
 
+    # chatbot
+    path('chatbot/', views.chatbot, name='chatbot'),
+
     # react apis below
 
     # account
