@@ -9,7 +9,6 @@ from react_app.throttle import UserRateThrottle, IPRateThrottle
 
 class ChatbotView(APIView):
 
-    throttle_classes = [UserRateThrottle, IPRateThrottle]
     def post(self, request):
         content = request.data.get("content")
         if content is None:
