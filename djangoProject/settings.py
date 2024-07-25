@@ -230,8 +230,6 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
-
-
 openai_api_key = os.environ.get('OPENAI_API_KEY')
 
 CORS_ALLOW_ALL_ORIGINS = True
