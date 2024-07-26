@@ -4,11 +4,8 @@ import markdown
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from react_app.throttle import UserRateThrottle, IPRateThrottle
-
 
 class ChatbotView(APIView):
-
     def post(self, request):
         content = request.data.get("content")
         if content is None:
@@ -24,7 +21,6 @@ class ChatbotView(APIView):
         )
 
         response_content = completion.choices[0].message.content
-        print(response_content)
-        # html = markdown.markdown(response_content)
+        html = markdown.markdown(response_content)
 
-        return Response(response_content)
+        return Response(html)
