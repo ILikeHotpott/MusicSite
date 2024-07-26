@@ -9,8 +9,7 @@ import logging
 class PlaygroundView(APIView):
     def get(self, request):
         try:
-            print("haha")
-            queryset = models.Moments.objects.all().order_by('-created_at')
+            queryset = models.Moments.objects.prefetch_related('comments').all().order_by('-created_at')
             serializer = MomentSerializer(queryset, many=True)
             return Response(serializer.data)
         except Exception as e:

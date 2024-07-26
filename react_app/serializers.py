@@ -65,8 +65,15 @@ class UserInfoSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'avatar']
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app01_models.MomentComment
+        fields = '__all__'
+
+
 class MomentSerializer(serializers.ModelSerializer):
     user = UserInfoSerializer()  # 嵌套序列化器!!
+    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = app01_models.Moments

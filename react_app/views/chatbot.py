@@ -24,6 +24,7 @@ class ChatbotView(APIView):
         )
 
         response_content = completion.choices[0].message.content
-        html = markdown.markdown(response_content)
+        print(response_content)
+        # html = markdown.markdown(response_content)
 
-        return Response(html)
+        return Response(response_content)
