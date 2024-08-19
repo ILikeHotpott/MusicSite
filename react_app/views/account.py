@@ -13,17 +13,15 @@ class LoginView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
-        print(request.data, type(request.data))
         if serializer.is_valid():
             user = serializer.validated_data['user']
-            login(request, user)
             token = jwt.encode({'user_id': user.id}, settings.JWT_SECRET_KEY, algorithm='HS256')
-            print(token)
             response = Response({
                 'success': 'User logged in successfully',
-                'token': token  # 在响应中包含 token
+                'token': token
             }, status=status.HTTP_200_OK)
             response.set_cookie(key='jwt', value=token, httponly=True)
+            print(response.data)
             return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

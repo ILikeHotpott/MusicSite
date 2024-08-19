@@ -20,6 +20,7 @@ $count: 1000;
     border-radius: 50%;
     left: 0;
     top: 0;
+    z-index: 10 !important;
     box-shadow: getShadows($count);
 
     &::after {
@@ -27,6 +28,7 @@ $count: 1000;
       position: fixed;
       left: 0;
       top: 100vh;
+      z-index: 10 !important;
       border-radius: inherit;
       width: inherit;
       height: inherit;

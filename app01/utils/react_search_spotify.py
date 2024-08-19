@@ -1,9 +1,13 @@
-from djangoProject.settings import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI
+from djangoProject.settings import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 import requests
 from requests.auth import HTTPBasicAuth
 import random
 
 
+# 数据库配置
+
+
+# 函数：获取Spotify访问令牌
 def get_spotify_access_token():
     auth_response = requests.post(
         'https://accounts.spotify.com/api/token',
@@ -49,7 +53,6 @@ def search_spotify(query):
         for index, album in enumerate(search_results.get('albums', {}).get('items', []))
     ]
 
-    # 解析歌曲
     tracks = [
         {
             'id': str(index + 1),
@@ -57,7 +60,8 @@ def search_spotify(query):
             'album': track['album']['name'],
             'artist': ', '.join([artist['name'] for artist in track['artists']]),
             'rating': round(random.uniform(3.0, 5.0), 2),  # 随机生成一个评分
-            'imageSrc': track['album']['images'][0]['url'] if track['album']['images'] else 'No image available'
+            'imageSrc': track['album']['images'][0]['url'] if track['album']['images'] else 'No image available',
+            'uri': track['uri']
         }
         for index, track in enumerate(search_results.get('tracks', {}).get('items', []))
     ]

@@ -127,20 +127,36 @@ class MomentComment(models.Model):
         return self.parent is not None
 
 
+class PlaylistItem(models.Model):
+    title = models.CharField(max_length=256, verbose_name='Title')
+    artist = models.CharField(max_length=128, verbose_name='Artist')
+    pic_url = models.URLField(max_length=512, verbose_name='Picture URL', null=True, blank=True)
+    spotify_uri = models.CharField(max_length=64, verbose_name='Spotify URI', unique=True, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['spotify_uri']),
+        ]
+
+
 class Playlist(models.Model):
     user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='User', related_name='playlists')
     name = models.CharField(max_length=128, verbose_name='Name')
     description = models.TextField(verbose_name='Description', blank=True)
-    playlist_cover = models.ImageField(max_length=512, verbose_name='playlist_cover', upload_to="playlist_cover/",
-                                       null=True,
-                                       blank=True,
-                                       default='https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/default.jpeg')
-    tracks = models.JSONField(default=list)
+    playlist_cover = models.URLField(max_length=512, verbose_name='playlist_cover', null=True, blank=True,
+                                     default='https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/default.jpeg')
+    tracks = models.ManyToManyField(PlaylistItem, related_name='app01_playlists', blank=True)
     track_number = models.PositiveIntegerField(verbose_name='Track Number', default=0)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
 
+
     def __str__(self):
         return f"{self.name} by {self.user.username}"
+
+    def save(self, *args, **kwargs):
+        self.track_number = self.tracks.count()
+        super().save(*args, **kwargs)
 
 
 class ReactUser(models.Model):

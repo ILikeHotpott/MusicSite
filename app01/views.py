@@ -20,12 +20,23 @@ from django.contrib.auth import authenticate
 from app01.utils.bootstrap import BootstrapForm
 from app01 import models
 from app01.utils.code import check_code
-from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist, ReactUser
+from app01.models import Music, Comment, US_TopMusic, UserInfo, Playlist, PlaylistItem
+from react_app.models import Playlist as ReactPlaylist, ReactUser
 from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
 from spotipy import Spotify, SpotifyOAuth
-from djangoProject.settings import SPOTIFY_REDIRECT_URI, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
+
+
+def runrun(request):
+    # 获取用户
+    playlist = ReactPlaylist.objects.get(id=1)
+    songs = PlaylistItem.objects.all()
+
+    for song in songs:
+        playlist.tracks.add(song)
+
+    return HttpResponse("ok了家人们")
 
 
 class MusicModelForm(BootstrapModelForm):
@@ -533,7 +544,7 @@ def playlist(request, playlist_id):
     # 将歌曲的 Spotify URI 和其他信息存储在 session 中
     request.session['playlist_name'] = playlist_info.name
     request.session['songs'] = [{'spotify_uri': song['spotify_uri']} for song in songs]
-    track_uris = [song['spotify_uri'] for song in request.session.get('songs', [])]
+    # track_uris = [song['spotify_uri'] for song in request.session.get('songs', [])]
 
     return render(request, 'playlist.html', {'playlist_info': playlist_info, 'songs': songs})
 
@@ -542,7 +553,7 @@ def rank_list(request):
     return render(request, "rank_list.html")
 
 
-def home(request):  # 待完成，级别第二高
+def home(request):
     return render(request, "home.html")
 
 
@@ -686,6 +697,3 @@ def chatbot(request):
         return HttpResponse(html, content_type="text/html")
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
-
-
-

@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from react_app.serializers import UserSerializer
 from react_app.throttle import IPRateThrottle, UserRateThrottle
+from react_app.redis_connection import redis_client
 
 
 class TestView(APIView):
@@ -29,4 +30,29 @@ class UserView(APIView):
         serializer = UserSerializer(instance=queryset, many=True)
         return Response(serializer.data)
 
+
+class RedisAddTestView(APIView):
+    def get(self, request):
+        user_id = request.GET.get('user_id')
+        user_name = request.GET.get('user_name')
+        user_score = request.GET.get('user_score')
+
+        key = f"user:{user_id}"
+        redis_client.hset(key, mapping={
+            "name": user_name,
+            "score": user_score
+        })
+
+        return Response({'status': 'success', 'user_id': user_id, 'user_name': user_name, 'user_score': user_score})
+
+
+class RedisGetTestView(APIView):
+    def get(self, request):
+        user_id = request.GET.get('user_id')
+        key = f"user:{user_id}"
+        user_data = redis_client.hgetall(key)
+        if user_data:
+            return Response({'status': 'success', 'user_data': user_data})
+        else:
+            return Response({'status': 'failed', 'user_id': user_id})
 

@@ -29,6 +29,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+from django.contrib.auth import get_user_model, authenticate
+
+
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
@@ -38,8 +41,14 @@ class LoginSerializer(serializers.Serializer):
         password = data.get('password')
 
         if email and password:
-            user = authenticate(username=email, password=password)
-            if not user:
+            try:
+                # 使用ReactUser模型
+                user = ReactUser.objects.get(email=email)
+            except ReactUser.DoesNotExist:
+                raise serializers.ValidationError('Invalid email or password')
+
+            # 验证密码
+            if not user.check_password(password):
                 raise serializers.ValidationError('Invalid email or password')
         else:
             raise serializers.ValidationError('Must include "email" and "password"')
@@ -78,3 +87,9 @@ class MomentSerializer(serializers.ModelSerializer):
     class Meta:
         model = app01_models.Moments
         fields = "__all__"
+
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app01_models.Playlist
+        fields = ['user', 'name', 'description', 'playlist_cover', 'tracks']

@@ -17,6 +17,7 @@ from django.core.files.storage import storages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR_STR = str(BASE_DIR)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -37,7 +38,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "www.music-top.com", '0.0.0.0', '3.86
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 AUTH_USER_MODEL = 'app01.UserInfo'
 
 # Application definition
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "app01.apps.App01Config",
     "react_app.apps.ReactAppConfig",
+    'graphene_django',
     "channels",
     "storages",
     'corsheaders',
@@ -59,8 +61,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
     'corsheaders.middleware.CorsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
     'django.middleware.common.CommonMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -72,6 +74,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "djangoProject.urls"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
@@ -97,28 +105,28 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 
 
 # 本地测试用这个！！
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'music_test',
-#         'USER': 'root',
-#         'PASSWORD': 'Lcy741125',
-#         'HOST': '127.0.0.1',
-#         'PORT': 3306
-#     }
-# }
-
-# #项目上线一定要用这个！！
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'music',
+        'NAME': 'music_test',
         'USER': 'root',
         'PASSWORD': 'Lcy741125',
-        'HOST': '3.86.215.66',
-        'PORT': '3306',
+        'HOST': '127.0.0.1',
+        'PORT': 3306
     }
 }
+
+# #项目上线一定要用这个！！
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'Lcy741125',
+#         'HOST': '3.86.215.66',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -153,8 +161,22 @@ CACHES = {
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
+    },
+    'session': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/2',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
 }
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_ALIAS = 'session'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -254,3 +276,74 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'react_app.schema.schema',
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(lineno)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+        'uvicorn': {
+            '()': 'uvicorn.logging.DefaultFormatter',
+            'format': '%(levelprefix)s %(asctime)s %(message)s',
+            'use_colors': None,
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',  # 仅记录INFO及以上级别的日志到控制台
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',  # 仅记录INFO及以上级别的日志到文件
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR_STR, 'logs', 'mylog.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'uvicorn': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'uvicorn.error': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'uvicorn.access': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
+    }
+}

@@ -19,11 +19,13 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 from app01 import views
-from react_app.views import account, playground, profile, search, test, chatbot
+from react_app.views import account, playground, profile, search, test, chatbot, playlist
 from django.urls import re_path
 from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.static import static
+from graphene_django.views import GraphQLView
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -96,7 +98,7 @@ urlpatterns = [
     # chatbot
     path('chatbot/', views.chatbot, name='chatbot'),
 
-    # react apis below
+    # react apis below ####################################
 
     # account
     path('api/react-login/', account.LoginView.as_view(), name='react_login'),
@@ -111,12 +113,22 @@ urlpatterns = [
     # playground
     path('api/playground/', playground.PlaygroundView.as_view(), name='playground'),
 
+    # chatbot
+    path('api/chatbot/', chatbot.ChatbotView.as_view(), name='chatbot'),
+
+    # GraphQL API
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+
+    # React Playlist API
+    path('api/playlist/<int:id>/', playlist.PlaylistView.as_view(), name='playlist'),
+
     # test
     path('api/test/', test.TestView.as_view(), name='test'),
     path('api/user/', test.UserView.as_view(), name='user'),
+    path('api/redis/add_user/', test.RedisAddTestView.as_view(), name='redis_add_user'),
+    path('api/redis/get_user/', test.RedisGetTestView.as_view(), name='redis_add_user'),
 
-    # chatbot
-    path('api/chatbot/', chatbot.ChatbotView.as_view(), name='chatbot')
+    path('runrun/', views.runrun, name='runrun')
 
 ]
 
