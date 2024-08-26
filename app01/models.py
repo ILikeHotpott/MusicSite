@@ -150,7 +150,6 @@ class Playlist(models.Model):
     track_number = models.PositiveIntegerField(verbose_name='Track Number', default=0)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
 
-
     def __str__(self):
         return f"{self.name} by {self.user.username}"
 

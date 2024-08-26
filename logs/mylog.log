@@ -4115,3 +4115,329 @@ INFO 2024-08-19 17:07:09,711 httptools_impl 484 127.0.0.1:54932 - "POST /api/rea
 INFO 2024-08-19 17:07:09,720 httptools_impl 484 127.0.0.1:54932 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
 INFO 2024-08-19 17:09:10,502 httptools_impl 484 127.0.0.1:55430 - "POST /api/react-login/ HTTP/1.1" 200
 INFO 2024-08-19 17:09:10,528 httptools_impl 484 127.0.0.1:55430 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 20:51:01,408 httptools_impl 484 127.0.0.1:52350 - "OPTIONS /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 20:51:01,595 httptools_impl 484 127.0.0.1:52350 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 20:51:01,605 httptools_impl 484 127.0.0.1:52350 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 20:51:31,532 httptools_impl 484 127.0.0.1:52439 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 20:51:31,539 httptools_impl 484 127.0.0.1:52439 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 20:53:43,537 httptools_impl 484 127.0.0.1:52988 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 20:53:43,546 httptools_impl 484 127.0.0.1:52988 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 20:55:54,306 httptools_impl 484 127.0.0.1:53128 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 20:57:45,530 httptools_impl 484 127.0.0.1:53232 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 20:58:37,567 httptools_impl 484 127.0.0.1:53447 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 20:58:46,848 httptools_impl 484 127.0.0.1:53491 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 21:04:40,633 httptools_impl 484 127.0.0.1:53688 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 21:04:45,382 httptools_impl 484 127.0.0.1:53688 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 21:06:12,421 server 253 Shutting down
+INFO 2024-08-19 21:06:12,522 server 87 Finished server process [1645]
+INFO 2024-08-19 21:06:13,357 server 77 Started server process [5458]
+INFO 2024-08-19 21:06:13,357 on 48 Waiting for application startup.
+INFO 2024-08-19 21:06:13,357 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:06:13,357 on 62 Application startup complete.
+INFO 2024-08-19 21:06:24,611 httptools_impl 484 127.0.0.1:53723 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 21:06:24,634 httptools_impl 484 127.0.0.1:53723 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 21:06:50,438 server 253 Shutting down
+INFO 2024-08-19 21:06:50,540 server 87 Finished server process [5458]
+INFO 2024-08-19 21:06:51,087 server 77 Started server process [5477]
+INFO 2024-08-19 21:06:51,088 on 48 Waiting for application startup.
+INFO 2024-08-19 21:06:51,088 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:06:51,088 on 62 Application startup complete.
+INFO 2024-08-19 21:06:51,961 httptools_impl 484 127.0.0.1:53730 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 21:06:52,025 httptools_impl 484 127.0.0.1:53730 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 21:07:07,066 server 253 Shutting down
+INFO 2024-08-19 21:07:07,171 server 87 Finished server process [5477]
+INFO 2024-08-19 21:07:07,732 server 77 Started server process [5487]
+INFO 2024-08-19 21:07:07,733 on 48 Waiting for application startup.
+INFO 2024-08-19 21:07:07,733 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:07:07,733 on 62 Application startup complete.
+INFO 2024-08-19 21:07:08,969 httptools_impl 484 127.0.0.1:53740 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 21:07:08,991 httptools_impl 484 127.0.0.1:53740 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 21:07:29,421 server 253 Shutting down
+INFO 2024-08-19 21:07:29,524 server 87 Finished server process [5487]
+INFO 2024-08-19 21:07:30,074 server 77 Started server process [5497]
+INFO 2024-08-19 21:07:30,075 on 48 Waiting for application startup.
+INFO 2024-08-19 21:07:30,075 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:07:30,075 on 62 Application startup complete.
+INFO 2024-08-19 21:07:31,741 httptools_impl 484 127.0.0.1:53744 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 21:07:31,763 httptools_impl 484 127.0.0.1:53744 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 21:10:49,858 httptools_impl 484 127.0.0.1:53834 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 21:11:01,418 server 253 Shutting down
+INFO 2024-08-19 21:11:01,519 server 87 Finished server process [5497]
+INFO 2024-08-19 21:11:02,010 server 77 Started server process [5573]
+INFO 2024-08-19 21:11:02,010 on 48 Waiting for application startup.
+INFO 2024-08-19 21:11:02,010 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:11:02,010 on 62 Application startup complete.
+INFO 2024-08-19 21:21:55,373 httptools_impl 484 127.0.0.1:53933 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 21:23:17,589 httptools_impl 484 127.0.0.1:54041 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 21:23:17,600 httptools_impl 484 127.0.0.1:54041 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 21:24:57,374 httptools_impl 484 127.0.0.1:54456 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 21:24:57,381 httptools_impl 484 127.0.0.1:54456 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 21:26:10,321 httptools_impl 484 127.0.0.1:54756 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 21:26:10,332 httptools_impl 484 127.0.0.1:54756 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 21:45:47,623 server 253 Shutting down
+INFO 2024-08-19 21:45:47,726 server 87 Finished server process [5573]
+INFO 2024-08-19 21:45:48,392 server 77 Started server process [6036]
+INFO 2024-08-19 21:45:48,392 on 48 Waiting for application startup.
+INFO 2024-08-19 21:45:48,392 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:45:48,392 on 62 Application startup complete.
+INFO 2024-08-19 21:47:42,356 server 253 Shutting down
+INFO 2024-08-19 21:47:42,459 server 87 Finished server process [6036]
+INFO 2024-08-19 21:47:42,911 server 77 Started server process [6081]
+INFO 2024-08-19 21:47:42,911 on 48 Waiting for application startup.
+INFO 2024-08-19 21:47:42,912 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:47:42,912 on 62 Application startup complete.
+INFO 2024-08-19 21:48:23,299 httptools_impl 484 127.0.0.1:55087 - "GET /api/playlist/1/ HTTP/1.1" 200
+INFO 2024-08-19 21:49:31,420 server 253 Shutting down
+INFO 2024-08-19 21:49:31,521 server 87 Finished server process [6081]
+INFO 2024-08-19 21:49:32,060 server 77 Started server process [6121]
+INFO 2024-08-19 21:49:32,060 on 48 Waiting for application startup.
+INFO 2024-08-19 21:49:32,060 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:49:32,060 on 62 Application startup complete.
+INFO 2024-08-19 21:52:00,144 server 253 Shutting down
+INFO 2024-08-19 21:52:00,247 server 87 Finished server process [6121]
+INFO 2024-08-19 21:52:00,687 server 77 Started server process [6183]
+INFO 2024-08-19 21:52:00,687 on 48 Waiting for application startup.
+INFO 2024-08-19 21:52:00,687 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:52:00,687 on 62 Application startup complete.
+WARNING 2024-08-19 21:54:52,165 log 241 Not Found: /api/playlist/2/
+INFO 2024-08-19 21:54:52,165 httptools_impl 484 127.0.0.1:55160 - "GET /api/playlist/2/ HTTP/1.1" 404
+INFO 2024-08-19 21:54:55,907 httptools_impl 484 127.0.0.1:55160 - "GET /api/playlist/1/ HTTP/1.1" 200
+INFO 2024-08-19 21:58:17,781 server 253 Shutting down
+INFO 2024-08-19 21:58:17,883 server 87 Finished server process [6183]
+INFO 2024-08-19 21:58:18,516 server 77 Started server process [6338]
+INFO 2024-08-19 21:58:18,516 on 48 Waiting for application startup.
+INFO 2024-08-19 21:58:18,516 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:58:18,516 on 62 Application startup complete.
+WARNING 2024-08-19 21:58:48,034 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 21:58:48,034 httptools_impl 484 127.0.0.1:55253 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 21:58:50,158 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 21:58:50,159 httptools_impl 484 127.0.0.1:55253 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 21:58:54,644 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 21:58:54,645 httptools_impl 484 127.0.0.1:55253 - "POST /api/react-login/ HTTP/1.1" 400
+INFO 2024-08-19 21:59:34,980 server 253 Shutting down
+INFO 2024-08-19 21:59:35,082 server 87 Finished server process [6338]
+INFO 2024-08-19 21:59:35,688 server 77 Started server process [6374]
+INFO 2024-08-19 21:59:35,688 on 48 Waiting for application startup.
+INFO 2024-08-19 21:59:35,688 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 21:59:35,688 on 62 Application startup complete.
+INFO 2024-08-19 22:00:00,944 server 253 Shutting down
+INFO 2024-08-19 22:00:01,046 server 87 Finished server process [6374]
+INFO 2024-08-19 22:00:01,578 server 77 Started server process [6389]
+INFO 2024-08-19 22:00:01,578 on 48 Waiting for application startup.
+INFO 2024-08-19 22:00:01,578 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:00:01,578 on 62 Application startup complete.
+WARNING 2024-08-19 22:00:03,367 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:00:03,367 httptools_impl 484 127.0.0.1:55530 - "POST /api/react-login/ HTTP/1.1" 400
+INFO 2024-08-19 22:00:23,759 server 253 Shutting down
+INFO 2024-08-19 22:00:23,860 server 87 Finished server process [6389]
+INFO 2024-08-19 22:00:24,289 server 77 Started server process [6404]
+INFO 2024-08-19 22:00:24,289 on 48 Waiting for application startup.
+INFO 2024-08-19 22:00:24,289 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:00:24,289 on 62 Application startup complete.
+WARNING 2024-08-19 22:00:33,185 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:00:33,185 httptools_impl 484 127.0.0.1:55653 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 22:01:32,215 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:01:32,217 httptools_impl 484 127.0.0.1:55915 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 22:01:32,798 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:01:32,798 httptools_impl 484 127.0.0.1:55915 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 22:01:32,961 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:01:32,961 httptools_impl 484 127.0.0.1:55915 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 22:01:33,127 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:01:33,127 httptools_impl 484 127.0.0.1:55915 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 22:01:33,269 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:01:33,270 httptools_impl 484 127.0.0.1:55915 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 22:01:33,406 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:01:33,406 httptools_impl 484 127.0.0.1:55915 - "POST /api/react-login/ HTTP/1.1" 400
+WARNING 2024-08-19 22:02:27,279 log 241 Bad Request: /api/react-login/
+INFO 2024-08-19 22:02:27,280 httptools_impl 484 127.0.0.1:56119 - "POST /api/react-login/ HTTP/1.1" 400
+INFO 2024-08-19 22:03:51,188 server 253 Shutting down
+INFO 2024-08-19 22:03:51,290 server 87 Finished server process [6404]
+INFO 2024-08-19 22:03:51,984 server 77 Started server process [6524]
+INFO 2024-08-19 22:03:51,984 on 48 Waiting for application startup.
+INFO 2024-08-19 22:03:51,984 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:03:51,984 on 62 Application startup complete.
+INFO 2024-08-19 22:04:14,919 httptools_impl 484 127.0.0.1:56569 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 22:04:14,942 httptools_impl 484 127.0.0.1:56569 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 22:05:41,002 server 253 Shutting down
+INFO 2024-08-19 22:05:41,105 server 87 Finished server process [6524]
+INFO 2024-08-19 22:05:41,691 server 77 Started server process [6569]
+INFO 2024-08-19 22:05:41,691 on 48 Waiting for application startup.
+INFO 2024-08-19 22:05:41,691 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:05:41,691 on 62 Application startup complete.
+INFO 2024-08-19 22:05:45,735 httptools_impl 484 127.0.0.1:56900 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 22:05:45,758 httptools_impl 484 127.0.0.1:56900 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 22:06:07,188 server 253 Shutting down
+INFO 2024-08-19 22:06:07,289 server 87 Finished server process [6569]
+INFO 2024-08-19 22:06:07,850 server 77 Started server process [6576]
+INFO 2024-08-19 22:06:07,850 on 48 Waiting for application startup.
+INFO 2024-08-19 22:06:07,850 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:06:07,850 on 62 Application startup complete.
+INFO 2024-08-19 22:06:09,417 httptools_impl 484 127.0.0.1:57014 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 22:06:09,439 httptools_impl 484 127.0.0.1:57014 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 22:06:39,363 server 253 Shutting down
+INFO 2024-08-19 22:06:39,464 server 87 Finished server process [6576]
+INFO 2024-08-19 22:06:40,025 server 77 Started server process [6598]
+INFO 2024-08-19 22:06:40,025 on 48 Waiting for application startup.
+INFO 2024-08-19 22:06:40,025 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:06:40,025 on 62 Application startup complete.
+INFO 2024-08-19 22:08:30,491 server 253 Shutting down
+INFO 2024-08-19 22:08:30,596 server 87 Finished server process [6598]
+INFO 2024-08-19 22:08:31,138 server 77 Started server process [6618]
+INFO 2024-08-19 22:08:31,138 on 48 Waiting for application startup.
+INFO 2024-08-19 22:08:31,139 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:08:31,139 on 62 Application startup complete.
+INFO 2024-08-19 22:10:55,679 server 253 Shutting down
+INFO 2024-08-19 22:10:55,782 server 87 Finished server process [6618]
+INFO 2024-08-19 22:10:56,270 server 77 Started server process [6655]
+INFO 2024-08-19 22:10:56,271 on 48 Waiting for application startup.
+INFO 2024-08-19 22:10:56,271 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:10:56,271 on 62 Application startup complete.
+INFO 2024-08-19 22:11:59,461 server 253 Shutting down
+INFO 2024-08-19 22:11:59,566 server 87 Finished server process [6655]
+INFO 2024-08-19 22:12:00,098 server 77 Started server process [6681]
+INFO 2024-08-19 22:12:00,098 on 48 Waiting for application startup.
+INFO 2024-08-19 22:12:00,098 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:12:00,098 on 62 Application startup complete.
+INFO 2024-08-19 22:12:52,585 server 253 Shutting down
+INFO 2024-08-19 22:12:52,686 server 87 Finished server process [6681]
+INFO 2024-08-19 22:12:53,132 server 77 Started server process [6693]
+INFO 2024-08-19 22:12:53,132 on 48 Waiting for application startup.
+INFO 2024-08-19 22:12:53,132 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:12:53,132 on 62 Application startup complete.
+INFO 2024-08-19 22:16:29,197 server 253 Shutting down
+INFO 2024-08-19 22:16:29,300 server 87 Finished server process [6693]
+INFO 2024-08-19 22:16:29,950 server 77 Started server process [6744]
+INFO 2024-08-19 22:16:29,951 on 48 Waiting for application startup.
+INFO 2024-08-19 22:16:29,951 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:16:29,951 on 62 Application startup complete.
+INFO 2024-08-19 22:17:20,127 server 253 Shutting down
+INFO 2024-08-19 22:17:20,229 server 87 Finished server process [6744]
+INFO 2024-08-19 22:17:20,658 server 77 Started server process [6766]
+INFO 2024-08-19 22:17:20,658 on 48 Waiting for application startup.
+INFO 2024-08-19 22:17:20,658 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:17:20,658 on 62 Application startup complete.
+INFO 2024-08-19 22:17:53,257 server 253 Shutting down
+INFO 2024-08-19 22:17:53,362 server 87 Finished server process [6766]
+INFO 2024-08-19 22:17:53,998 server 77 Started server process [6779]
+INFO 2024-08-19 22:17:53,998 on 48 Waiting for application startup.
+INFO 2024-08-19 22:17:53,998 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:17:53,998 on 62 Application startup complete.
+INFO 2024-08-19 22:17:56,090 httptools_impl 484 127.0.0.1:59929 - "POST /api/react-login/ HTTP/1.1" 200
+ERROR 2024-08-19 22:17:56,129 log 241 Internal Server Error: /api/user/profile/
+Traceback (most recent call last):
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/django/core/handlers/base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/rest_framework/response.py", line 74, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+          ^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/anaconda3/lib/python3.11/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/Users/liuyitong/anaconda3/lib/python3.11/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/anaconda3/lib/python3.11/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/projects/djangoProject/venv/lib/python3.11/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/liuyitong/anaconda3/lib/python3.11/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Playlist is not JSON serializable
+INFO 2024-08-19 22:17:56,130 httptools_impl 484 127.0.0.1:59929 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 500
+INFO 2024-08-19 22:20:36,858 server 253 Shutting down
+INFO 2024-08-19 22:20:36,960 server 87 Finished server process [6779]
+INFO 2024-08-19 22:20:37,495 server 77 Started server process [6820]
+INFO 2024-08-19 22:20:37,495 on 48 Waiting for application startup.
+INFO 2024-08-19 22:20:37,495 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:20:37,496 on 62 Application startup complete.
+INFO 2024-08-19 22:26:04,882 server 253 Shutting down
+INFO 2024-08-19 22:26:04,984 server 87 Finished server process [6820]
+INFO 2024-08-19 22:26:05,532 server 77 Started server process [6872]
+INFO 2024-08-19 22:26:05,532 on 48 Waiting for application startup.
+INFO 2024-08-19 22:26:05,532 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-19 22:26:05,532 on 62 Application startup complete.
+INFO 2024-08-19 22:26:09,802 httptools_impl 484 127.0.0.1:61971 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 22:26:09,830 httptools_impl 484 127.0.0.1:61971 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 22:26:14,660 httptools_impl 484 127.0.0.1:61971 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 22:26:14,672 httptools_impl 484 127.0.0.1:61971 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 22:27:08,609 httptools_impl 484 127.0.0.1:62216 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 23:36:42,863 httptools_impl 484 127.0.0.1:63536 - "OPTIONS /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 23:36:43,041 httptools_impl 484 127.0.0.1:63536 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 23:36:43,052 httptools_impl 484 127.0.0.1:63536 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 23:41:35,542 httptools_impl 484 127.0.0.1:64759 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 23:43:25,539 httptools_impl 484 127.0.0.1:65221 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 23:43:25,551 httptools_impl 484 127.0.0.1:65221 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 23:44:21,845 httptools_impl 484 127.0.0.1:65470 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 23:44:21,855 httptools_impl 484 127.0.0.1:65470 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 23:45:05,687 httptools_impl 484 127.0.0.1:49276 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 23:45:05,696 httptools_impl 484 127.0.0.1:49276 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 23:46:55,467 httptools_impl 484 127.0.0.1:49732 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-19 23:46:55,478 httptools_impl 484 127.0.0.1:49732 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-19 23:47:56,145 httptools_impl 484 127.0.0.1:49816 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 23:51:57,671 httptools_impl 484 127.0.0.1:50846 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 23:52:09,242 httptools_impl 484 127.0.0.1:50902 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-19 23:55:55,156 httptools_impl 484 127.0.0.1:51833 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:06:57,165 httptools_impl 484 127.0.0.1:52044 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:10:25,861 httptools_impl 484 127.0.0.1:52257 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:15:24,601 server 253 Shutting down
+INFO 2024-08-20 00:15:24,705 server 87 Finished server process [6872]
+INFO 2024-08-20 00:15:25,302 server 77 Started server process [8045]
+INFO 2024-08-20 00:15:25,302 on 48 Waiting for application startup.
+INFO 2024-08-20 00:15:25,302 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-20 00:15:25,302 on 62 Application startup complete.
+INFO 2024-08-20 00:18:43,221 httptools_impl 484 127.0.0.1:52627 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:18:58,395 httptools_impl 484 127.0.0.1:52708 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:21:35,912 httptools_impl 484 127.0.0.1:52817 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:21:56,460 httptools_impl 484 127.0.0.1:52827 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:22:43,452 httptools_impl 484 127.0.0.1:52846 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:23:03,453 httptools_impl 484 127.0.0.1:52915 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:28:11,352 httptools_impl 484 127.0.0.1:53654 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:28:44,874 httptools_impl 484 127.0.0.1:53794 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:29:24,662 httptools_impl 484 127.0.0.1:53968 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:29:37,745 httptools_impl 484 127.0.0.1:54028 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:29:43,029 httptools_impl 484 127.0.0.1:54041 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 00:30:13,459 httptools_impl 484 127.0.0.1:54054 - "POST /api/react-login/ HTTP/1.1" 200
+INFO 2024-08-20 00:30:13,472 httptools_impl 484 127.0.0.1:54054 - "GET /api/user/profile/?email=123@123.com HTTP/1.1" 200
+INFO 2024-08-20 00:30:59,819 httptools_impl 484 127.0.0.1:54077 - "GET /api/playground/?page=1&limit=20 HTTP/1.1" 200
+INFO 2024-08-20 12:49:59,242 server 253 Shutting down
+INFO 2024-08-20 12:49:59,344 server 87 Finished server process [8045]
+INFO 2024-08-20 12:56:48,465 server 77 Started server process [10210]
+INFO 2024-08-20 12:56:48,465 on 48 Waiting for application startup.
+INFO 2024-08-20 12:56:48,465 on 94 ASGI 'lifespan' protocol appears unsupported.
+INFO 2024-08-20 12:56:48,465 on 62 Application startup complete.
+INFO 2024-08-20 12:56:51,415 httptools_impl 484 127.0.0.1:57587 - "GET / HTTP/1.1" 302
+INFO 2024-08-20 12:56:51,416 httptools_impl 484 127.0.0.1:57588 - "GET / HTTP/1.1" 302
+INFO 2024-08-20 12:56:51,438 httptools_impl 484 127.0.0.1:57587 - "GET /home/ HTTP/1.1" 200
+INFO 2024-08-20 12:56:51,443 httptools_impl 484 127.0.0.1:57588 - "GET /home/ HTTP/1.1" 200
+WARNING 2024-08-20 12:56:52,104 log 241 Not Found: /favicon.ico
+INFO 2024-08-20 12:56:52,105 httptools_impl 484 127.0.0.1:57588 - "GET /favicon.ico HTTP/1.1" 404
+INFO 2024-08-20 12:57:20,285 server 253 Shutting down
+INFO 2024-08-20 12:57:20,386 server 87 Finished server process [10210]

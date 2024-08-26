@@ -541,7 +541,6 @@ def playlist(request, playlist_id):
     playlist_info = get_object_or_404(Playlist, id=playlist_id)
     songs = playlist_info.tracks  # 直接从 JSONField 获取歌曲列表
 
-    # 将歌曲的 Spotify URI 和其他信息存储在 session 中
     request.session['playlist_name'] = playlist_info.name
     request.session['songs'] = [{'spotify_uri': song['spotify_uri']} for song in songs]
     # track_uris = [song['spotify_uri'] for song in request.session.get('songs', [])]

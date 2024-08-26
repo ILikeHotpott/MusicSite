@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+import react_app.models
 from react_app.models import ReactUser
 from django.contrib.auth import authenticate
 from react_app import models
@@ -57,17 +59,6 @@ class LoginSerializer(serializers.Serializer):
         return data
 
 
-class UserSerializer(serializers.ModelSerializer):
-    xxx = serializers.SerializerMethodField()
-
-    class Meta:
-        model = models.ReactUser
-        fields = ['email', 'username', 'password', "xxx"]
-
-    def get_xxx(self, obj):
-        return "hello fucking world"
-
-
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = app01_models.UserInfo
@@ -93,3 +84,28 @@ class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = app01_models.Playlist
         fields = ['user', 'name', 'description', 'playlist_cover', 'tracks']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    xxx = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.ReactUser
+        fields = ['email', 'username', 'password', "xxx"]
+
+    def get_xxx(self, obj):
+        return "hello fucking world"
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    playlists = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = react_app.models.ReactUser
+        fields = '__all__'
+
+    def get_playlists(self, obj):
+        playlists = react_app.models.Playlist.objects.filter(user=obj)
+        return PlaylistSerializer(playlists, many=True).data
+

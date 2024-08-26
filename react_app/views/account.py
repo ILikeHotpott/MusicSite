@@ -1,5 +1,4 @@
 import jwt
-from django.contrib.auth import login
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
