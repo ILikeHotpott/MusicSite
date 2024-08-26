@@ -128,7 +128,7 @@ urlpatterns = [
     path('api/redis/add_user/', test.RedisAddTestView.as_view(), name='redis_add_user'),
     path('api/redis/get_user/', test.RedisGetTestView.as_view(), name='redis_add_user'),
 
-    path('runrun/', views.runrun, name='runrun')
+    path('runrun/', views.runrun, name='runrun'),
 
     path('message_center/', views.message_center, name='message_center')
 ]

@@ -4441,3 +4441,112 @@ WARNING 2024-08-20 12:56:52,104 log 241 Not Found: /favicon.ico
 INFO 2024-08-20 12:56:52,105 httptools_impl 484 127.0.0.1:57588 - "GET /favicon.ico HTTP/1.1" 404
 INFO 2024-08-20 12:57:20,285 server 253 Shutting down
 INFO 2024-08-20 12:57:20,386 server 87 Finished server process [10210]
+INFO 2024-08-26 14:18:56,851 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:20:24,868 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:22:18,133 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:25:21,690 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:26:06,309 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:26:57,148 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:27:25,112 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:27:43,606 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:28:07,663 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:28:44,194 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:36:22,741 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:38:06,030 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:38:09,874 autoreload 266 E:\MusicSite\djangoProject\urls.py changed, reloading.
+INFO 2024-08-26 14:38:10,946 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:38:19,585 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:38:23,362 basehttp 212 "GET / HTTP/1.1" 302 0
+INFO 2024-08-26 14:38:23,372 basehttp 212 "GET /home/ HTTP/1.1" 200 19621
+WARNING 2024-08-26 14:38:24,263 log 241 Not Found: /favicon.ico
+WARNING 2024-08-26 14:38:24,263 basehttp 212 "GET /favicon.ico HTTP/1.1" 404 9211
+INFO 2024-08-26 14:38:25,420 basehttp 212 "GET /search/ HTTP/1.1" 200 18993
+INFO 2024-08-26 14:38:26,316 basehttp 212 "GET /login/ HTTP/1.1" 200 3026
+INFO 2024-08-26 14:38:26,372 basehttp 212 "GET /image/code/ HTTP/1.1" 200 2336
+INFO 2024-08-26 14:38:31,533 basehttp 212 "GET /login/ HTTP/1.1" 200 3026
+INFO 2024-08-26 14:38:31,575 basehttp 212 "GET /image/code/ HTTP/1.1" 200 2137
+INFO 2024-08-26 14:39:13,678 basehttp 212 "GET /login/ HTTP/1.1" 200 3026
+INFO 2024-08-26 14:39:13,711 basehttp 212 "GET /image/code/ HTTP/1.1" 200 2354
+INFO 2024-08-26 14:39:30,547 basehttp 212 "POST /login/ HTTP/1.1" 302 0
+INFO 2024-08-26 14:39:30,556 basehttp 212 "GET /rank_list/ HTTP/1.1" 200 36496
+INFO 2024-08-26 14:39:32,839 basehttp 212 "GET /playground/ HTTP/1.1" 200 44937
+INFO 2024-08-26 14:39:34,466 basehttp 212 "GET /rank_list/ HTTP/1.1" 200 36496
+INFO 2024-08-26 14:39:35,174 basehttp 212 "GET /playground/ HTTP/1.1" 200 44937
+INFO 2024-08-26 14:39:35,536 basehttp 212 "GET /search/ HTTP/1.1" 200 19599
+INFO 2024-08-26 14:39:38,464 basehttp 212 "GET /search/ HTTP/1.1" 200 19599
+INFO 2024-08-26 14:39:40,977 basehttp 212 "GET /search/ HTTP/1.1" 200 19599
+INFO 2024-08-26 14:39:41,462 basehttp 212 "GET /playground/ HTTP/1.1" 200 44937
+INFO 2024-08-26 14:39:41,830 basehttp 212 "GET /rank_list/ HTTP/1.1" 200 36496
+INFO 2024-08-26 14:39:42,715 basehttp 212 "GET /home/ HTTP/1.1" 200 20227
+INFO 2024-08-26 14:39:43,294 basehttp 212 "GET /rank_list/ HTTP/1.1" 200 36496
+INFO 2024-08-26 14:39:43,706 basehttp 212 "GET /playground/ HTTP/1.1" 200 44937
+ERROR 2024-08-26 14:39:45,733 log 241 Internal Server Error: /like-post/
+Traceback (most recent call last):
+  File "E:\python\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\MusicSite\app01\views.py", line 431, in like_post
+    like = Like.objects.create(user=user, moment=moment)
+           ^^^^
+NameError: name 'Like' is not defined
+ERROR 2024-08-26 14:39:45,737 basehttp 212 "POST /like-post/ HTTP/1.1" 500 86009
+INFO 2024-08-26 14:39:48,959 basehttp 212 "GET /search/ HTTP/1.1" 200 19599
+INFO 2024-08-26 14:39:49,425 basehttp 212 "GET /playground/ HTTP/1.1" 200 44936
+INFO 2024-08-26 14:39:49,772 basehttp 212 "GET /rank_list/ HTTP/1.1" 200 36496
+INFO 2024-08-26 14:39:53,475 basehttp 212 "GET /profile/ HTTP/1.1" 200 17186
+INFO 2024-08-26 14:39:55,548 basehttp 212 "GET /home/ HTTP/1.1" 200 20227
+INFO 2024-08-26 14:40:00,659 basehttp 212 "GET /rank_list/ HTTP/1.1" 200 36496
+INFO 2024-08-26 14:40:06,802 basehttp 212 "GET /home/ HTTP/1.1" 200 20227
+INFO 2024-08-26 14:40:07,455 basehttp 212 "GET /rank_list/ HTTP/1.1" 200 36496
+INFO 2024-08-26 14:40:08,314 basehttp 212 "GET /playground/ HTTP/1.1" 200 44936
+WARNING 2024-08-26 14:40:11,811 log 241 Not Found: /playground/message_center
+WARNING 2024-08-26 14:40:11,812 basehttp 212 "GET /playground/message_center HTTP/1.1" 404 9253
+INFO 2024-08-26 14:40:25,759 basehttp 212 "GET /message_center HTTP/1.1" 301 0
+ERROR 2024-08-26 14:40:25,806 log 241 Internal Server Error: /message_center/
+Traceback (most recent call last):
+  File "E:\python\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\MusicSite\app01\views.py", line 711, in message_center
+    notifications = NotifiCenter.objects.filter(user=user)
+                    ^^^^^^^^^^^^
+NameError: name 'NotifiCenter' is not defined
+ERROR 2024-08-26 14:40:25,811 basehttp 212 "GET /message_center/ HTTP/1.1" 500 80522
+INFO 2024-08-26 14:46:22,754 autoreload 266 E:\MusicSite\app01\views.py changed, reloading.
+INFO 2024-08-26 14:46:23,916 autoreload 668 Watching for file changes with StatReloader
+INFO 2024-08-26 14:46:27,028 basehttp 212 "GET / HTTP/1.1" 302 0
+INFO 2024-08-26 14:46:27,049 basehttp 212 "GET /home/ HTTP/1.1" 200 20227
+INFO 2024-08-26 14:46:30,847 basehttp 212 "GET /home/ HTTP/1.1" 200 20227
+ERROR 2024-08-26 14:46:39,157 log 241 Internal Server Error: /message_center/
+Traceback (most recent call last):
+  File "E:\python\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\MusicSite\app01\views.py", line 737, in message_center
+    comment = MomentComment.objects.get(id=post_comment_notifi.comment_id)
+              ^^^^^^^^^^^^^
+NameError: name 'MomentComment' is not defined
+ERROR 2024-08-26 14:46:39,160 basehttp 212 "GET /message_center/ HTTP/1.1" 500 84013
+INFO 2024-08-26 14:47:18,865 autoreload 266 E:\MusicSite\app01\views.py changed, reloading.
+INFO 2024-08-26 14:47:20,012 autoreload 668 Watching for file changes with StatReloader
