@@ -130,6 +130,7 @@ urlpatterns = [
 
     path('runrun/', views.runrun, name='runrun')
 
+    path('message_center/', views.message_center, name='message_center')
 ]
 
 if settings.DEBUG:

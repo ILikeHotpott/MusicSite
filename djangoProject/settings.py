@@ -84,8 +84,7 @@ CORS_ALLOW_CREDENTIALS = True
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": os.path.join(BASE_DIR, 'templates')
-        ,
+        "DIRS": [os.path.join(BASE_DIR, 'app01', 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -104,17 +103,46 @@ WSGI_APPLICATION = "djangoProject.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-# 本地测试用这个！！
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'music_test',
+        'NAME': 'music',
         'USER': 'root',
-        'PASSWORD': 'Lcy741125',
+        'PASSWORD': 'LUOth1997',
         'HOST': '127.0.0.1',
         'PORT': 3306
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'Lcy741125',
+#         'HOST': '44.217.110.116',
+#         'PORT': 3306
+#     }
+# }
+
+# local notification sys database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'music',
+#         'USER': 'root',
+#         'PASSWORD': 'LUOth1997',
+#         'HOST': '127.0.0.1',
+#         'PORT': 3306
+#     }
+# }
 
 # #项目上线一定要用这个！！
 # DATABASES = {

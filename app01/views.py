@@ -26,7 +26,8 @@ from app01.utils.bootstrap import BootstrapModelForm
 from app01.utils.music_api import get_ranks_songs_artists
 from app01.utils import search_spotify
 from spotipy import Spotify, SpotifyOAuth
-
+from app01.notifi import Notification
+import os
 
 def runrun(request):
     # 获取用户
@@ -427,7 +428,8 @@ def like_post(request):
         redis_conn.sadd(likes_key, user.id)
         liked = True
         moment.likes_count = redis_conn.scard(likes_key)  # 更新likes_count
-
+        like = Like.objects.create(user=user, moment=moment)
+        Notification.notify_like(like, moment)
     moment.save()  # 保存修改到数据库
 
     return JsonResponse({'liked': liked, 'like_count': moment.likes_count})
@@ -451,6 +453,7 @@ def submit_moment_comment(request):
                 content=comment_text,
             )
             comment.save()
+            Notification.notify_comment(comment, moment, 1)
             return JsonResponse({'message': 'Comment submitted successfully'})
 
         except Exception as e:
@@ -694,5 +697,66 @@ def chatbot(request):
         print(html)
 
         return HttpResponse(html, content_type="text/html")
-
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def rank_list(request):  # 待完成，级别最高
+    return render(request, "rank_list.html")
+
+
+@login_required
+def message_center(request):
+    user = request.user
+    unread = user.unread_count
+
+    notifications = NotifiCenter.objects.filter(user=user)
+    unread_notifications = notifications.filter(read=False)
+    likes_notifications = notifications.filter(types=0)
+    post_comments_notifications = notifications.filter(types=1)
+
+    unread_likes_data = []
+    read_likes_data = []
+    for notifi in likes_notifications:
+        like_notifi = NotifiLikesPost.objects.get(notifi=notifi)
+        like_data = {
+            'notification_id': notifi.id,
+            'time': notifi.time,
+            'liked_by': like_notifi.like.user.username,
+            'liked_post': like_notifi.like.moment.content,
+            'read': notifi.read,
+        }
+        if notifi.read:
+            read_likes_data.append(like_data)
+        else:
+            unread_likes_data.append(like_data)
+
+    unread_post_comments_data = []
+    read_post_comments_data = []
+    for notifi in post_comments_notifications:
+        post_comment_notifi = NotifiPostComment.objects.get(notifi=notifi)
+        comment = MomentComment.objects.get(id=post_comment_notifi.comment_id)
+        comment_data = {
+            'notification_id': notifi.id,
+            'time': notifi.time,
+            'commented_by': comment.user.username,
+            'comment_content': comment.content,
+            'commented_post': comment.moment.content,
+            'read': notifi.read,
+        }
+        if notifi.read:
+            read_post_comments_data.append(comment_data)
+        else:
+            unread_post_comments_data.append(comment_data)
+
+    context = {
+        'unread_count': unread,
+        'unread_likes_data': unread_likes_data,
+        'read_likes_data': read_likes_data,
+        'unread_post_comments_data': unread_post_comments_data,
+        'read_post_comments_data': read_post_comments_data,
+    }
+
+    user.unread_count = 0
+    user.save()
+    unread_notifications.update(read=True)
+
+    return render(request, 'message_center.html', context)

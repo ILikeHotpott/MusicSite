@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Message Center</title>
+</head>
+<body>
+    <h1>Message Center</h1>
+    <h2>Unread Count: {{ unread_count }}</h2>
+
+    <h3>Likes</h3>
+    {% for like in unread_likes_data %}
+        <p style="font-weight: bold;">{{ like.time }}: {{ like.liked_by }} liked your post "{{ like.liked_post }}"</p>
+    {% endfor %}
+    {% for like in read_likes_data %}
+        <p>{{ like.time }}: {{ like.liked_by }} liked your post "{{ like.liked_post }}"</p>
+    {% endfor %}
+
+    <h3>Comments on Posts</h3>
+    {% for comment in unread_post_comments_data %}
+        <p style="font-weight: bold;">{{ comment.time }}: {{ comment.commented_by }} commented on your post "{{ comment.commented_post }}": "{{ comment.comment_content }}"</p>
+    {% endfor %}
+    {% for comment in read_post_comments_data %}
+        <p>{{ comment.time }}: {{ comment.commented_by }} commented on your post "{{ comment.commented_post }}": "{{ comment.comment_content }}"</p>
+    {% endfor %}
+</body>
+</html>
